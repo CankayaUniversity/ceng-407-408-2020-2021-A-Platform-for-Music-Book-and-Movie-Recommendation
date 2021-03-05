@@ -1,0 +1,68 @@
+package com.bitirme.quirec.user.controller;
+
+import com.bitirme.quirec.user.model.User;
+import com.bitirme.quirec.user.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+@Controller
+@RequestMapping("/quirec-api/user")
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
+public class UserController {
+
+    private UserService userService;
+
+    //profil sayfasında user bilgilerinin görülmesi için
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<User> get(@PathVariable("id") long userId) {
+        return new ResponseEntity<>(
+                userService.get(userId),
+                HttpStatus.OK
+        );
+    }
+
+    //register
+    @RequestMapping(value = "/register",method = RequestMethod.POST)
+    public ResponseEntity<User> register(@RequestBody User user) {
+        return new ResponseEntity<>(
+                userService.register(user),
+                HttpStatus.OK
+        );
+    }
+
+    //login
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<String> login(@RequestBody String userInfo, String password) {
+        return new ResponseEntity<>(
+                userService.login(userInfo, password),
+                HttpStatus.OK
+        );
+    }
+
+    //change password
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<User> update(@PathVariable("id") long userId, @RequestBody String newPassword) {
+        return new ResponseEntity<>(
+                userService.update(userId, newPassword),
+                HttpStatus.OK
+        );
+    }
+
+    //delete user -> üyelik iptali gibi gerekirse kullanılır
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> delete(@PathVariable("id") long userId) {
+        userService.delete(userId);
+        return new ResponseEntity<>(
+                HttpStatus.OK
+        );
+    }
+
+    //TODO: forgot password, mail service
+}
