@@ -22,9 +22,7 @@ public class UserServiceImpl implements UserService {
 
     private final String SECRET = "secretKey";
 
-    private BCrypt bCrypt;
-
-    private BCryptPasswordEncoder bCryptEncoder;
+    private final String salt = BCrypt.gensalt("$2b", 5);
 
     @Override
     public User get(long userId) {
@@ -41,7 +39,8 @@ public class UserServiceImpl implements UserService {
             User newUser = new User();
             newUser.setUsername(user.getUsername());
             newUser.setEmail(user.getEmail());
-            newUser.setPassword(bCryptEncoder.encode(user.getPassword()));
+
+            newUser.setPassword(BCrypt.hashpw(user.getPassword(), salt));
 
             return userDao.saveAndFlush(newUser);
         }
@@ -50,11 +49,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(String userInfo, String password) {
-        User userControl = userDao.findUserByEmailOrUsername(userInfo, userInfo);
+    public String login(User user) {
+        String userInfo = user.getEmail() == null ? user.getUsername() : user.getEmail();
+        User userControl = userDao.findUserByEmailOrUsername(userInfo);
 
         if (userControl != null) {
-            if (bCryptEncoder.matches(password, userControl.getPassword())) {
+            if (BCrypt.checkpw(user.getPassword(), userControl.getPassword())) {
                 return JWT.create()
                         .withSubject(userControl.getUsername())
                         .sign(Algorithm.HMAC512(SECRET.getBytes()));
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
                 () -> new EntityNotFoundException("user")
         );
 
-        update.setPassword(bCryptEncoder.encode(newPassword));
+        update.setPassword(BCrypt.hashpw(newPassword, salt));
 
         return userDao.saveAndFlush(update);
     }
