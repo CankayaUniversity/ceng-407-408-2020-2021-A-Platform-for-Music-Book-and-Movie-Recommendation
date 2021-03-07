@@ -5,7 +5,6 @@ import com.bitirme.dataset.model.Movie;
 import com.bitirme.dataset.model.Music;
 import com.bitirme.quirec.browser.service.BrowserService;
 import com.bitirme.quirec.questionnarie.model.Categories;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +16,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/quirec-api/browse")
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class BrowserController {
 
-    private BrowserService browserService;
+    @Autowired
+    BrowserService browserService;
 
     //dbdeki tüm şarkılar
     @RequestMapping(value = "/music", method = RequestMethod.GET)

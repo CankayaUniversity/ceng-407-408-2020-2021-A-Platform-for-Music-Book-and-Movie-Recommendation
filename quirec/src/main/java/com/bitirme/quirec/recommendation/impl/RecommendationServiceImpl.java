@@ -8,6 +8,7 @@ import com.bitirme.quirec.recommendation.model.Recommendation;
 import com.bitirme.quirec.recommendation.service.RecommendationService;
 import com.bitirme.quirec.user.dao.UserDao;
 import com.bitirme.quirec.user.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -17,11 +18,14 @@ import javax.transaction.Transactional;
 @Transactional
 public class RecommendationServiceImpl implements RecommendationService {
 
-    private UserDao userDao;
+    @Autowired
+    UserDao userDao;
 
-    private RecommendationDao recommendationDao;
+    @Autowired
+    RecommendationDao recommendationDao;
 
-    private RatingDao ratingDao;
+    @Autowired
+    RatingDao ratingDao;
 
     @Override
     public Recommendation get(long userId) {

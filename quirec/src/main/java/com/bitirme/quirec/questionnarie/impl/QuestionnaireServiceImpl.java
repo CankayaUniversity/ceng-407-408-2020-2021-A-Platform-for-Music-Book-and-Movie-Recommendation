@@ -5,7 +5,6 @@ import com.bitirme.quirec.questionnarie.model.Categories;
 import com.bitirme.quirec.questionnarie.service.QuestionnaireService;
 import com.bitirme.quirec.user.dao.UserDao;
 import com.bitirme.quirec.user.model.User;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +16,13 @@ import java.util.Set;
 
 @Service
 @Transactional
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class QuestionnaireServiceImpl implements QuestionnaireService {
 
-    private CategoryDao categoryDao;
+    @Autowired
+    CategoryDao categoryDao;
 
-    private UserDao userDao;
+    @Autowired
+    UserDao userDao;
 
     @Override
     public List<Categories> getCategories() {

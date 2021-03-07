@@ -8,6 +8,7 @@ import com.bitirme.dataset.model.Movie;
 import com.bitirme.dataset.model.Music;
 import com.bitirme.quirec.browser.service.BrowserService;
 import com.bitirme.quirec.questionnarie.model.Categories;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,11 +18,14 @@ import java.util.List;
 @Transactional
 public class BrowserServiceImpl implements BrowserService {
 
-    private MusicDao musicDao;
+    @Autowired
+    MusicDao musicDao;
 
-    private BookDao bookDao;
+    @Autowired
+    BookDao bookDao;
 
-    private MovieDao movieDao;
+    @Autowired
+    MovieDao movieDao;
 
     @Override
     public List<Music> getMusic() {

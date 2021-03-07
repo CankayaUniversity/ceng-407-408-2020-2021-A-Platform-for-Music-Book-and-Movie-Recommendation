@@ -5,7 +5,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.bitirme.quirec.user.dao.UserDao;
 import com.bitirme.quirec.user.model.User;
 import com.bitirme.quirec.user.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,10 +15,10 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserServiceImpl implements UserService {
 
-    private UserDao userDao;
+    @Autowired
+    UserDao userDao;
 
     private final String SECRET = "secretKey";
 
@@ -52,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(String userInfo, String password) {
-        User userControl = userDao.findUserByEmailOrUsername(userInfo);
+        User userControl = userDao.findUserByEmailOrUsername(userInfo, userInfo);
 
         if (userControl != null) {
             if (bCryptEncoder.matches(password, userControl.getPassword())) {
@@ -61,10 +60,10 @@ public class UserServiceImpl implements UserService {
                         .sign(Algorithm.HMAC512(SECRET.getBytes()));
             }
 
-            return null; //userın girdiği password dbdeki password ile örtüşmedi
+            return "mismatch"; //userın girdiği password dbdeki password ile örtüşmedi
         }
 
-        return null; //user bulunamadı
+        return "user bulunamadı";
     }
 
     @Override
