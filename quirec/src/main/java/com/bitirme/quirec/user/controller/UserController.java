@@ -38,9 +38,9 @@ public class UserController {
 
     //login
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<String> login(@RequestBody String userInfo, String password) {
+    public ResponseEntity<String> login(@RequestBody User user) {
         return new ResponseEntity<>(
-                userService.login(userInfo, password),
+                userService.login(user),
                 HttpStatus.OK
         );
     }

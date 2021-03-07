@@ -8,7 +8,7 @@ public interface UserService {
 
     User register(User user);
 
-    String login(String userInfo, String password);
+    String login(User user);
 
     User update(long userId, String newPassword);
 
