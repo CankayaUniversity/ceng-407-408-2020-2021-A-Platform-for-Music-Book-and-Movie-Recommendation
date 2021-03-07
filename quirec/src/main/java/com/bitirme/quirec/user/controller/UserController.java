@@ -2,7 +2,6 @@ package com.bitirme.quirec.user.controller;
 
 import com.bitirme.quirec.user.model.User;
 import com.bitirme.quirec.user.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/quirec-api/user")
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserController {
 
-    private UserService userService;
+    @Autowired
+    UserService userService;
 
     //profil sayfasında user bilgilerinin görülmesi için
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -29,7 +28,7 @@ public class UserController {
     }
 
     //register
-    @RequestMapping(value = "/register",method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<User> register(@RequestBody User user) {
         return new ResponseEntity<>(
                 userService.register(user),

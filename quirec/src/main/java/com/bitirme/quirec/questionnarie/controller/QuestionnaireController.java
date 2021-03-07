@@ -2,7 +2,6 @@ package com.bitirme.quirec.questionnarie.controller;
 
 import com.bitirme.quirec.questionnarie.model.Categories;
 import com.bitirme.quirec.questionnarie.service.QuestionnaireService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +16,10 @@ import java.util.Set;
 
 @Controller
 @RequestMapping("/quirec-api/questionnarie")
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class QuestionnaireController {
 
-    private QuestionnaireService questionnaireService;
+    @Autowired
+    QuestionnaireService questionnaireService;
 
     //anket sayfasında mevcut tüm kategorilerin görülmesi için NOT: Kategorileri dbye elle kaydedeceğiz
     @RequestMapping(value = "/categories", method = RequestMethod.GET)
