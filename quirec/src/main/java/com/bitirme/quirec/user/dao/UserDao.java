@@ -7,6 +7,6 @@ public interface UserDao extends BaseDao<User> {
 
     User findUserByEmail(String email);
 
-    User findUserByEmailOrUsername(String userInfo);
+    User findUserByEmailOrUsername(String email, String username);
 
 }
