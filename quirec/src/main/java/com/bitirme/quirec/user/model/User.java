@@ -25,8 +25,12 @@ public class User extends BaseModel {
     @Column(name = "PASSWORD")
     private String password;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "USER_ID")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            schema = "QUIREC", name = "USER_CATEGORIES",
+            joinColumns = {@JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "FK_USER_CATEGORIES_USER_ID"))},
+            inverseJoinColumns = {@JoinColumn(name = "CATEGORY_ID", foreignKey = @ForeignKey(name = "FK_USER_CATEGORIES_CATEGORY_ID"))}
+    )
     private Set<Categories> categories;
 
 }
