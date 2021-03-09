@@ -20,7 +20,7 @@ public class Rating extends BaseModel {
     private CategoryType categoryType;
 
     @Column(name = "category_rate")
-    private int rate;
+    private double rate;
 
     @Column(name = "vote_number")
     private int voteNumber;

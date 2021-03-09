@@ -5,6 +5,7 @@ import com.bitirme.dataset.model.Movie;
 import com.bitirme.dataset.model.Music;
 import com.bitirme.quirec.browser.service.BrowserService;
 import com.bitirme.quirec.questionnarie.model.Categories;
+import com.bitirme.quirec.recommendation.model.Recommendation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,8 +50,7 @@ public class BrowserController {
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    //TODO: return type değişecek
-    public ResponseEntity<Categories> search(Categories searchCategory) {
+    public ResponseEntity<Recommendation> search(Categories searchCategory) {
         return new ResponseEntity<>(
                 browserService.search(searchCategory),
                 HttpStatus.OK
@@ -58,8 +58,7 @@ public class BrowserController {
     }
 
     @RequestMapping(value = "/search/detail", method = RequestMethod.GET)
-    //TODO: return type değişecek
-    public ResponseEntity<Categories> detailedSearch(Categories searchInfo) {
+    public ResponseEntity<Recommendation> detailedSearch(Categories searchInfo) {
         return new ResponseEntity<>(
                 browserService.detailedSearch(searchInfo),
                 HttpStatus.OK

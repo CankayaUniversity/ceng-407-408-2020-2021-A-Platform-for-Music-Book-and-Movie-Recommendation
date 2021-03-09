@@ -8,6 +8,7 @@ import com.bitirme.dataset.model.Movie;
 import com.bitirme.dataset.model.Music;
 import com.bitirme.quirec.browser.service.BrowserService;
 import com.bitirme.quirec.questionnarie.model.Categories;
+import com.bitirme.quirec.recommendation.model.Recommendation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,14 +44,14 @@ public class BrowserServiceImpl implements BrowserService {
     }
 
     @Override
-    public Categories search(Categories searchInfo) {
+    public Recommendation search(Categories searchInfo) {
         //searchInfo.getName();'e göre search yapılırsa "romantik" aramasında romantik film, kitap, müzik döner,
         //"korku" aramasında sadece korku film döner çünkü korku müzik yoktur
         return null;
     }
 
     @Override
-    public Categories detailedSearch(Categories searchInfo) {
+    public Recommendation detailedSearch(Categories searchInfo) {
         //dao filter by searchInfo.getName() && searchInfo. getCategoyType()
         return null;
     }

@@ -4,6 +4,7 @@ import com.bitirme.dataset.model.Book;
 import com.bitirme.dataset.model.Movie;
 import com.bitirme.dataset.model.Music;
 import com.bitirme.quirec.questionnarie.model.Categories;
+import com.bitirme.quirec.recommendation.model.Recommendation;
 
 import java.util.List;
 
@@ -15,8 +16,8 @@ public interface BrowserService {
 
     List<Movie> getMovie();
 
-    Categories search(Categories searchCategory);
+    Recommendation search(Categories searchCategory);
 
-    Categories detailedSearch(Categories searchInfo);
+    Recommendation detailedSearch(Categories searchInfo);
 
 }

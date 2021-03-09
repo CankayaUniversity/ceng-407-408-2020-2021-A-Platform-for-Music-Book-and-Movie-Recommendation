@@ -50,7 +50,7 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
 
     @Override
-    public void rate(CategoryType type, int rate) {
+    public void rate(CategoryType type, double rate) {
         Rating rating = ratingDao.findRatingByCategoryType(type);
 
         rating.setRate(rating.getRate() + rate);

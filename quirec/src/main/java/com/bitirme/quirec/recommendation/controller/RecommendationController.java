@@ -47,14 +47,4 @@ public class RecommendationController {
         );
     }
 
-    /*TODO: Ege ai'ı başka yerde yapabiliyorsa buna gerek yok
-    //get recommendations after rate
-    @RequestMapping(value = "/rate/recommendation", method = RequestMethod.GET)
-    public ResponseEntity<Recommendation> () {
-        return new ResponseEntity<>(
-                recommendationService.rateRecommends(type, rate);
-                HttpStatus.OK
-        );
-    }*/
-
 }

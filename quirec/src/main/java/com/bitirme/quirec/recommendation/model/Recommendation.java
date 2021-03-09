@@ -19,7 +19,7 @@ import java.util.Set;
 public class Recommendation extends BaseModel {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-        @JoinColumn(name = "MUSIC_ID")
+    @JoinColumn(name = "MUSIC_ID")
     private Set<Music> musicRecommendations;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

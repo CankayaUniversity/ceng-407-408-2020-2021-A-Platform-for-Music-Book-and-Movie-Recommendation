@@ -9,6 +9,6 @@ public interface RecommendationService {
 
     Recommendation detail(long recommendationId);
 
-    void rate(CategoryType type, int rate);
+    void rate(CategoryType type, double rate);
 
 }
