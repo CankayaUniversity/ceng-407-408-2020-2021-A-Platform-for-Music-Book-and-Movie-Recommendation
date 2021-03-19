@@ -8,11 +8,11 @@
             <tbody>
               <tr>
                 <td class="text-left">Username</td>
-                <td class="text-left">yarenipek</td>
+                <td class="text-left">{{username}}</td>
               </tr>
               <tr>
                 <td>E-mail</td>
-                <td>yarenipek1337@gmail.com</td>
+                <td>{{email}}</td>
               </tr>
             </tbody>
           </template>
@@ -35,7 +35,20 @@
 export default {
   name: "profilepage",
   data() {
-    return {};
+    return {
+        username:"",
+        email: ""
+    };
   },
+  async mounted () {
+    this.getUserInfo();
+  },
+  methods: {
+    async getUserInfo(){
+        const response = await this.axios.get('http://localhost:9000/quirec-api/user/' + this.$router.history.current.params.userId)
+        this.username = response.data.username;
+        this.email = response.data.email;
+    }
+  }
 };
 </script>

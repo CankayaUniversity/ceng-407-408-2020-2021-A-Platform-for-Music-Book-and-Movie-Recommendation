@@ -43,7 +43,7 @@ const routes = [
     name: 'changepass'
   },
   {
-    path: '/DetailsPage',
+    path: '/detailsPage',
     component: DetailsPage,
     name: 'detailspage'
   },
@@ -53,7 +53,7 @@ const routes = [
     name: 'mainpage'
   },
   {
-    path: '/ProfilePage',
+    path: '/profilePage',
     component: ProfilePage,
     name: 'profilepage'
   },

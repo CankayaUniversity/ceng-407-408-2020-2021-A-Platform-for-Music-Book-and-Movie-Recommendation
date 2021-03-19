@@ -21,7 +21,7 @@
                 
                 <div class="text-decoration-underline text-center"> <a href="ForgotPassword"> Forgot Password? </a></div>
                 
-                <center><v-btn to="/BrowserPage" large color="#c2185b" rounded>Login</v-btn></center>
+                <center><v-btn v-on:click="login()" large color="#c2185b" rounded>Login</v-btn></center>
               </v-card-text>
 
               <v-divider> </v-divider>
@@ -49,7 +49,22 @@
         }
     },
     methods: {
-
+        async login() {
+            if(this.input.email != "" && this.input.password != null){
+                this.axios.post('http://localhost:9000/quirec-api/user/login', {
+                    email: this.input.email,
+                    username: "",
+                    password: this.input.password
+                })
+                .then(response => {
+                    //this.$store.commit('setToken', response.data)
+                    this.$router.push("/profilePage")
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            }
+        }
     }
   };
 </script>

@@ -20,7 +20,7 @@
 
                 <v-text-field label="Enter Your Password Again" v-model="input.passworda" type="password" color="#c2185b"></v-text-field>
 
-                <center><v-btn to="/" large color="#c2185b" rounded>Sign Up</v-btn></center>
+                <center><v-btn v-on:click="register()" large color="#c2185b" rounded>Sign Up</v-btn></center>
               </v-card-text>
 
               <v-card-text>
@@ -49,7 +49,21 @@
         }
     },
     methods: {
-
+        async register(){
+            if(this.input != ""){
+                if(this.input.password == this.input.passworda){
+                    let currentObj = this;
+                    await this.axios.post('http://localhost:9000/quirec-api/user/register', {
+                        email: this.input.email,
+                        username: this.input.username,
+                        password: this.input.password
+                    })
+                    .then(
+                        this.$router.push('/')
+                    )
+                }
+            }
+        }
     }
   };
 </script>
