@@ -14,4 +14,6 @@ public interface UserService {
 
     void delete(long userId);
 
+    void forgotPassword(User user);
+
 }

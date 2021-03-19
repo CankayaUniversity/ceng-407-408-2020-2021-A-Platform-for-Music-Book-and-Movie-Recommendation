@@ -81,4 +81,14 @@ public class UserServiceImpl implements UserService {
     public void delete(long userId) {
         userDao.deleteById(userId);
     }
+
+    @Override
+    public void forgotPassword(User user){
+        User emailControl = userDao.findUserByEmail(user.getEmail());
+
+        if (emailControl != null){
+            //TODO: mail service
+        }
+
+    }
 }
