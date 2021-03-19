@@ -1,9 +1,21 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import VuexPersistence from 'vuex-persist'
 
-import user from './modules/user'
 Vue.use(Vuex);
 
-export const store = new Vuex.Store({
-user,
+const vuexLocal = new VuexPersistence({
+    storage: window.localStorage
+})
+
+const store = new Vuex.Store({
+    state:{
+
+    },
+    mutations:{
+
+    },
+    plugins: [vuexLocal.plugin]
 });
+
+export default store
