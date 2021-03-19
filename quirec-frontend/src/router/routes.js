@@ -1,0 +1,78 @@
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Login from '../views/Auth/Login.vue'
+import Register from '../views/Auth/Register.vue'
+import AdminPanel from '../views/AdminPanel.vue'
+import BrowserPage from '../views/User/BrowserPage.vue'
+import ChangePass from '../views/User/ChangePass.vue'
+import DetailsPage from '../views/User/DetailsPage.vue'
+import MainPage from '../views/MainPage.vue'
+import ProfilePage from '../views/User/ProfilePage.vue'
+import Questionnaire from '../views/User/Questionnaire.vue'
+import ForgotPassword from '../views/Auth/ForgotPassword.vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
+Vue.use(VueAxios, axios)
+Vue.use(VueRouter);
+
+const routes = [
+  {
+    path: '/login',
+    component: Login,
+    name: 'login'
+  },
+  {
+    path: '/register',
+    component: Register,
+    name: 'register'
+  },
+  {
+    path: '/adminpanel',
+    component: AdminPanel,
+    name: 'adminpanel'
+  },
+  {
+    path: '/BrowserPage',
+    component: BrowserPage,
+    name: 'browserpage'
+  },
+  {
+    path: '/ChangePass',
+    component: ChangePass,
+    name: 'changepass'
+  },
+  {
+    path: '/DetailsPage',
+    component: DetailsPage,
+    name: 'detailspage'
+  },
+  {
+    path: '/MainPage',
+    component: MainPage,
+    name: 'mainpage'
+  },
+  {
+    path: '/ProfilePage',
+    component: ProfilePage,
+    name: 'profilepage'
+  },
+  {
+    path: '/Questionnaire',
+    component: Questionnaire,
+    name: 'questionnaire'
+  },
+  {
+    path: '/ForgotPassword',
+    component: ForgotPassword,
+    name: 'ForgotPassword'
+  }
+]
+
+const router = new VueRouter({
+  mode: 'history',
+  routes: routes,
+  base: '/'
+})
+
+export default router
