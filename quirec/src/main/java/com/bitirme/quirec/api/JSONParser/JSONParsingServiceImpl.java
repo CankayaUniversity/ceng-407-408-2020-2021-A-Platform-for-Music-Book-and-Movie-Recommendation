@@ -7,9 +7,9 @@ import org.springframework.web.client.RestTemplate;
 public class JSONParsingServiceImpl implements JSONParsingService {
 
     @Override
-    public Object parse(String url) {
+    public Object getForObject(String url, String type) {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(url, Object.class);
+        return restTemplate.getForObject(url, Object.class, type);
     }
 
 }
