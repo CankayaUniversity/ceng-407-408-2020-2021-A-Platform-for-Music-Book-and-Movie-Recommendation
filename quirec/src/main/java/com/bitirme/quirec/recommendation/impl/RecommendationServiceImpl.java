@@ -43,13 +43,6 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
 
     @Override
-    public Recommendation detail(long recommendationId) {
-        return recommendationDao.findById(recommendationId).orElseThrow(
-                () -> new EntityNotFoundException("detail")
-        );
-    }
-
-    @Override
     public void rate(CategoryType type, double rate) {
         Rating rating = ratingDao.findRatingByCategoryType(type);
 

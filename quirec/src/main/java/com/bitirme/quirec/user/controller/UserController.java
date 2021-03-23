@@ -1,5 +1,6 @@
 package com.bitirme.quirec.user.controller;
 
+import com.bitirme.quirec.user.model.LoginReturn;
 import com.bitirme.quirec.user.model.User;
 import com.bitirme.quirec.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class UserController {
 
     //login
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<String> login(@RequestBody User user) {
+    public ResponseEntity<LoginReturn> login(@RequestBody User user) {
         return new ResponseEntity<>(
                 userService.login(user),
                 HttpStatus.OK

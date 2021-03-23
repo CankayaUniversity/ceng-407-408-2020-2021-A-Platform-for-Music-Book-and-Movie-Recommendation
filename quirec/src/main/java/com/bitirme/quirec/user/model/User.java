@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -31,6 +32,6 @@ public class User extends BaseModel {
             joinColumns = {@JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "FK_USER_CATEGORIES_USER_ID"))},
             inverseJoinColumns = {@JoinColumn(name = "CATEGORY_ID", foreignKey = @ForeignKey(name = "FK_USER_CATEGORIES_CATEGORY_ID"))}
     )
-    private Set<Categories> categories;
+    private Set<Categories> categories = new HashSet<>();
 
 }

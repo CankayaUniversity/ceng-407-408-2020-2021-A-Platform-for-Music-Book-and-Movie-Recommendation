@@ -29,15 +29,6 @@ public class RecommendationController {
         );
     }
 
-    //see recommended object in detail
-    @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Recommendation> detail(@PathVariable("id") long recommendationId) {
-        return new ResponseEntity<>(
-                recommendationService.detail(recommendationId),
-                HttpStatus.OK
-        );
-    }
-
     //rate recommendation accuracy
     @RequestMapping(value = "/rate", method = RequestMethod.POST)
     public ResponseEntity<Void> rate(@RequestBody CategoryType type, int rate) {

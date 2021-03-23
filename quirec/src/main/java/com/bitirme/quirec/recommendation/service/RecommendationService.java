@@ -7,8 +7,6 @@ public interface RecommendationService {
 
     Recommendation get(long userId);
 
-    Recommendation detail(long recommendationId);
-
     void rate(CategoryType type, double rate);
 
 }

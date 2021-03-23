@@ -1,5 +1,6 @@
 package com.bitirme.quirec.user.service;
 
+import com.bitirme.quirec.user.model.LoginReturn;
 import com.bitirme.quirec.user.model.User;
 
 public interface UserService {
@@ -8,7 +9,7 @@ public interface UserService {
 
     User register(User user);
 
-    String login(User user);
+    LoginReturn login(User user);
 
     User update(long userId, String newPassword);
 

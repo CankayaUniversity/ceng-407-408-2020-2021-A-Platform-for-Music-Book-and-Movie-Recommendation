@@ -3,11 +3,11 @@ package com.bitirme.quirec.user.impl;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.bitirme.quirec.user.dao.UserDao;
+import com.bitirme.quirec.user.model.LoginReturn;
 import com.bitirme.quirec.user.model.User;
 import com.bitirme.quirec.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -49,21 +49,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(User user) {
+    public LoginReturn login(User user) {
         String userInfo = user.getEmail() == null ? user.getUsername() : user.getEmail();
         User userControl = userDao.findUserByEmailOrUsername(userInfo);
 
+        LoginReturn loginReturn = new LoginReturn();
+
         if (userControl != null) {
             if (BCrypt.checkpw(user.getPassword(), userControl.getPassword())) {
-                return JWT.create()
+                String accessToken = JWT.create()
                         .withSubject(userControl.getUsername())
                         .sign(Algorithm.HMAC512(SECRET.getBytes()));
+
+                loginReturn.setAccessToken(accessToken);
+                loginReturn.setUserInfo(userControl);
             }
 
-            return "mismatch"; //userın girdiği password dbdeki password ile örtüşmedi
+            else loginReturn.setAccessToken("mismatch");
         }
 
-        return "user bulunamadı";
+        else loginReturn.setAccessToken("user not found");
+        return loginReturn;
     }
 
     @Override
