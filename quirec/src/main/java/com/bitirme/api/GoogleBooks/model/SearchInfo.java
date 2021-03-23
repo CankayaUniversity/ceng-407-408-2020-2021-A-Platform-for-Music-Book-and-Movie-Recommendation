@@ -1,4 +1,4 @@
-package com.bitirme.quirec.api.GoogleBooks.model;
+package com.bitirme.api.GoogleBooks.model;
 
 public class SearchInfo {
 

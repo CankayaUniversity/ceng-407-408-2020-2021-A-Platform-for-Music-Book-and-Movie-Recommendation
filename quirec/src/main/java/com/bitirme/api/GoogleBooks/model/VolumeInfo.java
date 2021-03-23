@@ -1,4 +1,4 @@
-package com.bitirme.quirec.api.GoogleBooks.model;
+package com.bitirme.api.GoogleBooks.model;
 
 import lombok.Data;
 
@@ -25,15 +25,9 @@ public class VolumeInfo {
 
     private Integer pageCount;
 
-    private Dimension dimension;
-
     private String printType;
 
     private List<String> categories;
-
-    private Double averageRating;
-
-    private Integer ratingsCount;
 
     private String maturityRating;
 
@@ -55,10 +49,6 @@ public class VolumeInfo {
 
     private SaleInfo saleInfo;
 
-    private AccessInfo accessInfo;
-
     private SearchInfo searchInfo;
-
-    private String mainCategory; //önemli
 
 }

@@ -1,4 +1,4 @@
-package com.bitirme.quirec.api.JSONParser;
+package com.bitirme.api.JSONParser;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -7,9 +7,9 @@ import org.springframework.web.client.RestTemplate;
 public class JSONParsingServiceImpl implements JSONParsingService {
 
     @Override
-    public Object getForObject(String url, String type) {
+    public Object getForObject(String url, String param) {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(url, Object.class, type);
+        return restTemplate.getForObject(url, Object.class, param);
     }
 
 }
