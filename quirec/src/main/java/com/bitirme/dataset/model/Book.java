@@ -26,6 +26,9 @@ public class Book extends BaseModel {
     @Column(name = "AUTHOR")
     public String author;
 
+    @Column(name = "COVER")
+    public String cover;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             schema = "QUIREC", name = "BOOK_CATEGORIES",
