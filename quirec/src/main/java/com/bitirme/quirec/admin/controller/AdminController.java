@@ -26,7 +26,13 @@ public class AdminController {
         );
     }
 
-    //TODO: database update
+    @RequestMapping(path = "/databaseUpdate", method = RequestMethod.POST)
+    public ResponseEntity<Void> databaseUpdate() {
+        adminService.databaseUpdate();
+        return new ResponseEntity<>(
+                HttpStatus.OK
+        );
+    }
 
     //TODO: model retraining
 

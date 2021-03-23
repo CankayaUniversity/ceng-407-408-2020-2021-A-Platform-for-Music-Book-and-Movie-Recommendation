@@ -29,7 +29,7 @@ public class GoogleBooksServiceImpl implements GoogleBooksService {
     CategoryDao categoryDao;
 
     public void getBooks(){
-        String getBooksUrl = "https://www.googleapis.com/books/v1/volumes?q={search type}&maxResults=40";
+        String getBooksUrl = "https://www.googleapis.com/books/v1/volumes?q={search type}&maxResults=10&startIndex=30"; //TODO: startIndex generalization
         String searchType = "{printType, books}";
         LinkedHashMap<String, ArrayList<LinkedHashMap<String, Object>>> resource = (LinkedHashMap<String, ArrayList<LinkedHashMap<String, Object>>>)parsingService.getForObject(getBooksUrl, searchType);
 
@@ -49,29 +49,32 @@ public class GoogleBooksServiceImpl implements GoogleBooksService {
                     newBook.setResourceId(resourceId);
                     newBook.setTitle((String) bookInfo.get("title"));
 
+                    LinkedHashMap<String, Object> links = (LinkedHashMap<String, Object>) bookInfo.get("imageLinks");
+                    newBook.setCover(links.get("thumbnail").toString());
+
                     List<String> authors = (List<String>) bookInfo.get("authors");
                     if (authors != null) newBook.setAuthor(authors.get(0));
                     else newBook.setAuthor("Author Unknown");
 
                     categories
-                        .forEach(
-                            category -> {
-                                Categories c = categoryDao.findCategoriesByCategoryTypeAndName(CategoryType.BOOK, category);
+                            .forEach(
+                                    category -> {
+                                        Categories c = categoryDao.findCategoriesByCategoryTypeAndName(CategoryType.BOOK, category);
 
-                                if (c == null) {
-                                    Categories newCategory = new Categories();
+                                        if (c == null) {
+                                            Categories newCategory = new Categories();
 
-                                    newCategory.setCategoryType(CategoryType.BOOK);
-                                    newCategory.setName(category);
-                                    categoryDao.saveAndFlush(newCategory);
+                                            newCategory.setCategoryType(CategoryType.BOOK);
+                                            newCategory.setName(category);
+                                            categoryDao.saveAndFlush(newCategory);
 
-                                    newBook.getCategories().add(newCategory);
-                                }
+                                            newBook.getCategories().add(newCategory);
+                                        }
 
-                                else
-                                    newBook.getCategories().add(c);
-                            }
-                        );
+                                        else
+                                            newBook.getCategories().add(c);
+                                    }
+                            );
 
                     bookDao.saveAndFlush(newBook);
                 }
