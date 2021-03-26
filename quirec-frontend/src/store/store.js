@@ -10,12 +10,17 @@ const vuexLocal = new VuexPersistence({
 
 const store = new Vuex.Store({
     state:{
-
+        userId: null
+    },
+    getters: {
+        getUserId: state => state.userId //gets user id
     },
     mutations:{
-
+        setUserId(state, id){
+            state.userId = id; //sets user id
+        }
     },
     plugins: [vuexLocal.plugin]
-});
+});64
 
 export default store
