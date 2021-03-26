@@ -4,4 +4,7 @@ import com.bitirme.base.dao.BaseDao;
 import com.bitirme.dataset.model.Movie;
 
 public interface MovieDao extends BaseDao<Movie> {
+
+    Movie findMoviesByResourceId(int resourceId);
+
 }

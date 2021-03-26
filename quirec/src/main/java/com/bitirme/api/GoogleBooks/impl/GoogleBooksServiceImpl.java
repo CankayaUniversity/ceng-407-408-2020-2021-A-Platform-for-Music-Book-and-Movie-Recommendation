@@ -66,6 +66,7 @@ public class GoogleBooksServiceImpl implements GoogleBooksService {
 
                                             newCategory.setCategoryType(CategoryType.BOOK);
                                             newCategory.setName(category);
+                                            newCategory.setOriginalId(0);
                                             categoryDao.saveAndFlush(newCategory);
 
                                             newBook.getCategories().add(newCategory);

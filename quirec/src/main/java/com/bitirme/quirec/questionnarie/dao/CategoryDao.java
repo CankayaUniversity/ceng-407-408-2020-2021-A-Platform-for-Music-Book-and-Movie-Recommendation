@@ -8,4 +8,6 @@ public interface CategoryDao extends BaseDao<Categories> {
 
     Categories findCategoriesByCategoryTypeAndName(CategoryType type, String name);
 
+    Categories findCategoriesByCategoryTypeAndOriginalId(CategoryType type, long originalId);
+
 }
