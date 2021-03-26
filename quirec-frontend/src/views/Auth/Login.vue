@@ -57,8 +57,9 @@
                     password: this.input.password
                 })
                 .then(response => {
-                    //this.$store.commit('setToken', response.data)
-                    this.$router.push("/profilePage")
+                  this.$store.commit('setUserId', response.data.userId)
+
+                  this.$router.push("/profilePage")
                 })
                 .catch(error => {
                     console.log(error);
