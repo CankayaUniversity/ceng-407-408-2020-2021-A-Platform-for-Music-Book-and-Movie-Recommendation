@@ -1,6 +1,7 @@
 package com.bitirme.quirec.admin.impl;
 
 import com.bitirme.api.GoogleBooks.service.GoogleBooksService;
+import com.bitirme.api.TheMovieDatabase.service.TheMovieDatabaseService;
 import com.bitirme.quirec.admin.service.AdminService;
 import com.bitirme.quirec.recommendation.dao.RatingDao;
 import com.bitirme.quirec.recommendation.model.Rating;
@@ -20,6 +21,9 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     GoogleBooksService booksService;
 
+    @Autowired
+    TheMovieDatabaseService movieDatabaseService;
+
     @Override
     public List<Rating> getRatings() {
         return ratingDao.findAll();
@@ -27,7 +31,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void databaseUpdate(){
-        booksService.getBooks();
+        //booksService.getBooks();
+        movieDatabaseService.getMovies();
     }
 
 }

@@ -18,7 +18,7 @@ import java.util.Set;
 public class Movie extends BaseModel {
 
     @Column(name = "RESOURCE_ID")
-    public String resourceId;
+    public Integer resourceId;
 
     @Column(name = "TITLE")
     public String title;
@@ -26,8 +26,8 @@ public class Movie extends BaseModel {
     @Column(name = "POSTER")
     public String poster;
 
-    @Column(name = "VIDEO")
-    public boolean video;
+    @Column(name = "LANGUAGE")
+    public String language;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

@@ -21,4 +21,7 @@ public class Categories extends BaseModel {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "original_id")
+    private long originalId;
+
 }
