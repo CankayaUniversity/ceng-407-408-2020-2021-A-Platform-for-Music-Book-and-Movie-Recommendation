@@ -8,31 +8,34 @@
 
             <v-text-field
               color="#c2185b"
-              name="password"
+              v-model="input.password"
               label="Enter your password"
-              type="text"
+              type="password"
+              prepend-icon="lock"
             >
             </v-text-field>
 
             <v-text-field
               color="#c2185b"
-              name="passwordn"
+              v-model="input.passwordn"
               label="Enter your new password"
-              type="text"
+              type="password"
+              prepend-icon="lock"
             >
             </v-text-field>
 
             <v-text-field
               color="#c2185b"
-              name="passworda"
+              v-model="input.passworda"
               label="Enter your new password again"
-              type="text"
+              type="password"
+              prepend-icon="lock"
             >
             </v-text-field>
 
             <v-card-actions class="justify-center pt-10">
               <v-layout align-center justify-center>
-                <v-btn large color="#c2185b" rounded
+                <v-btn large color="#c2185b" rounded v-on:click="passwChange()"
                   >Change Your Password</v-btn
                 >
               </v-layout>
@@ -47,5 +50,43 @@
 <script>
 export default {
   name: "changepass",
+  data(){
+    return{
+      input:{
+        username:"",
+        email:"",
+        password:"",
+        passworda:"",
+        passwordn:""
+      }
+
+
+    }
+
+  },
+  methods: {
+    async passwChange(){
+      if(this.input.password != null && this.input.passworda != null && this.input.passwordn != null){
+        if(this.input.passworda  === this.input.passwordn){
+
+            await this.axios.put('http://localhost:9000/quirec-api/user/' + this.$store.getters.getUserId, {
+              email: "",
+              username:"",
+              password: this.input.passwordn,
+            })
+            .then(response =>{
+              this.$router.push("/login")
+            })
+            .catch(error =>{
+              alert("Incorrect op.");
+              console.log(error);
+            })
+
+        }
+
+      }
+
+    }
+  }
 };
 </script>

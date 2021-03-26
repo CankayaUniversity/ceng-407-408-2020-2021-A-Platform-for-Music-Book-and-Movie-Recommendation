@@ -45,9 +45,10 @@ export default {
   },
   methods: {
     async getUserInfo(){
-        const response = await this.axios.get('http://localhost:9000/quirec-api/user/' + this.$router.history.current.params.userId)
+        const response = await this.axios.get('http://localhost:9000/quirec-api/user/' + this.$store.getters.getUserId)
         this.username = response.data.username;
         this.email = response.data.email;
+
     }
   }
 };
