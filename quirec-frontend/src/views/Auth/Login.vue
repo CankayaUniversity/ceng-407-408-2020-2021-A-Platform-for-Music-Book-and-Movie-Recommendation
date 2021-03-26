@@ -50,7 +50,7 @@
     },
     methods: {
         async login() {
-            if(this.input.email != "" && this.input.password != null){
+            if(this.input.email != null && this.input.password != null){
                 this.axios.post('http://localhost:9000/quirec-api/user/login', {
                     email: this.input.email,
                     username: "",
@@ -58,8 +58,7 @@
                 })
                 .then(response => {
                   this.$store.commit('setUserId', response.data.userId)
-
-                  this.$router.push("/profilePage")
+                 this.$router.push("/profilePage")
                 })
                 .catch(error => {
                     console.log(error);

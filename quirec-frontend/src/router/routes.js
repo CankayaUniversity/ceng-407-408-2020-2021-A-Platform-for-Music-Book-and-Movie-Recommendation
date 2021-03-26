@@ -10,6 +10,7 @@ import MainPage from '../views/MainPage.vue'
 import ProfilePage from '../views/User/ProfilePage.vue'
 import Questionnaire from '../views/User/Questionnaire.vue'
 import ForgotPassword from '../views/Auth/ForgotPassword.vue'
+import store from '../store/store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
@@ -75,4 +76,18 @@ const router = new VueRouter({
   base: '/'
 })
 
+
 export default router
+
+router.beforeEach((to, from, next) => {
+  if (['register','mainpage', 'login'].includes(to.name)) {
+    next()
+  }
+  else {
+    if(store.state.userId != null ) {
+      //store.commit('setAuthHeader');
+      next()
+    }
+    else next({ name: 'login' })
+  }
+})
