@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
                         .sign(Algorithm.HMAC512(SECRET.getBytes()));
 
                 loginReturn.setAccessToken(accessToken);
-                loginReturn.setUserInfo(userControl);
+                loginReturn.setUserId(userControl.getId());
             }
 
             else loginReturn.setAccessToken("mismatch");

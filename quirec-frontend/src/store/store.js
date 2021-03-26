@@ -21,6 +21,6 @@ const store = new Vuex.Store({
         }
     },
     plugins: [vuexLocal.plugin]
-});64
+});
 
 export default store
