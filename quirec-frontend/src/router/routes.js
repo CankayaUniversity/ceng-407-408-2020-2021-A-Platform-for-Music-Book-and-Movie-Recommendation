@@ -13,6 +13,7 @@ import ForgotPassword from '../views/Auth/ForgotPassword.vue'
 import store from '../store/store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import DeleteAccount from "@/views/User/DeleteAccount";
 
 Vue.use(VueAxios, axios)
 Vue.use(VueRouter);
@@ -67,6 +68,11 @@ const routes = [
     path: '/ForgotPassword',
     component: ForgotPassword,
     name: 'ForgotPassword'
+  },
+  {
+    path: '/DeleteAccount',
+    component: DeleteAccount,
+    name: 'deleteaccount'
   }
 ]
 
