@@ -36,13 +36,17 @@ public class UserServiceImpl implements UserService {
         User emailControl = userDao.findUserByEmail(user.getEmail());
 
         if (emailControl == null) {
-            User newUser = new User();
-            newUser.setUsername(user.getUsername());
-            newUser.setEmail(user.getEmail());
+            User usernameControl  = userDao.findUserByUsername(user.getUsername());
 
-            newUser.setPassword(BCrypt.hashpw(user.getPassword(), salt));
+            if (usernameControl == null) {
+                User newUser = new User();
+                newUser.setUsername(user.getUsername());
+                newUser.setEmail(user.getEmail());
 
-            return userDao.saveAndFlush(newUser);
+                newUser.setPassword(BCrypt.hashpw(user.getPassword(), salt));
+
+                return userDao.saveAndFlush(newUser);
+            }
         }
 
         return null; //aynı emaille biri kayıtlı
