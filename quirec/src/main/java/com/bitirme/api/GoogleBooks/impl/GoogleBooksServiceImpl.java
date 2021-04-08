@@ -29,9 +29,11 @@ public class GoogleBooksServiceImpl implements GoogleBooksService {
     CategoryDao categoryDao;
 
     public void getBooks(){
-        String getBooksUrl = "https://www.googleapis.com/books/v1/volumes?q={search type}&maxResults=10&startIndex=30"; //TODO: startIndex generalization
+        long latestId = bookDao.count();
+
+        String getBooksUrl = "https://www.googleapis.com/books/v1/volumes?q={search type}&startIndex={index}";
         String searchType = "{printType, books}";
-        LinkedHashMap<String, ArrayList<LinkedHashMap<String, Object>>> resource = (LinkedHashMap<String, ArrayList<LinkedHashMap<String, Object>>>)parsingService.getForObject(getBooksUrl, searchType);
+        LinkedHashMap<String, ArrayList<LinkedHashMap<String, Object>>> resource = (LinkedHashMap<String, ArrayList<LinkedHashMap<String, Object>>>)parsingService.getForObject(getBooksUrl, searchType, latestId);
 
         ArrayList<LinkedHashMap<String, Object>> books = resource.get("items");
 
@@ -85,7 +87,7 @@ public class GoogleBooksServiceImpl implements GoogleBooksService {
 
     public void getBookDetail(String resourceId){
         String searchBooksUrl = "https://www.googleapis.com/books/v1/volumes/{volumeId}";
-        LinkedHashMap<String, ArrayList<Object>> response = (LinkedHashMap<String, ArrayList<Object>>)parsingService.getForObject(searchBooksUrl, resourceId);
+        //LinkedHashMap<String, ArrayList<Object>> response = (LinkedHashMap<String, ArrayList<Object>>)parsingService.getForObject(searchBooksUrl, resourceId);
     }
 
 }
