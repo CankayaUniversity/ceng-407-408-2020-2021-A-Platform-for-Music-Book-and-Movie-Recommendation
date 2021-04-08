@@ -13,9 +13,9 @@ public class JSONParsingServiceImpl implements JSONParsingService {
     }
 
     @Override
-    public Object getForObject(String url, String param) {
+    public Object getForObject(String url, String param, long index) {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(url, Object.class, param);
+        return restTemplate.getForObject(url, Object.class, param, index);
     }
 
 }
