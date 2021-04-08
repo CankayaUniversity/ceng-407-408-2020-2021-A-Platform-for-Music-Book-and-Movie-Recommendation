@@ -4,6 +4,6 @@ public interface JSONParsingService {
 
     Object get(String url);
 
-    Object getForObject(String url, String param);
+    Object getForObject(String url, String param, long index);
 
 }
