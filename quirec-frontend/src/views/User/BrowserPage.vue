@@ -11,39 +11,17 @@
           <v-row>
             <v-card
                 class="mx-5 my-5"
-                v-for="item in MusicList"
-                :key="item.id"
-                :label="item.title"
-                width="300"
                 outlined
                 color="#c2185b"
             >
-              <v-list-item three-line>
-                <v-list-item-content>
-                  <v-list-item-title class="headline mb-1">
-                    {{ item.title }}
-                  </v-list-item-title>
-                  <v-list-item-subtitle>{{ item.artist }}</v-list-item-subtitle>
-                </v-list-item-content>
-
-                <v-list-item-avatar
-                    tile
-                    size="80"
-                    color="grey"
-                ></v-list-item-avatar>
-              </v-list-item>
-
-              <v-card-actions>
-                <v-btn to="/DetailsPage" outlined rounded text> Daha fazlasını gör </v-btn>
-              </v-card-actions>
+             <v-data-table
+                :items="music"
+                :items-per-gage="10"
+             >
+             </v-data-table>
             </v-card>
           </v-row>
         </v-card-text>
-        <v-pagination
-            v-model="pagem"
-            :length="6"
-            color="#c2185b"
-        ></v-pagination>
       </v-card>
 
       <v-card class="my-12 py-15 px-12" rounded color="#212121">
@@ -52,38 +30,16 @@
           <v-row>
             <v-card
                 class="mx-5 my-5"
-                v-for="item in MusicList"
-                :key="item.id"
-                :label="item.title"
-                width="300"
                 outlined
                 color="#c2185b"
             >
-              <v-list-item three-line>
-                <v-list-item-content>
-                  <v-list-item-title class="headline mb-1">
-                    {{ item.title }}
-                  </v-list-item-title>
-                  <v-list-item-subtitle>{{ item.artist }}</v-list-item-subtitle>
-                </v-list-item-content>
-
-                <v-list-item-avatar
-                    tile
-                    size="80"
-                    color="grey"
-                ></v-list-item-avatar>
-              </v-list-item>
-
-              <v-card-actions>
-                <v-btn to="/DetailsPage" outlined rounded text> Daha fazlasını gör </v-btn>
-              </v-card-actions>
+              <v-data-table
+                :items="books"
+                :items-per-page="10"
+              >
+              </v-data-table>
             </v-card>
           </v-row>
-          <v-pagination
-              v-model="pageb"
-              :length="6"
-              color="#c2185b"
-          ></v-pagination>
         </v-card-text>
       </v-card>
       <v-card class="my-12 py-15 px-12" rounded color="#212121">
@@ -92,38 +48,16 @@
           <v-row>
             <v-card
                 class="mx-5 my-5"
-                v-for="item in MusicList"
-                :key="item.id"
-                :label="item.title"
-                width="300"
                 outlined
                 color="#c2185b"
             >
-              <v-list-item three-line>
-                <v-list-item-content>
-                  <v-list-item-title class="headline mb-1">
-                    {{ item.title }}
-                  </v-list-item-title>
-                  <v-list-item-subtitle>{{ item.artist }}</v-list-item-subtitle>
-                </v-list-item-content>
-
-                <v-list-item-avatar
-                    tile
-                    size="80"
-                    color="grey"
-                ></v-list-item-avatar>
-              </v-list-item>
-
-              <v-card-actions>
-                <v-btn to="/DetailsPage" outlined rounded text> Daha fazlasını gör </v-btn>
-              </v-card-actions>
+              <v-data-table
+                :items="movies"
+                :items-per-page="10"
+              >
+             </v-data-table>
             </v-card>
           </v-row>
-          <v-pagination
-              v-model="pagemo"
-              :length="6"
-              color="#c2185b"
-          ></v-pagination>
         </v-card-text>
       </v-card>
     </v-flex>
@@ -135,47 +69,24 @@ export default {
   name: "browserpage",
   data() {
     return {
-      pagem: 1,
-      pageb: 1,
-      pagemo: 1,
-      MusicList: [
-        {
-          id: 1,
-          title: "Kabahat Bende",
-          artist: "Buray, Kehanet",
-        },
-        {
-          id: 2,
-          title: "Karar Verdim",
-          artist: "Göksel, Arka Bahçem",
-        },
-        {
-          id: 3,
-          title: "Kusursuz Gün",
-          artist: "Çağrı Sinci, Çığ",
-        },
-        {
-          id: 3,
-          title: "Kabahat Bende",
-          artist: "Buray, Kehanet",
-        },
-        {
-          id: 4,
-          title: "Kabahat Bende",
-          artist: "Buray, Kehanet",
-        },
-        {
-          id: 5,
-          title: "Kabahat Bende",
-          artist: "Buray, Kehanet",
-        },
-      ],
-    };
+      music: [],
+      books: [],
+      movies: []
+    }
   },
+  async mounted () {
+    this.getItems();
+  },
+  methods: {
+    async getItems() {
+        this.books = [];
+        const response2 = await this.axios.get('http://localhost:9000/quirec-api/browse/book');
+        for(let element of response2.data){
+            this.books.push(element)
+        }
+    }
+  }
 };
 </script>
 <style scoped>
-.list-cards{
-
-}
 </style>
