@@ -21,7 +21,7 @@
           <tr>
             <td>
               <v-card-actions class="align-left justify-left mx-5">
-                <v-btn large color="#c2185b" rounded>Go Back To Main Page</v-btn>
+                <v-btn to="/BrowserPage" large color="#c2185b" rounded>Go Back To Main Page</v-btn>
               </v-card-actions>
             </td>
 

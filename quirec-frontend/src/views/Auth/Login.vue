@@ -48,6 +48,9 @@
             }
         }
     },
+    async mounted() {
+    this.reset()
+    },
     methods: {
         async login() {
             if(this.input.email != null && this.input.password != null){
@@ -56,15 +59,26 @@
                     username: "",
                     password: this.input.password
                 })
+
                 .then(response => {
-                  this.$store.commit('setUserId', response.data.userId)
-                 this.$router.push("/profilePage")
+
+                    this.$store.commit('setUserId', response.data.userId)
+                    this.$store.commit('setUserToken', response.data.accessToken)
+                    this.$router.push("/profilePage")
+
+
                 })
-                .catch(error => {
+                .catch(error =>  {
                     console.log(error);
+                    this.$router.push("/login")
                 })
             }
-        }
+        },
+      async reset(){
+          this.$store.commit('clearUserId')
+          this.$store.commit('clearUserToken')
+
+      }
     }
   };
 </script>

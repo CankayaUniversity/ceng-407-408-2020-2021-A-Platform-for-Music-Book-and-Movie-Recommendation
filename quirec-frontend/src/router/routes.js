@@ -10,6 +10,7 @@ import MainPage from '../views/MainPage.vue'
 import ProfilePage from '../views/User/ProfilePage.vue'
 import Questionnaire from '../views/User/Questionnaire.vue'
 import ForgotPassword from '../views/Auth/ForgotPassword.vue'
+//import Header from '../views/Auth/Header.vue'
 import store from '../store/store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
@@ -90,10 +91,11 @@ router.beforeEach((to, from, next) => {
     next()
   }
   else {
-    if(store.state.userId != null ) {
+    if(store.getters.getToken ) {
+     // console.log(store.getters.getToken)
       //store.commit('setAuthHeader');
       next()
     }
-    else next({ name: 'login' })
+    else next("/login")
   }
 })
