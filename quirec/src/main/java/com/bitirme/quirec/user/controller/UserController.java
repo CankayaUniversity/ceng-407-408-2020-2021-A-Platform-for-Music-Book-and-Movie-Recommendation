@@ -30,7 +30,7 @@ public class UserController {
 
     //register
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<User> register(@RequestBody User user) {
+    public ResponseEntity<User> register(@RequestBody User user) throws Exception {
         return new ResponseEntity<>(
                 userService.register(user),
                 HttpStatus.OK
@@ -39,7 +39,7 @@ public class UserController {
 
     //login
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<LoginReturn> login(@RequestBody User user) {
+    public ResponseEntity<LoginReturn> login(@RequestBody User user) throws Exception {
         return new ResponseEntity<>(
                 userService.login(user),
                 HttpStatus.OK
