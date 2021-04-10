@@ -7,9 +7,9 @@ public interface UserService {
 
     User get(long userId);
 
-    User register(User user);
+    User register(User user) throws Exception;
 
-    LoginReturn login(User user);
+    LoginReturn login(User user) throws Exception;
 
     User update(long userId, String newPassword);
 

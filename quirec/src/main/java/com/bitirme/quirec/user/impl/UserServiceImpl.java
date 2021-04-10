@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User register(User user) {
+    public User register(User user) throws Exception {
         User emailControl = userDao.findUserByEmail(user.getEmail());
 
         if (emailControl == null) {
@@ -49,11 +49,11 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        return null; //aynı emaille biri kayıtlı
+        throw new Exception("cannot use this email");
     }
 
     @Override
-    public LoginReturn login(User user) {
+    public LoginReturn login(User user) throws Exception {
         String userInfo = user.getEmail() == null ? user.getUsername() : user.getEmail();
         User userControl = userDao.findUserByEmailOrUsername(userInfo);
 
@@ -69,10 +69,10 @@ public class UserServiceImpl implements UserService {
                 loginReturn.setUserId(userControl.getId());
             }
 
-            else loginReturn.setAccessToken("mismatch");
+            else throw new Exception("mismatch");
         }
 
-        else loginReturn.setAccessToken("user not found");
+        else throw new Exception("user not found");
         return loginReturn;
     }
 
