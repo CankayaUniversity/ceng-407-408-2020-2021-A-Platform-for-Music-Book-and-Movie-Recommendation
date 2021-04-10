@@ -79,14 +79,27 @@ export default {
   },
   methods: {
     async getItems() {
+      this.music = [];
+      const response1 = await this.axios.get('http://localhost:9000/quirec-api/browse/music');
+      for(let element of response1){
+        this.music.push(element)
+      }
+
         this.books = [];
         const response2 = await this.axios.get('http://localhost:9000/quirec-api/browse/book');
         for(let element of response2.data){
             this.books.push(element)
         }
+
+      this.movies = [];
+      const response3 = await this.axios.get('http://localhost:9000/quirec-api/browse/movie');
+      for(let element of response3.data){
+        this.movies.push(element)
+      }
     }
   }
 };
 </script>
 <style scoped>
 </style>
+
