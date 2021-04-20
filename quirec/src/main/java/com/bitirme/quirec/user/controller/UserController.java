@@ -65,7 +65,7 @@ public class UserController {
     }
 
     //forgot password
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
     public ResponseEntity<Void> forgotPassword(@RequestBody User user) {
         userService.forgotPassword(user);
         return new ResponseEntity<>(
