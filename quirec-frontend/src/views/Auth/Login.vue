@@ -64,7 +64,7 @@
 
                     this.$store.commit('setUserId', response.data.userId)
                     this.$store.commit('setUserToken', response.data.accessToken)
-                    this.$router.push("/profilePage")
+                    this.$router.push("/BrowserPage")
 
 
                 })
