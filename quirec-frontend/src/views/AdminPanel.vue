@@ -16,7 +16,7 @@
                     stroke-linecap="round"
                     smooth
                   >
-                    <template v-slot:label="item"> {{ item.value }}% </template>
+                    <template v-slot:label="item"> {{ item.value.rate }}% </template>
                   </v-sparkline>
                 </v-sheet>
               </v-card-text>
@@ -38,7 +38,7 @@
                     stroke-linecap="round"
                     smooth
                   >
-                    <template v-slot:label="item"> {{ item.value }}% </template>
+                    <template v-slot:label="item"> {{ item.value.rate }}% </template>
                   </v-sparkline>
                 </v-sheet>
               </v-card-text>
@@ -67,7 +67,7 @@
                     stroke-linecap="round"
                     smooth
                   >
-                    <template v-slot:label="item"> {{ item.value }}% </template>
+                    <template v-slot:label="item"> {{ item.value.rate}}% </template>
                   </v-sparkline>
                 </v-sheet>
               </v-card-text>
@@ -85,7 +85,7 @@
           >Log Out</v-btn
         >
         <v-divider></v-divider>
-        <v-btn large color="#c2185b" rounded>Update Database</v-btn>
+        <v-btn @click="dbUpdate()" large color="#c2185b" rounded>Update Database</v-btn>
         <v-btn class="ml-5" large color="#c2185b" rounded>Model Retrain</v-btn>
       </v-layout>
       <br />
@@ -96,8 +96,26 @@
 <script>
 export default {
   name: "adminpanel",
-  data: () => ({
-    value: [75, 82, 83, 61, 98, 36, 45],
-  }),
+  data() {
+    return {
+      value: [],
+    }
+  },
+  async mounted() {
+    await this.getRatings();
+  },
+  methods: {
+  async getRatings(){
+    const response1 = await this.axios.get('http://localhost:9000/quirec-api/admin');
+    for(let element of response1.data){
+      this.value.push(element)
+    }
+
+  },
+    async dbUpdate(){
+      await this.axios.post('http://localhost:9000/quirec-api/admin/databaseUpdate');
+      this.$router.push("/browserpage")
+  }
+  },
 };
 </script>

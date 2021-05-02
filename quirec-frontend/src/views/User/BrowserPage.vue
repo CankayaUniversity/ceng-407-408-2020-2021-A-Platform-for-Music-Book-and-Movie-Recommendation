@@ -1,10 +1,6 @@
 <template>
   <v-container>
     <v-flex>
-      <v-layout class="d-flex justify-end pa-2">
-        <v-btn to="/ProfilePage" class="ml-10" large color="#c2185b" rounded>Profile</v-btn>
-      </v-layout>
-
       <v-card class="py-15 px-12" rounded color="#212121">
         <v-card-text class="text-center">
           <p class="text-h6 text-center">Music</p>
@@ -14,11 +10,12 @@
                 outlined
                 color="#c2185b"
             >
-             <v-data-table
-                :items="music"
-                :items-per-gage="10"
-             >
-             </v-data-table>
+              <v-data-table
+                  :headers="headerms"
+                  :items="music"
+                  :items-per-page="10"
+              >
+              </v-data-table>
             </v-card>
           </v-row>
         </v-card-text>
@@ -34,9 +31,14 @@
                 color="#c2185b"
             >
               <v-data-table
-                :items="books"
-                :items-per-page="10"
+                  :headers="headerb"
+                  :items="books"
+                  :items-per-page="10"
               >
+                <template v-slot:item.cover="{ item }">
+                  <v-img :src= item.cover >
+                  </v-img>
+              </template>
               </v-data-table>
             </v-card>
           </v-row>
@@ -52,10 +54,15 @@
                 color="#c2185b"
             >
               <v-data-table
-                :items="movies"
-                :items-per-page="10"
+                  :headers="headerm"
+                  :items="movies"
+                  :items-per-page="10"
               >
-             </v-data-table>
+                <template v-slot:item.poster="{ item }">
+                  <v-img width="100px" height="150px" :src= "'https://www.themoviedb.org/t/p/w1280/' + item.poster ">
+                  </v-img>
+                </template>
+              </v-data-table>
             </v-card>
           </v-row>
         </v-card-text>
@@ -69,32 +76,67 @@ export default {
   name: "browserpage",
   data() {
     return {
+      headerms:[{
+        text: 'Title',
+        align: 'start',
+        filterable: false,
+        value: 'title',
+      },
+        {
+          text: 'Artist', value: 'artist'
+      }],
+      headerm: [{
+        text: 'Title',
+        align: 'start',
+        filterable: false,
+        value: 'title',
+      },
+        {
+          text: 'Language', value: 'language'
+        },
+        {text: 'Poster', value:'poster'}
+
+      ],
+      headerb: [{
+        text: 'Title',
+        align: 'start',
+        filterable: false,
+        value: 'title',
+
+      },
+        {text: 'Author', value: 'author'},
+        {text: 'Cover of the Book', value:'cover'}
+
+      ],
       music: [],
       books: [],
       movies: []
     }
   },
-  async mounted () {
+  async mounted() {
     this.getItems();
   },
   methods: {
     async getItems() {
-      this.music = [];
+
       const response1 = await this.axios.get('http://localhost:9000/quirec-api/browse/music');
-      for(let element of response1){
+      for (let element of response1.data) {
         this.music.push(element)
+
       }
 
-        this.books = [];
-        const response2 = await this.axios.get('http://localhost:9000/quirec-api/browse/book');
-        for(let element of response2.data){
-            this.books.push(element)
-        }
+      const response2 = await this.axios.get('http://localhost:9000/quirec-api/browse/book');
 
-      this.movies = [];
+      for (let element of response2.data) {
+        this.books.push(element)
+      }
+
       const response3 = await this.axios.get('http://localhost:9000/quirec-api/browse/movie');
-      for(let element of response3.data){
+      let i = 0;
+      for (let element of response3.data) {
         this.movies.push(element)
+
+
       }
     }
   }
