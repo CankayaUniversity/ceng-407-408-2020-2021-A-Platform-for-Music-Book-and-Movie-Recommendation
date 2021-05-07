@@ -4,6 +4,4 @@ public interface GoogleBooksService {
 
     void getBooks();
 
-    void getBookDetail(String resourceId);
-
 }
