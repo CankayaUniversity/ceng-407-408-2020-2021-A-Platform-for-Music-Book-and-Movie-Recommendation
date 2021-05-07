@@ -9,12 +9,12 @@
       <v-toolbar-title>
           QuiRec
         </v-toolbar-title>
-      <v-btn to="/ProfilePage" :class="visibleClass" class="ml-10" prepend-icon="person" >
+      <v-btn to="/profile" :class="visibleClass" class="ml-10" prepend-icon="person" >
         Profile
       </v-btn>
 
-      <v-btn to="/BrowserPage" :class="visibleClass">
-        Main Page
+      <v-btn to="/browse" :class="visibleClass">
+        Browse
       </v-btn>
 
       <v-spacer></v-spacer>

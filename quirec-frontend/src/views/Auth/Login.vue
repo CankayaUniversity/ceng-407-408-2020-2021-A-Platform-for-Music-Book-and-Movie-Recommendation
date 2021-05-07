@@ -11,24 +11,22 @@
       <v-layout align-end d-flex flex-column>
         <v-flex>
           <v-form>
-            <v-card 
-              class="elevation-12 my-12 py-12 px-10 secondary" 
-            >
-              <v-card-text>         
-                <v-text-field label="Username or Email" v-model="input.email" color="#c2185b" prepend-icon="person"></v-text-field>
+            <v-card class="elevation-12 my-12 py-12 px-10 secondary">
+              <v-card-text class="text--primary">
+                <v-text-field label="Username or Email" v-model="input.email" prepend-icon="person"></v-text-field>
                 
-                <v-text-field label="Password" v-model="input.password" type="password" color="#c2185b" prepend-icon="lock"></v-text-field>
-                
-                <div class="text-decoration-underline text-center"> <a href="ForgotPassword"> Forgot Password? </a></div>
-                
-                <center><v-btn v-on:click="login()" large color="#c2185b" rounded>Login</v-btn></center>
+                <v-text-field label="Password" v-model="input.password" type="password" prepend-icon="lock"></v-text-field>
+
+                <div class="text-decoration-underline text-center"><a href="forgot-password"> Forgot Password? </a></div>
+
+                <center><v-btn v-on:click="login()" class="primary" large rounded>Login</v-btn></center>
               </v-card-text>
 
               <v-divider> </v-divider>
 
               <v-card-text>
                 <div class="text-decoration-none text-center"> Don't have an account? Sign up to QUIREC.</div>
-                <center><v-btn to="/register" large class="primary" rounded>Sign Up</v-btn></center>
+                <center><v-btn to="/register" class="primary" large rounded>Sign Up</v-btn></center>
               </v-card-text>
             </v-card>
           </v-form>
@@ -41,43 +39,37 @@
 <script>
   export default {
     data(){
-        return {
-            input: {
-                  email: "",
-                  password: ""
-            }
+      return {
+        input: {
+          email: "",
+          password: ""
         }
+      }
     },
     async mounted() {
-    this.reset()
+      await this.reset()
     },
     methods: {
-        async login() {
-            if(this.input.email != null && this.input.password != null){
-                this.axios.post('http://localhost:9000/quirec-api/user/login', {
-                    email: this.input.email,
-                    username: "",
-                    password: this.input.password
-                })
-
-                .then(response => {
-
-                    this.$store.commit('setUserId', response.data.userId)
-                    this.$store.commit('setUserToken', response.data.accessToken)
-                    this.$router.push("/BrowserPage")
-
-
-                })
-                .catch(error =>  {
-                    console.log(error);
-                    this.$router.push("/login")
-                })
-            }
-        },
-      async reset(){
-          this.$store.commit('clearUserId')
-          this.$store.commit('clearUserToken')
-
+      async login() {
+        if(this.input.email != null && this.input.password != null) {
+          this.axios.post('http://localhost:9000/quirec-api/user/login', {
+            email: this.input.email,
+            username: "",
+            password: this.input.password
+          })
+          .then(response => {
+            this.$store.commit('setUserId', response.data.userId)
+            this.$store.commit('setUserToken', response.data.accessToken)
+            this.$router.push("/questionnaire")
+          })
+          .catch(error => {
+            console.log(error);
+          })
+        }
+      },
+      async reset() {
+        this.$store.commit('clearUserId')
+        this.$store.commit('clearUserToken')
       }
     }
   };

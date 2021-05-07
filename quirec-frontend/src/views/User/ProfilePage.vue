@@ -19,56 +19,35 @@
         </v-simple-table>
         <v-simple-table>
           <tr>
-            <td>
-              <v-card-actions class="align-left justify-left mx-5">
-                <v-btn to="/BrowserPage" large color="#c2185b" rounded>Go Back To Main Page</v-btn>
-              </v-card-actions>
-            </td>
-
-            <td>
-              <v-card-actions class="align-end justify-end mx-10">
-                <v-btn to="/Questionnaire" large color="#c2185b" rounded>Change Questionnaire</v-btn>
-              </v-card-actions>
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              <v-card-actions class="align-left justify-left mx-5">
-                <v-btn to="/DeleteAccount" large color="#c2185b" rounded>Delete My Account</v-btn>
-              </v-card-actions>
-            </td>
-            <td>
-              <v-card-actions class="align-end justify-end mx-10">
-                <v-btn to="/ChangePass" large color="#c2185b" rounded>Change Password</v-btn>
-              </v-card-actions>
-            </td>
+            <td> <v-btn to="/questionnaire" class="mx-5 primary float-left" large rounded>Change Questionnaire</v-btn> </td>
+            <td> <center><v-btn to="/change-password" class="mx-5 primary" large rounded>Change Password</v-btn></center> </td>
+            <td> <v-btn to="/delete-account" class="mx-5 primary float-right" large rounded>Delete My Account</v-btn> </td>
           </tr>
         </v-simple-table>
+        <br><br>
+        <v-btn to="/" class="float-right mx-5 primary" large rounded>Return to recommendations</v-btn>
       </v-card>
     </v-flex>
   </v-container>
 </template>
 
 <script>
-export default {
-  name: "profilepage",
-  data() {
-    return {
-      username: "",
-      email: ""
-    };
-  },
-  async mounted() {
-    this.getUserInfo();
-  },
-  methods: {
-    async getUserInfo() {
-      const response = await this.axios.get('http://localhost:9000/quirec-api/user/' + this.$store.getters.getUserId)
-      this.username = response.data.username;
-      this.email = response.data.email;
-
+  export default {
+    data() {
+      return {
+        username: "",
+        email: ""
+      };
+   },
+    async mounted() {
+      await this.getUserInfo();
+    },
+    methods: {
+      async getUserInfo() {
+        const response = await this.axios.get('http://localhost:9000/quirec-api/user/' + this.$store.getters.getUserId)
+        this.username = response.data.username;
+        this.email = response.data.email;
+      }
     }
-  }
-};
+  };
 </script>
