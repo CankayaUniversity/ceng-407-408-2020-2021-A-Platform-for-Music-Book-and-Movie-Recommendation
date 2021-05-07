@@ -84,10 +84,4 @@ public class GoogleBooksServiceImpl implements GoogleBooksService {
             }
         }
     }
-
-    public void getBookDetail(String resourceId){
-        String searchBooksUrl = "https://www.googleapis.com/books/v1/volumes/{volumeId}";
-        //LinkedHashMap<String, ArrayList<Object>> response = (LinkedHashMap<String, ArrayList<Object>>)parsingService.getForObject(searchBooksUrl, resourceId);
-    }
-
 }
