@@ -1,25 +1,30 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../views/Auth/Login.vue'
-import Register from '../views/Auth/Register.vue'
-import AdminPanel from '../views/AdminPanel.vue'
-import BrowserPage from '../views/User/BrowserPage.vue'
-import ChangePass from '../views/User/ChangePass.vue'
-import DetailsPage from '../views/User/DetailsPage.vue'
-import MainPage from '../views/MainPage.vue'
-import ProfilePage from '../views/User/ProfilePage.vue'
-import Questionnaire from '../views/User/Questionnaire.vue'
-import ForgotPassword from '../views/Auth/ForgotPassword.vue'
-//import Header from '../views/Auth/Header.vue'
 import store from '../store/store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import DeleteAccount from "@/views/User/DeleteAccount";
+
+import MainPage from '../views/MainPage.vue'
+import Login from '../views/Auth/Login.vue'
+import Register from '../views/Auth/Register.vue'
+import ProfilePage from '../views/User/ProfilePage.vue'
+import Questionnaire from '../views/User/Questionnaire.vue'
+import BrowserPage from '../views/User/BrowserPage.vue'
+import DetailsPage from '../views/User/DetailsPage.vue'
+import AdminPanel from '../views/AdminPanel.vue'
+import ChangePassword from '../views/User/ChangePass.vue'
+import ForgotPassword from '../views/Auth/ForgotPassword.vue'
+import DeleteAccount from '../views/User/DeleteAccount.vue'
 
 Vue.use(VueAxios, axios)
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: '/main-page',
+    component: MainPage,
+    name: 'mainPage'
+  },
   {
     path: '/login',
     component: Login,
@@ -31,49 +36,44 @@ const routes = [
     name: 'register'
   },
   {
-    path: '/adminpanel',
-    component: AdminPanel,
-    name: 'adminpanel'
-  },
-  {
-    path: '/BrowserPage',
-    component: BrowserPage,
-    name: 'browserpage'
-  },
-  {
-    path: '/ChangePass',
-    component: ChangePass,
-    name: 'changepass'
-  },
-  {
-    path: '/detailsPage',
-    component: DetailsPage,
-    name: 'detailspage'
-  },
-  {
-    path: '/MainPage',
-    component: MainPage,
-    name: 'mainpage'
-  },
-  {
-    path: '/profilePage',
+    path: '/profile',
     component: ProfilePage,
-    name: 'profilepage'
+    name: 'profilePage'
   },
   {
-    path: '/Questionnaire',
+    path: '/questionnaire',
     component: Questionnaire,
     name: 'questionnaire'
   },
   {
-    path: '/ForgotPassword',
-    component: ForgotPassword,
-    name: 'ForgotPassword'
+    path: '/browse',
+    component: BrowserPage,
+    name: 'browserPage'
   },
   {
-    path: '/DeleteAccount',
+    path: '/details',
+    component: DetailsPage,
+    name: 'detailsPage'
+  },
+  {
+    path: '/admin-panel',
+    component: AdminPanel,
+    name: 'adminPanel'
+  },
+  {
+    path: '/change-password',
+    component: ChangePassword,
+    name: 'changePassword'
+  },
+  {
+    path: '/forgot-password',
+    component: ForgotPassword,
+    name: 'forgotPassword'
+  },
+  {
+    path: '/delete-account',
     component: DeleteAccount,
-    name: 'deleteaccount'
+    name: 'deleteAccount'
   }
 ]
 
@@ -83,17 +83,14 @@ const router = new VueRouter({
   base: '/'
 })
 
-
 export default router
 
 router.beforeEach((to, from, next) => {
-  if (['register','mainpage', 'login'].includes(to.name)) {
+  if(['register','mainPage', 'login', 'forgotPassword'].includes(to.name)) {
     next()
   }
   else {
-    if(store.getters.getToken ) {
-     // console.log(store.getters.getToken)
-      //store.commit('setAuthHeader');
+    if(store.getters.getToken) {
       next()
     }
     else next("/login")
