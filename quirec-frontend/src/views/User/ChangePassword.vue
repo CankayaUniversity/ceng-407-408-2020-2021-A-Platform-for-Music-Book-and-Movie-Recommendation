@@ -2,22 +2,22 @@
   <v-container fill-height>
     <v-flex>
       <v-form>
-        <v-card class="my-12 py-15 px-12" rounded color="#212121">
+        <v-card class="my-12 py-15 px-12 secondary" rounded>
           <v-card-text class="text-center">
             <p class="text-h3 text-center">Change Your Password</p>
 
             <v-text-field
-              color="#c2185b"
-              v-model="input.password"
-              label="Enter your password"
+              class="primary"
+              v-model="input.passwordOld"
+              label="Enter your old password"
               type="password"
               prepend-icon="lock"
             >
             </v-text-field>
 
             <v-text-field
-              color="#c2185b"
-              v-model="input.passwordn"
+              class="primary"
+              v-model="input.passwordNew"
               label="Enter your new password"
               type="password"
               prepend-icon="lock"
@@ -25,8 +25,8 @@
             </v-text-field>
 
             <v-text-field
-              color="#c2185b"
-              v-model="input.passworda"
+              class="primary"
+              v-model="input.passwordAgain"
               label="Enter your new password again"
               type="password"
               prepend-icon="lock"
@@ -35,9 +35,7 @@
 
             <v-card-actions class="justify-center pt-10">
               <v-layout align-center justify-center>
-                <v-btn large color="#c2185b" rounded v-on:click="passwChange()"
-                  >Change Your Password</v-btn
-                >
+                <v-btn class="primary" large rounded v-on:click="changePassword()">Change Your Password</v-btn>
               </v-layout>
             </v-card-actions>
           </v-card-text>
@@ -48,45 +46,37 @@
 </template>
 
 <script>
-export default {
-  name: "changepass",
-  data(){
-    return{
-      input:{
-        username:"",
-        email:"",
-        password:"",
-        passworda:"",
-        passwordn:""
+  export default {
+    data(){
+      return{
+        input: {
+          email:"",
+          passwordOld:"",
+          passwordNew:"",
+          passwordAgain:""
+        }
       }
-
-
-    }
-
-  },
-  methods: {
-    async passwChange(){
-      if(this.input.password != null && this.input.passworda != null && this.input.passwordn != null){
-        if(this.input.passworda  === this.input.passwordn){
+    },
+    methods: {
+      async changePassword(){
+        if(this.input.passwordOld != null && this.input.passwordNew != null && this.input.passwordAgain != null) {
+          if(this.input.passwordNew  === this.input.passwordAgain) {
 
             await this.axios.put('http://localhost:9000/quirec-api/user/' + this.$store.getters.getUserId, {
               email: "",
               username:"",
-              password: this.input.passwordn,
+              password: this.input.passwordNew,
             })
-            .then(response =>{
+            .then(
               this.$router.push("/login")
-            })
+            )
             .catch(error =>{
               alert("Incorrect op.");
               console.log(error);
             })
-
+          }
         }
-
       }
-
     }
-  }
-};
+  };
 </script>

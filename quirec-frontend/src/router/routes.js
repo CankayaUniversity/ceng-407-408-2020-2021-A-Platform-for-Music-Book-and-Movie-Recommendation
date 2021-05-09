@@ -12,10 +12,11 @@ import Questionnaire from '../views/User/Questionnaire.vue'
 import BrowserPage from '../views/User/BrowserPage.vue'
 import DetailsPage from '../views/User/DetailsPage.vue'
 import AdminPanel from '../views/AdminPanel.vue'
-import ChangePassword from '../views/User/ChangePass.vue'
+import ChangePassword from '../views/User/ChangePassword.vue'
 import ForgotPassword from '../views/Auth/ForgotPassword.vue'
 import DeleteAccount from '../views/User/DeleteAccount.vue'
 import ResetPassword from '../views/Auth/ResetPassword.vue'
+
 Vue.use(VueAxios, axios)
 Vue.use(VueRouter);
 
@@ -78,7 +79,7 @@ const routes = [
   {
     path: '/reset-password',
     component: ResetPassword,
-    name: 'resetpassword'
+    name: 'resetPassword'
   }
 ]
 
@@ -91,7 +92,7 @@ const router = new VueRouter({
 export default router
 
 router.beforeEach((to, from, next) => {
-  if(['register','mainPage', 'login', 'forgotPassword',"resetpassword"].includes(to.name)) {
+  if(['register','mainPage', 'login', 'forgotPassword', "resetPassword"].includes(to.name)) {
     next()
   }
   else {
