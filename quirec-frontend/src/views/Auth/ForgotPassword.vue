@@ -20,7 +20,7 @@
 
             <v-card-actions class="justify-center pt-10">
               <v-layout align-center justify-center>
-                <v-btn class="primary" large rounded>Reset Your Password</v-btn>
+                <v-btn @click="forgotpassw" class="primary" large rounded>Reset Your Password</v-btn>
               </v-layout>
             </v-card-actions>
           </v-card-text>
@@ -35,12 +35,26 @@
     data(){
       return {
         input: {
-          email: ""
+          email: "",
+          username: "",
+          password:""
         }
       }
     },
     methods: {
+    async forgotpassw(){
+      if(this.email !== ""){
+        await this.axios.post('http://localhost:9000/quirec-api/user/forgotPassword',{
+          email: this.email,
+          username: this.username,
+          password: this.password
+        })
+        .then(
+            this.$router.push('/login')
+        )
+      }
 
+    }
     }
   };
 </script>
