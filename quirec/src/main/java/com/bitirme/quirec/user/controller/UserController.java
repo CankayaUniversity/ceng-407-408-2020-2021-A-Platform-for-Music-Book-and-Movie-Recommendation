@@ -19,7 +19,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    //profil sayfasında user bilgilerinin görülmesi için
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<User> get(@PathVariable("id") long userId) {
         return new ResponseEntity<>(
@@ -28,7 +27,6 @@ public class UserController {
         );
     }
 
-    //register
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<User> register(@RequestBody User user) throws Exception {
         return new ResponseEntity<>(
@@ -37,7 +35,6 @@ public class UserController {
         );
     }
 
-    //login
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<LoginReturn> login(@RequestBody User user) throws Exception {
         return new ResponseEntity<>(
@@ -46,36 +43,33 @@ public class UserController {
         );
     }
 
-    //change password
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<User> update(@PathVariable("id") long userId, @RequestBody User user) {
+    public ResponseEntity<User> changePassword(@PathVariable("id") long userId, @RequestBody User user) {
         return new ResponseEntity<>(
-                userService.update(userId, user.getPassword()),
-                HttpStatus.OK
-        );
-    }
-    //reset password
-    @RequestMapping(value = "/reset", method = RequestMethod.PUT)
-    public ResponseEntity<User> resetPassword(@RequestBody User user) {
-        return new ResponseEntity<>(
-                userService.resetPassword(user),
+                userService.changePassword(userId, user.getPassword()),
                 HttpStatus.OK
         );
     }
 
-    //delete user -> üyelik iptali gibi gerekirse kullanılır
+    @RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
+    public ResponseEntity<Void> forgotPassword(@RequestBody User user) throws Exception {
+        userService.forgotPassword(user);
+        return new ResponseEntity<>(
+                HttpStatus.OK
+        );
+    }
+
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.PUT)
+    public ResponseEntity<Void> resetPassword(@RequestBody User user) throws Exception {
+        userService.resetPassword(user);
+        return new ResponseEntity<>(
+                HttpStatus.OK
+        );
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> delete(@PathVariable("id") long userId) {
         userService.delete(userId);
-        return new ResponseEntity<>(
-                HttpStatus.OK
-        );
-    }
-
-    //forgot password
-    @RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
-    public ResponseEntity<Void> forgotPassword(@RequestBody User user) {
-        userService.forgotPassword(user);
         return new ResponseEntity<>(
                 HttpStatus.OK
         );

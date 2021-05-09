@@ -11,12 +11,12 @@ public interface UserService {
 
     LoginReturn login(User user) throws Exception;
 
-    User update(long userId, String newPassword);
+    User changePassword(long userId, String newPassword);
 
     void delete(long userId);
 
-    void forgotPassword(User user);
+    void forgotPassword(User user) throws Exception;
 
-    User resetPassword(User user);
+    void resetPassword(User user) throws Exception;
 
 }
