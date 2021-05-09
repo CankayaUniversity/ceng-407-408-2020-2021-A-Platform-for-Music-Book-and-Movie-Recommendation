@@ -1,5 +1,6 @@
 package com.bitirme.quirec.admin.impl;
 
+import com.bitirme.api.Deezer.service.DeezerService;
 import com.bitirme.api.GoogleBooks.service.GoogleBooksService;
 import com.bitirme.api.TheMovieDatabase.service.TheMovieDatabaseService;
 import com.bitirme.quirec.admin.service.AdminService;
@@ -24,6 +25,9 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     TheMovieDatabaseService movieDatabaseService;
 
+    @Autowired
+    DeezerService deezerService;
+
     @Override
     public List<Rating> getRatings() {
         return ratingDao.findAll();
@@ -32,7 +36,8 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void databaseUpdate(){
         //booksService.getBooks();
-        movieDatabaseService.getMovies();
+        //movieDatabaseService.getMovies();
+        deezerService.getMusic();
     }
 
 }

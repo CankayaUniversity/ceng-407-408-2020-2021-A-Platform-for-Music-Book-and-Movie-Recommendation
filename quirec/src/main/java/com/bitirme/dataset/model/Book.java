@@ -23,11 +23,11 @@ public class Book extends BaseModel {
     @Column(name = "TITLE")
     public String title;
 
-    @Column(name = "AUTHOR")
-    public String author;
-
     @Column(name = "COVER")
     public String cover;
+
+    @Column(name = "AUTHOR")
+    public String author;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

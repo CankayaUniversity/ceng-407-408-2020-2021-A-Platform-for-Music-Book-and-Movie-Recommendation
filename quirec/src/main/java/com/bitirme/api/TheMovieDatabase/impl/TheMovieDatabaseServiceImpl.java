@@ -1,8 +1,6 @@
 package com.bitirme.api.TheMovieDatabase.impl;
 
 import com.bitirme.api.JSONParser.JSONParsingService;
-import com.bitirme.api.TheMovieDatabase.dao.OriginalCategoriesDao;
-import com.bitirme.api.TheMovieDatabase.model.OriginalCategories;
 import com.bitirme.api.TheMovieDatabase.service.TheMovieDatabaseService;
 import com.bitirme.dataset.dao.MovieDao;
 import com.bitirme.dataset.model.Movie;
@@ -29,9 +27,6 @@ public class TheMovieDatabaseServiceImpl implements TheMovieDatabaseService {
 
     @Autowired
     CategoryDao categoryDao;
-
-    @Autowired
-    OriginalCategoriesDao originalCategoriesDao;
 
     @Override
     public void getMovies() {
@@ -60,11 +55,10 @@ public class TheMovieDatabaseServiceImpl implements TheMovieDatabaseService {
                     categories
                             .forEach(
                                     categoryId -> {
-                                        OriginalCategories originalC = originalCategoriesDao.findByOriginalId(categoryId);
+                                        Categories originalC = categoryDao.findCategoriesByCategoryTypeAndOriginalId(CategoryType.MOVIE, categoryId);
 
                                         if (originalC != null) {
-                                            Categories c = categoryDao.findCategoriesByCategoryTypeAndOriginalId(CategoryType.MOVIE, categoryId);
-                                            newMovie.getCategories().add(c);
+                                            newMovie.getCategories().add(originalC);
                                             movieDao.saveAndFlush(newMovie);
                                         }
 
@@ -87,19 +81,14 @@ public class TheMovieDatabaseServiceImpl implements TheMovieDatabaseService {
                 .forEach(
                     category -> {
                         int id = Integer.parseInt(String.valueOf(category.get("id")));
-                        OriginalCategories originalC = originalCategoriesDao.findByOriginalId(id);
+                        Categories originalC = categoryDao.findCategoriesByCategoryTypeAndOriginalId(CategoryType.MOVIE, id);
 
                         if(originalC == null) {
-                            OriginalCategories newC = new OriginalCategories();
-                            newC.setOriginalId(id);
-                            newC.setName(category.get("name").toString());
-
                             Categories c = new Categories();
                             c.setCategoryType(CategoryType.MOVIE);
-                            c.setName(newC.getName());
+                            c.setName(category.get("name").toString());
                             c.setOriginalId(id);
 
-                            originalCategoriesDao.saveAndFlush(newC);
                             categoryDao.saveAndFlush(c);
                         }
                     }
