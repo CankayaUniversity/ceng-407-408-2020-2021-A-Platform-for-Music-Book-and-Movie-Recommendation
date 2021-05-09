@@ -54,6 +54,14 @@ public class UserController {
                 HttpStatus.OK
         );
     }
+    //reset password
+    @RequestMapping(value = "/reset", method = RequestMethod.PUT)
+    public ResponseEntity<User> resetPassword(@RequestBody User user) {
+        return new ResponseEntity<>(
+                userService.resetPassword(user),
+                HttpStatus.OK
+        );
+    }
 
     //delete user -> üyelik iptali gibi gerekirse kullanılır
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
