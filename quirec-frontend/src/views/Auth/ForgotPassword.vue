@@ -45,9 +45,9 @@
     async forgotpassw(){
       if(this.email !== ""){
         await this.axios.post('http://localhost:9000/quirec-api/user/forgotPassword',{
-          email: this.email,
-          username: this.username,
-          password: this.password
+          email: this.input.email,
+          username: this.input.username,
+          password: this.input.password
         })
         .then(
             this.$router.push('/login')

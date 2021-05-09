@@ -7,11 +7,14 @@ import com.bitirme.quirec.user.model.LoginReturn;
 import com.bitirme.quirec.user.model.User;
 import com.bitirme.quirec.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.Properties;
 
 @Service
 @Transactional
@@ -97,7 +100,29 @@ public class UserServiceImpl implements UserService {
         User emailControl = userDao.findUserByEmail(user.getEmail());
 
         if (emailControl != null){
-            //TODO: mail service
+            JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+            mailSender.setHost("smtp.gmail.com");
+            mailSender.setPort(587);
+
+
+            mailSender.setUsername("quirecnoreply@gmail.com");
+            mailSender.setPassword("password.1234");
+
+            Properties props = mailSender.getJavaMailProperties();
+            props.put("mail.transport.protocol","smtp");
+            props.put("mail.smtp.auth","true");
+            props.put("mail.smtp.starttls.enable","true");
+            props.put("mail.debug","true");
+
+            String to=emailControl.getEmail();
+
+            SimpleMailMessage msg = new SimpleMailMessage();
+            msg.setFrom("noreply@quirec.com");
+            msg.setTo(to);
+            msg.setSubject("Reset Your Password!");
+            msg.setText("lets see if its works");
+
+            mailSender.send(msg);
         }
 
     }
