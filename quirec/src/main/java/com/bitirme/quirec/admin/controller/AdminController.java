@@ -26,7 +26,7 @@ public class AdminController {
         );
     }
 
-    @RequestMapping(path = "/databaseUpdate", method = RequestMethod.POST)
+    @RequestMapping(path = "/databaseUpdate", method = RequestMethod.GET)
     public ResponseEntity<Void> databaseUpdate() {
         adminService.databaseUpdate();
         return new ResponseEntity<>(
