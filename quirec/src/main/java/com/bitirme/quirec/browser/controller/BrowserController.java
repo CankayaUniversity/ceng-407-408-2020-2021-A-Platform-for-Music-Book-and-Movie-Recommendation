@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -22,7 +23,6 @@ public class BrowserController {
     @Autowired
     BrowserService browserService;
 
-    //dbdeki tüm şarkılar
     @RequestMapping(value = "/music", method = RequestMethod.GET)
     public ResponseEntity<List<Music>> getMusic() {
         return new ResponseEntity<>(
@@ -31,7 +31,6 @@ public class BrowserController {
         );
     }
 
-    //dbdeki tüm kitaplar
     @RequestMapping(value = "/book", method = RequestMethod.GET)
     public ResponseEntity<List<Book>> getBook() {
         return new ResponseEntity<>(
@@ -40,7 +39,6 @@ public class BrowserController {
         );
     }
 
-    //dbdeki tüm filmler
     @RequestMapping(value = "/movie", method = RequestMethod.GET)
     public ResponseEntity<List<Movie>> getMovie() {
         return new ResponseEntity<>(
@@ -49,18 +47,26 @@ public class BrowserController {
         );
     }
 
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public ResponseEntity<Recommendation> search(Categories searchCategory) {
+    @RequestMapping(value = "/musicSearch", method = RequestMethod.POST)
+    public ResponseEntity<List<Music>> musicSearch(@RequestBody String searchType, String searchDetail) {
         return new ResponseEntity<>(
-                browserService.search(searchCategory),
+                browserService.musicSearch(searchType, searchDetail),
                 HttpStatus.OK
         );
     }
 
-    @RequestMapping(value = "/search/detail", method = RequestMethod.GET)
-    public ResponseEntity<Recommendation> detailedSearch(Categories searchInfo) {
+    @RequestMapping(value = "/bookSearch", method = RequestMethod.POST)
+    public ResponseEntity<List<Book>> bookSearch(@RequestBody String searchType, String searchDetail) {
         return new ResponseEntity<>(
-                browserService.detailedSearch(searchInfo),
+                browserService.bookSearch(searchType, searchDetail),
+                HttpStatus.OK
+        );
+    }
+
+    @RequestMapping(value = "/movieSearch", method = RequestMethod.POST)
+    public ResponseEntity<List<Movie>> movieSearch(@RequestBody String searchType, String searchDetail) {
+        return new ResponseEntity<>(
+                browserService.movieSearch(searchType, searchDetail),
                 HttpStatus.OK
         );
     }

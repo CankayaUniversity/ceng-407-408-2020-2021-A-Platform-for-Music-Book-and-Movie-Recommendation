@@ -44,16 +44,17 @@ public class BrowserServiceImpl implements BrowserService {
     }
 
     @Override
-    public Recommendation search(Categories searchInfo) {
-        //searchInfo.getName();'e göre search yapılırsa "romantik" aramasında romantik film, kitap, müzik döner,
-        //"korku" aramasında sadece korku film döner çünkü korku müzik yoktur
+    public List<Music> musicSearch(String searchType, String searchDetail) {
         return null;
     }
 
     @Override
-    public Recommendation detailedSearch(Categories searchInfo) {
-        //dao filter by searchInfo.getName() && searchInfo. getCategoyType()
+    public List<Book> bookSearch(String searchType, String searchDetail) {
         return null;
     }
 
+    @Override
+    public List<Movie> movieSearch(String searchType, String searchDetail) {
+        return null;
+    }
 }
