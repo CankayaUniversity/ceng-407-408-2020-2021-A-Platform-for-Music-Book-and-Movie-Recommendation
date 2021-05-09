@@ -4,9 +4,24 @@
       <v-card class="py-15 px-12 secondary text-center" rounded>
           <p class="text-h6">Music</p>
           <v-row>
-            <v-card class="mx-5 my-5 primary" outlined>
-            </v-card>
+            <v-col
+                v-for="n in 4"
+                :key="n"
+                cols="10"
+                md="3"
+            >
+              <v-card class="mx-5 my-5 primary" outlined>
+                <p>
+                  <v-img :src= music[musicIndex+n].cover aspect-ratio="0.7"></v-img>
+                  {{music[musicIndex+n].title}} <br>
+                  {{music[musicIndex+n].artist}}
+                </p>
+                <v-btn v-on:click="navToDetails(music[musicIndex+n].resourceId)" class="secondary white--text"> see details</v-btn>
+              </v-card>
+            </v-col>
           </v-row>
+        <v-btn v-on:click="musicIndex -= 4"><span class="text-h6 text--primary">←&nbsp;</span></v-btn>
+        <v-btn v-on:click="musicIndex += 4"><span class="text-h6 text--primary">&nbsp;→</span></v-btn>
       </v-card>
 
       <v-card class="my-12 py-15 px-12 secondary text-center" rounded>
@@ -63,8 +78,9 @@
         music: [],
         books: [],
         movies: [],
-        bookIndex: 0,
-        movieIndex: 0
+        bookIndex: -1,
+        movieIndex: -1,
+        musicIndex: -1
       }
     },
     async mounted() {
@@ -86,6 +102,9 @@
         for (let element of movies.data) {
           this.movies.push(element)
         }
+      },
+      navToDetails (resourceId) {
+        this.$router.push({ path: 'details/' + resourceId});
       }
     }
   };
