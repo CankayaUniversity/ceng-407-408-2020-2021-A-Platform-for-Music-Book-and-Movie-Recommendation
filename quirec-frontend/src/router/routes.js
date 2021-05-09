@@ -51,7 +51,7 @@ const routes = [
     name: 'browserPage'
   },
   {
-    path: '/details',
+    path: '/details/:resourceId',
     component: DetailsPage,
     name: 'detailsPage'
   },
