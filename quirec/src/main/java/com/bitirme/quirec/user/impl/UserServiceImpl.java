@@ -114,16 +114,34 @@ public class UserServiceImpl implements UserService {
             props.put("mail.smtp.starttls.enable","true");
             props.put("mail.debug","true");
 
-            String to=emailControl.getEmail();
 
+            String to=emailControl.getEmail();
+            String line1="Do You Want To Reset Your Password?\n";
+            String line2="That's fine! We are here to help you.\n Did you made this request? if you did click the link below to continue reseting your password.\n";
+            String line3="If yu-ou didnt from this request contacth us!\n";
+            String line4="Click Here: http://localhost:8080/reset-password";
+            String mesage="";
+            mesage=line1+line2+line3+line4;
             SimpleMailMessage msg = new SimpleMailMessage();
             msg.setFrom("noreply@quirec.com");
             msg.setTo(to);
             msg.setSubject("Reset Your Password!");
-            msg.setText("lets see if its works");
+            msg.setText(mesage);
 
             mailSender.send(msg);
         }
 
+
+    }
+
+    @Override
+    public User resetPassword(User user) {
+        User emailControl = userDao.findUserByEmail(user.getEmail());
+        if (emailControl != null) {
+            emailControl.setPassword(BCrypt.hashpw(user.getPassword(), salt));
+            return userDao.saveAndFlush(emailControl);
+        }
+
+        return null;
     }
 }

@@ -17,4 +17,6 @@ public interface UserService {
 
     void forgotPassword(User user);
 
+    User resetPassword(User user);
+
 }

@@ -21,14 +21,14 @@ public class Recommendation extends BaseModel {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "MUSIC_ID")
-    private Set<Music> musicRecommendations = new HashSet<>();;
+    private Set<Music> musicRecommendations = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "BOOK_ID")
-    private Set<Book> bookRecommendations = new HashSet<>();;
+    private Set<Book> bookRecommendations = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "MOVIE_ID")
-    private Set<Movie> movieRecommendations = new HashSet<>();;
+    private Set<Movie> movieRecommendations = new HashSet<>();
 
 }
