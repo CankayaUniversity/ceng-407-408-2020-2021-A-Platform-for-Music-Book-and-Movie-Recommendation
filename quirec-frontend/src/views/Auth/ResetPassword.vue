@@ -72,8 +72,7 @@ export default {
           await this.axios.put('http://localhost:9000/quirec-api/user/reset',{
             email: this.input.email,
             username:"",
-            password: this.y
-                .passwordn,
+            password: this.input.passwordn
           })
               .then(response =>{
                 this.$router.push("/login")
