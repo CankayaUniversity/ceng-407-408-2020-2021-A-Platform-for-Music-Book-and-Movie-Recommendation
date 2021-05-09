@@ -54,7 +54,7 @@ export default {
     return {
       details: [
         {
-          songname: "Gozlerine Teslimim",
+          songname: "",
           singer: "Sıla",
           albumname: "Joker",
         },
@@ -62,5 +62,19 @@ export default {
       rating: 4.3,
     };
   },
+  async mounted(){
+    await this.getDetails();
+  },
+  methods: {
+    async getDetails() {
+      this.axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+      const response = (await this.axios.get('https://api.deezer.com/track/' + this.$router.history.current.params.resourceId)).headers
+      this.details.songname = response.data.title
+    }
+  }
 };
 </script>
+
+
+https://www.googleapis.com/books/v1/volumes/params.resourceId
+
