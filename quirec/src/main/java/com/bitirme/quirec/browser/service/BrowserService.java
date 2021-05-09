@@ -16,8 +16,10 @@ public interface BrowserService {
 
     List<Movie> getMovie();
 
-    Recommendation search(Categories searchCategory);
+    List<Music> musicSearch(String searchType, String searchDetail);
 
-    Recommendation detailedSearch(Categories searchInfo);
+    List<Book> bookSearch(String searchType, String searchDetail);
+
+    List<Movie> movieSearch(String searchType, String searchDetail);
 
 }
