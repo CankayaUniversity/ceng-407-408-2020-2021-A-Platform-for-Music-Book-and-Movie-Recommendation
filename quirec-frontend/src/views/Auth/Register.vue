@@ -1,7 +1,6 @@
 <template>
   <v-container fill-height>
     <v-row align="center" justify="center">
-
       <v-col sm="6">
         <v-card class="my-12 elevation-0 ">
           <v-img :src="require('@/assets/QuiRec.png')"> </v-img>
@@ -20,6 +19,9 @@
                 <v-text-field label="Password" v-model="password" :rules="passwordRules" type="password" prepend-icon="lock"></v-text-field>
 
                 <v-text-field label="Enter Your Password Again" v-model="passwordAgain" :rules="passwordRules" type="password" prepend-icon="lock"></v-text-field>
+
+                <v-alert v-if="successMessage" type="success">Successfully registered! <br> Go to login page to start using QuiRec</v-alert>
+                <v-alert v-if="errorMessage" type="error">Existing email/username on the system! Please try different email/username</v-alert>
 
                 <center><v-btn @click="register" :disabled="!valid" class="primary" large rounded>Sign Up</v-btn></center>
               </v-card-text>
@@ -57,6 +59,7 @@
           v => !!v || 'Password is required',
           v => /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(v) || 'Password must contain a lowercase letter, one number, a special character and one uppercase letter',
         ],
+        errorMessage: false
       }
     },
     methods: {
@@ -68,10 +71,15 @@
               username: this.username,
               password: this.password
             })
-            .then(
-                this.$router.push('/login')
-            )
-          } //this.passworda != null && this.password != null && this.username != null && this.email != null
+            .then(response => {
+              this.errorMessage = false
+              this.successMessage = true
+            })
+            .catch(error => {
+              this.successMessage = false
+              this.errorMessage = true
+            })
+          }
         }
       }
     }
