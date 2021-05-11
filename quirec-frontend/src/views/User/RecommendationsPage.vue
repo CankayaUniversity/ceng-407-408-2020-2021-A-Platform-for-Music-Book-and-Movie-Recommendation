@@ -11,12 +11,7 @@
                 md="3"
             >
               <v-card class="mx-5 my-5 primary" outlined>
-                <p>
-                  <v-img :src= music[musicIndex+n].cover aspect-ratio="0.7"></v-img>
-                  {{music[musicIndex+n].title}} <br>
-                  {{music[musicIndex+n].artist}}
-                </p>
-                <v-btn v-on:click="navToDetails(music[musicIndex+n].resourceId)" class="secondary white--text"> see details</v-btn>
+
               </v-card>
             </v-col>
           </v-row>
@@ -34,11 +29,7 @@
               md="3"
           >
             <v-card class="mx-5 my-5 primary" outlined>
-              <p>
-                <v-img :src= books[bookIndex+n].cover aspect-ratio="0.7"></v-img>
-                {{books[bookIndex+n].title}} <br>
-                Author: {{books[bookIndex+n].author}}
-              </p>
+
             </v-card>
           </v-col>
         </v-row>
@@ -56,11 +47,7 @@
               md="3"
           >
             <v-card class="mx-5 my-5 primary" outlined>
-              <p>
-                <v-img :src= "'https://www.themoviedb.org/t/p/w1280/' + movies[movieIndex+n].poster" aspect-ratio="0.7"></v-img>
-                {{movies[movieIndex+n].title}} <br>
-                Language: {{movies[movieIndex+n].language}}
-              </p>
+
             </v-card>
           </v-col>
         </v-row>
@@ -92,19 +79,10 @@
         for (let element of music.data) {
           this.music.push(element)
         }
-
-        const books = await this.axios.get('http://localhost:9000/quirec-api/browse/book');
-        for (let element of books.data) {
-          this.books.push(element)
-        }
-
-        const movies = await this.axios.get('http://localhost:9000/quirec-api/browse/movie');
-        for (let element of movies.data) {
-          this.movies.push(element)
-        }
       },
       navToDetails (resourceId) {
         //TODO: music/book/movie ayrımı yapılmalı
+        //TODO: recommendations ya da browser page ayrımı yapılmalı ona göre rate çıkacak
         this.$router.push({ path: 'details/' + resourceId});
       }
     }

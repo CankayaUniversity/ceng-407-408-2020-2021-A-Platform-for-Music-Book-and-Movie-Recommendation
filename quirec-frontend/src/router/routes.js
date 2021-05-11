@@ -16,6 +16,7 @@ import ChangePassword from '../views/User/ChangePassword.vue'
 import ForgotPassword from '../views/Auth/ForgotPassword.vue'
 import DeleteAccount from '../views/User/DeleteAccount.vue'
 import ResetPassword from '../views/Auth/ResetPassword.vue'
+import RecommendationsPage from "../views/User/RecommendationsPage";
 
 Vue.use(VueAxios, axios)
 Vue.use(VueRouter);
@@ -80,6 +81,11 @@ const routes = [
     path: '/reset-password',
     component: ResetPassword,
     name: 'resetPassword'
+  },
+  {
+    path: '/recommendations',
+    component: RecommendationsPage,
+    name: 'recommendationsPage'
   }
 ]
 

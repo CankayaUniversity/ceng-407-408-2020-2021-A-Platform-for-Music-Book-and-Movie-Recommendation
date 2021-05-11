@@ -7,6 +7,6 @@ public class LoginReturn {
 
     private String accessToken;
 
-    private Long userId;
+    private User user;
 
 }

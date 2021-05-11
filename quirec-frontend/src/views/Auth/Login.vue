@@ -1,7 +1,6 @@
 <template>
   <v-container fill-height>
     <v-row align="center" justify="center">
-
       <v-col sm="6">
         <v-card class="my-12 elevation-0">
           <v-img :src="require('@/assets/QuiRec.png')"> </v-img>
@@ -16,6 +15,8 @@
                 <v-text-field label="Username or Email" v-model="input.email" prepend-icon="person"></v-text-field>
                 
                 <v-text-field label="Password" v-model="input.password" type="password" prepend-icon="lock"></v-text-field>
+
+                <v-alert v-if="errorMessage" type="error">Invalid username/password!</v-alert>
 
                 <div class="text-decoration-underline text-center"><a href="forgot-password"> Forgot Password? </a></div>
 
@@ -43,7 +44,8 @@
         input: {
           email: "",
           password: ""
-        }
+        },
+        errorMessage: false
       }
     },
     async mounted() {
@@ -58,12 +60,16 @@
             password: this.input.password
           })
           .then(response => {
-            this.$store.commit('setUserId', response.data.userId)
+            this.$store.commit('setUserId', response.data.user.id)
             this.$store.commit('setUserToken', response.data.accessToken)
-            this.$router.push("/questionnaire")
+
+            if(response.data.user.username == 'admin')
+              this.$router.push("/admin-panel")
+            else
+              this.$router.push("/recommendations")
           })
           .catch(error => {
-            console.log(error);
+            this.errorMessage = true
           })
         }
       },
