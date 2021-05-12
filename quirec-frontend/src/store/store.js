@@ -11,24 +11,32 @@ const vuexLocal = new VuexPersistence({
 const store = new Vuex.Store({
     state:{
         userId: null,
-        userToken: null
+        userToken: null,
+        role: null
     },
     getters: {
-        getUserId: state => state.userId ,//gets user id
-        getToken: state => state.userToken //gets user Token
+        getUserId: state => state.userId,
+        getToken: state => state.userToken,
+        getRole: state => state.role
     },
     mutations:{
-        setUserId(state, id){
-            state.userId = id; //sets user id
+        setUserId(state, id) {
+            state.userId = id;
         },
-        setUserToken(state, token){
-            state.userToken = token; //sets user token
+        clearUserId(state) {
+            state.userId = null;
+        },
+        setUserToken(state, token) {
+            state.userToken = token;
         },
         clearUserToken(state){
             state.userToken = null;
         },
-        clearUserId(state){
-            state.userId = null;
+        setRole(state, role) {
+            state.role = role
+        },
+        clearRole(state) {
+            state.role = null
         }
     },
     plugins: [vuexLocal.plugin]

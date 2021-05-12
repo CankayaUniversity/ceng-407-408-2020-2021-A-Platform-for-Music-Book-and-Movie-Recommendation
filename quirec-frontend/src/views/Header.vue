@@ -32,6 +32,7 @@ export default {
     async logout(){
       this.$store.commit('clearUserToken')
       this.$store.commit('clearUserId')
+      this.$store.commit('clearRole')
       this.$router.push("/login")
     }
 
