@@ -63,10 +63,14 @@
             this.$store.commit('setUserId', response.data.user.id)
             this.$store.commit('setUserToken', response.data.accessToken)
 
-            if(response.data.user.username == 'admin')
+            if(response.data.user.username == 'admin') {
+              this.$store.commit('setRole', 'admin')
               this.$router.push("/admin-panel")
-            else
+            }
+            else {
+              this.$store.commit('setRole', 'user')
               this.$router.push("/recommendations")
+            }
           })
           .catch(error => {
             this.errorMessage = true
@@ -76,6 +80,7 @@
       async reset() {
         this.$store.commit('clearUserId')
         this.$store.commit('clearUserToken')
+        this.$store.commit('clearRole')
       }
     }
   };

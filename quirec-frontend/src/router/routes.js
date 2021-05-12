@@ -40,32 +40,38 @@ const routes = [
   {
     path: '/profile',
     component: ProfilePage,
-    name: 'profilePage'
+    name: 'profilePage',
+    meta: { authorize: 'user' }
   },
   {
     path: '/questionnaire',
     component: Questionnaire,
-    name: 'questionnaire'
+    name: 'questionnaire',
+    meta: { authorize: 'user' }
   },
   {
     path: '/browse',
     component: BrowserPage,
-    name: 'browserPage'
+    name: 'browserPage',
+    meta: { authorize: 'user' }
   },
   {
     path: '/details/:resourceId',
     component: DetailsPage,
-    name: 'detailsPage'
+    name: 'detailsPage',
+    meta: { authorize: 'user' }
   },
   {
     path: '/admin-panel',
     component: AdminPanel,
-    name: 'adminPanel'
+    name: 'adminPanel',
+    meta: { authorize: 'admin' }
   },
   {
     path: '/change-password',
     component: ChangePassword,
-    name: 'changePassword'
+    name: 'changePassword',
+    meta: { authorize: 'user' }
   },
   {
     path: '/forgot-password',
@@ -75,7 +81,8 @@ const routes = [
   {
     path: '/delete-account',
     component: DeleteAccount,
-    name: 'deleteAccount'
+    name: 'deleteAccount',
+    meta: { authorize: 'user' }
   },
   {
     path: '/reset-password',
@@ -85,7 +92,8 @@ const routes = [
   {
     path: '/recommendations',
     component: RecommendationsPage,
-    name: 'recommendationsPage'
+    name: 'recommendationsPage',
+    meta: { authorize: 'user' }
   }
 ]
 
@@ -102,8 +110,11 @@ router.beforeEach((to, from, next) => {
     next()
   }
   else {
+    const { authorize } = to.meta;
     if(store.getters.getToken) {
-      next()
+      if(authorize !== store.getters.getRole)
+        next({ path: '/login'});
+      else next()
     }
     else next("/login")
   }
