@@ -2,7 +2,19 @@
   <v-container>
     <v-flex>
       <v-card class="py-15 px-12 secondary text-center" rounded>
-          <p class="text-h6">Music</p>
+        <p class="text-h6">Music</p>
+        <v-row>
+        <v-text-field
+            v-model="searchm"
+            label="Search a music by title or a category..."
+            class="mx-4"
+        >
+        </v-text-field>
+          <v-btn icon v-on:click="searchBy">
+           <v-icon>search</v-icon>
+          </v-btn>
+
+        </v-row>
           <v-row>
             <v-col
                 v-for="n in 4"
@@ -27,6 +39,17 @@
       <v-card class="my-12 py-15 px-12 secondary text-center" rounded>
         <p class="text-h6">Books</p>
         <v-row>
+          <v-text-field
+              v-model="searchb"
+              label="Search a book by title or a category..."
+              class="mx-4"
+          >
+          </v-text-field>
+          <v-btn icon v-on:click="searchBy">
+            <v-icon>search</v-icon>
+          </v-btn>
+        </v-row>
+        <v-row>
           <v-col
               v-for="n in 4"
               :key="n"
@@ -37,17 +60,30 @@
               <p>
                 <v-img :src= books[bookIndex+n].cover aspect-ratio="0.7"></v-img>
                 {{books[bookIndex+n].title}} <br>
-                Author: {{books[bookIndex+n].author}}
+                {{books[bookIndex+n].artist}}
               </p>
+              <v-btn v-on:click="navToDetails(books[bookIndex+n].resourceId)" class="secondary white--text"> see details</v-btn>
             </v-card>
           </v-col>
+
         </v-row>
-        <v-btn v-on:click="bookIndex -= 4"><span class="text-h6 text--primary">←&nbsp;</span></v-btn>
+        <v-btn v-on:click="bookIndex-= 4"><span class="text-h6 text--primary">←&nbsp;</span></v-btn>
         <v-btn v-on:click="bookIndex += 4"><span class="text-h6 text--primary">&nbsp;→</span></v-btn>
       </v-card>
 
       <v-card class="my-12 py-15 px-12 secondary text-center" rounded>
         <p class="text-h6">Movies</p>
+        <v-row>
+          <v-text-field
+              v-model="searchmv"
+              label="Search a movie by title or a category..."
+              class="mx-4"
+          >
+          </v-text-field>
+          <v-btn icon v-on:click="searchBy">
+            <v-icon>search</v-icon>
+          </v-btn>
+        </v-row>
         <v-row>
           <v-col
               v-for="n in 4"
@@ -80,32 +116,73 @@
         movies: [],
         bookIndex: -1,
         movieIndex: -1,
-        musicIndex: -1
+        musicIndex: -1,
+        searchm: "",
+        searchb:"",
+        searchmv: ""
       }
     },
     async mounted() {
       await this.getItems();
+      await this.searchBy();
     },
     methods: {
       async getItems() {
-        const music = await this.axios.get('http://localhost:9000/quirec-api/browse/music');
-        for (let element of music.data) {
-          this.music.push(element)
-        }
+        if(this.searchm == "" && this.searchb == "" && this.searchmv == "") {
+          const music = await this.axios.get('http://localhost:9000/quirec-api/browse/music');
+          for (let element of music.data) {
+            this.music.push(element)
+          }
 
-        const books = await this.axios.get('http://localhost:9000/quirec-api/browse/book');
-        for (let element of books.data) {
-          this.books.push(element)
-        }
+          const books = await this.axios.get('http://localhost:9000/quirec-api/browse/book');
+          for (let element of books.data) {
+            this.books.push(element)
+          }
 
-        const movies = await this.axios.get('http://localhost:9000/quirec-api/browse/movie');
-        for (let element of movies.data) {
-          this.movies.push(element)
+          const movies = await this.axios.get('http://localhost:9000/quirec-api/browse/movie');
+          for (let element of movies.data) {
+            this.movies.push(element)
+          }
         }
       },
       navToDetails (resourceId) {
         //TODO: music/book/movie ayrımı yapılmalı
         this.$router.push({ path: 'details/' + resourceId});
+      },
+      searchBy(){
+        if(this.searchm !== ""){
+          const msc = this.axios.post('http://localhost:9000/quirec-api/browse/musicSearch', {
+            searchDetail: this.searchm
+          })
+          .then(response =>{
+            for(let element of msc.data){
+              this.music.push(element)
+            }
+
+          })
+        }
+        else if(this.searchb !== ""){
+         const b =  this.axios.post('http://localhost:9000/quirec-api/browse/bookSearch', {
+            searchDetail: this.searchb
+          })
+             .then(response => {
+               for (let element of b.data) {
+                 this.books.push(element)
+               }
+             })
+        }
+        else if(this.searchmv !== ""){
+          const mv = this.axios.post('http://localhost:9000/quirec-api/browse/movieSearch', {
+            searchDetail: this.searchmv
+          })
+              .then(response => {
+                for (let element of mv.data) {
+                  this.movies.push(element)
+
+                }
+              })
+        }
+
       }
     }
   };
