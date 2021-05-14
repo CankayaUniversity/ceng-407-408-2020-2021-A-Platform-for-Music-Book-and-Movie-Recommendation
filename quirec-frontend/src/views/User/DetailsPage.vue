@@ -13,10 +13,10 @@
             </thead>
 
             <tbody>
-              <tr v-for="item in details" :key="item.name">
-                <td>{{ item.songname }}</td>
-                <td>{{ item.singer }}</td>
-                <td>{{ item.albumname }}</td>
+              <tr >
+                <td>{{ songname }}</td>
+                <td>{{ singer }}</td>
+                <td>{{ albumname }}</td>
               </tr>
             </tbody>
           </template>
@@ -52,14 +52,11 @@ export default {
   name: "detailspage",
   data() {
     return {
-      details: [
-        {
-          songname: "",
-          singer: "Sıla",
-          albumname: "Joker",
-        },
-      ],
-      rating: 4.3,
+      songname: "",
+      singer: "",
+      albumname: "",
+      rating: "",
+      info: ""
     };
   },
   async mounted(){
@@ -67,9 +64,11 @@ export default {
   },
   methods: {
     async getDetails() {
-      this.axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-      const response = (await this.axios.get('https://api.deezer.com/track/' + this.$router.history.current.params.resourceId)).headers
-      this.details.songname = response.data.title
+     // this.axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+      const response = ((await this.axios.get('https://api.deezer.com/track/' + this.$router.history.current.params.resourceId + "")).headers)
+      this.details.songname = response.data.title 
+
+
     }
   }
 };
