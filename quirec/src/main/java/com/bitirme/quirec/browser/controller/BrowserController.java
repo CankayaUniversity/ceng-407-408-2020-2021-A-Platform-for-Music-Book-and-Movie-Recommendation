@@ -50,7 +50,7 @@ public class BrowserController {
     @RequestMapping(value = "/musicSearch", method = RequestMethod.POST)
     public ResponseEntity<List<Music>> musicSearch(@RequestBody String searchType, String searchDetail) {
         return new ResponseEntity<>(
-                browserService.musicSearch(searchType, searchDetail),
+                browserService.musicSearch(searchDetail),
                 HttpStatus.OK
         );
     }
@@ -58,7 +58,7 @@ public class BrowserController {
     @RequestMapping(value = "/bookSearch", method = RequestMethod.POST)
     public ResponseEntity<List<Book>> bookSearch(@RequestBody String searchType, String searchDetail) {
         return new ResponseEntity<>(
-                browserService.bookSearch(searchType, searchDetail),
+                browserService.bookSearch(searchDetail),
                 HttpStatus.OK
         );
     }
@@ -66,7 +66,7 @@ public class BrowserController {
     @RequestMapping(value = "/movieSearch", method = RequestMethod.POST)
     public ResponseEntity<List<Movie>> movieSearch(@RequestBody String searchType, String searchDetail) {
         return new ResponseEntity<>(
-                browserService.movieSearch(searchType, searchDetail),
+                browserService.movieSearch(searchDetail),
                 HttpStatus.OK
         );
     }

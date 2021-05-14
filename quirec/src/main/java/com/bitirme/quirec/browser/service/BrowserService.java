@@ -16,10 +16,10 @@ public interface BrowserService {
 
     List<Movie> getMovie();
 
-    List<Music> musicSearch(String searchType, String searchDetail);
+    List<Music> musicSearch(String searchDetail);
 
-    List<Book> bookSearch(String searchType, String searchDetail);
+    List<Book> bookSearch(String searchDetail);
 
-    List<Movie> movieSearch(String searchType, String searchDetail);
+    List<Movie> movieSearch(String searchDetail);
 
 }
