@@ -44,17 +44,17 @@ public class BrowserServiceImpl implements BrowserService {
     }
 
     @Override
-    public List<Music> musicSearch(String searchType, String searchDetail) {
+    public List<Music> musicSearch(String searchDetail) {
         return null;
     }
 
     @Override
-    public List<Book> bookSearch(String searchType, String searchDetail) {
+    public List<Book> bookSearch(String searchDetail) {
         return null;
     }
 
     @Override
-    public List<Movie> movieSearch(String searchType, String searchDetail) {
+    public List<Movie> movieSearch(String searchDetail) {
         return null;
     }
 }
