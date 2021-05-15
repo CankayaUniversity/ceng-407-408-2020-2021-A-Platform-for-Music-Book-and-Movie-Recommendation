@@ -10,7 +10,6 @@ import com.bitirme.quirec.browser.service.BrowserService;
 import com.bitirme.quirec.questionnarie.dao.CategoryDao;
 import com.bitirme.quirec.questionnarie.model.Categories;
 import com.bitirme.quirec.questionnarie.model.CategoryType;
-import com.bitirme.quirec.recommendation.model.Recommendation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +49,6 @@ public class BrowserServiceImpl implements BrowserService {
 
     @Override
     public List<Music> musicSearch(String searchDetail) {
-
         Categories category=categoryDao.findCategoriesByCategoryTypeAndName(CategoryType.MUSIC, searchDetail);
 
         if(category!=null)
@@ -61,7 +59,6 @@ public class BrowserServiceImpl implements BrowserService {
 
     @Override
     public List<Book> bookSearch(String searchDetail) {
-
         Categories category=categoryDao.findCategoriesByCategoryTypeAndName(CategoryType.BOOK, searchDetail);
 
         if(category!=null)
