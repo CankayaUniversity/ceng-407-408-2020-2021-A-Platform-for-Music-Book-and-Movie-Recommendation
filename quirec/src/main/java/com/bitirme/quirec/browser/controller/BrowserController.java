@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,24 +48,24 @@ public class BrowserController {
         );
     }
 
-    @RequestMapping(value = "/musicSearch", method = RequestMethod.POST)
-    public ResponseEntity<List<Music>> musicSearch(@RequestBody String searchType, String searchDetail) {
+    @RequestMapping(value = "/musicSearch/{searchDetail}", method = RequestMethod.GET)
+    public ResponseEntity<List<Music>> musicSearch(@PathVariable String searchDetail) {
         return new ResponseEntity<>(
                 browserService.musicSearch(searchDetail),
                 HttpStatus.OK
         );
     }
 
-    @RequestMapping(value = "/bookSearch", method = RequestMethod.POST)
-    public ResponseEntity<List<Book>> bookSearch(@RequestBody String searchType, String searchDetail) {
+    @RequestMapping(value = "/bookSearch/{searchDetail}", method = RequestMethod.GET)
+    public ResponseEntity<List<Book>> bookSearch(@PathVariable String searchDetail) {
         return new ResponseEntity<>(
                 browserService.bookSearch(searchDetail),
                 HttpStatus.OK
         );
     }
 
-    @RequestMapping(value = "/movieSearch", method = RequestMethod.POST)
-    public ResponseEntity<List<Movie>> movieSearch(@RequestBody String searchType, String searchDetail) {
+    @RequestMapping(value = "/movieSearch/{searchDetail}", method = RequestMethod.GET)
+    public ResponseEntity<List<Movie>> movieSearch(@PathVariable String searchDetail) {
         return new ResponseEntity<>(
                 browserService.movieSearch(searchDetail),
                 HttpStatus.OK
