@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.io.IOException;
+
 @Controller
 @RequestMapping("/quirec-api/recommendation")
 public class RecommendationController {
@@ -19,17 +21,14 @@ public class RecommendationController {
     @Autowired
     RecommendationService recommendationService;
 
-    //recommendations page
-    //get recommendations for user with id "id"
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Recommendation> get(@PathVariable("id") long userId) {
+    public ResponseEntity<Recommendation> get(@PathVariable("id") long userId) throws IOException {
         return new ResponseEntity<>(
                 recommendationService.get(userId),
                 HttpStatus.OK
         );
     }
 
-    //rate recommendation accuracy
     @RequestMapping(value = "/rate", method = RequestMethod.POST)
     public ResponseEntity<Void> rate(@RequestBody CategoryType type, int rate) {
         recommendationService.rate(type, rate);
@@ -37,5 +36,4 @@ public class RecommendationController {
                 HttpStatus.OK
         );
     }
-
 }
