@@ -5,7 +5,7 @@
         <p class="text-h6">Music</p>
         <v-row>
         <v-text-field
-            v-model="searchm"
+            v-model="searchMusic"
             label="Search a music by title or a category..."
             class="mx-4"
         >
@@ -40,7 +40,7 @@
         <p class="text-h6">Books</p>
         <v-row>
           <v-text-field
-              v-model="searchb"
+              v-model="searchBook"
               label="Search a book by title or a category..."
               class="mx-4"
           >
@@ -60,7 +60,7 @@
               <p>
                 <v-img :src= books[bookIndex+n].cover aspect-ratio="0.7"></v-img>
                 {{books[bookIndex+n].title}} <br>
-                {{books[bookIndex+n].artist}}
+                {{books[bookIndex+n].author}}
               </p>
               <v-btn v-on:click="navToDetails(books[bookIndex+n].resourceId)" class="secondary white--text"> see details</v-btn>
             </v-card>
@@ -75,7 +75,7 @@
         <p class="text-h6">Movies</p>
         <v-row>
           <v-text-field
-              v-model="searchmv"
+              v-model="searchMovie"
               label="Search a movie by title or a category..."
               class="mx-4"
           >
@@ -117,9 +117,9 @@
         bookIndex: -1,
         movieIndex: -1,
         musicIndex: -1,
-        searchm: "",
-        searchb:"",
-        searchmv: ""
+        searchMusic: "",
+        searchBook:"",
+        searchMovie: ""
       }
     },
     async mounted() {
@@ -128,7 +128,7 @@
     },
     methods: {
       async getItems() {
-        if(this.searchm == "" && this.searchb == "" && this.searchmv == "") {
+        if(this.searchMusic == "" && this.searchBook == "" && this.searchMovie == "") {
           const music = await this.axios.get('http://localhost:9000/quirec-api/browse/music');
           for (let element of music.data) {
             this.music.push(element)
@@ -150,10 +150,8 @@
         this.$router.push({ path: 'details/' + resourceId});
       },
       searchBy(){
-        if(this.searchm !== ""){
-          const msc = this.axios.post('http://localhost:9000/quirec-api/browse/musicSearch', {
-            searchDetail: this.searchm
-          })
+        if(this.searchMusic !== ""){
+          const msc = this.axios.get('http://localhost:9000/quirec-api/browse/musicSearch/' + this.searchMusic)
           .then(response =>{
             for(let element of msc.data){
               this.music.push(element)
@@ -161,20 +159,16 @@
 
           })
         }
-        else if(this.searchb !== ""){
-         const b =  this.axios.post('http://localhost:9000/quirec-api/browse/bookSearch', {
-            searchDetail: this.searchb
-          })
+        else if(this.searchBook !== ""){
+         const b =  this.axios.get('http://localhost:9000/quirec-api/browse/bookSearch/' + this.searchBook )
              .then(response => {
                for (let element of b.data) {
                  this.books.push(element)
                }
              })
         }
-        else if(this.searchmv !== ""){
-          const mv = this.axios.post('http://localhost:9000/quirec-api/browse/movieSearch', {
-            searchDetail: this.searchmv
-          })
+        else if(this.searchMovie !== ""){
+          const mv = this.axios.get('http://localhost:9000/quirec-api/browse/movieSearch/'+  this.searchMovie)
               .then(response => {
                 for (let element of mv.data) {
                   this.movies.push(element)
