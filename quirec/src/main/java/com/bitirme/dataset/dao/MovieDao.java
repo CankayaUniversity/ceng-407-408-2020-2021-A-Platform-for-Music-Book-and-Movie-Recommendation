@@ -1,7 +1,6 @@
 package com.bitirme.dataset.dao;
 
 import com.bitirme.base.dao.BaseDao;
-import com.bitirme.dataset.model.Book;
 import com.bitirme.dataset.model.Movie;
 import com.bitirme.quirec.questionnarie.model.Categories;
 
