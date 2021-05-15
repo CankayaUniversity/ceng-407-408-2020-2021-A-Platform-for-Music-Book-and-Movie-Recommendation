@@ -13,6 +13,12 @@ public class JSONParsingServiceImpl implements JSONParsingService {
     }
 
     @Override
+    public String postForRecommendation(String url,  String datasetPath) {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.postForObject(url, datasetPath, String.class);
+    }
+
+    @Override
     public Object getForPage(String url, int page) {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(url, Object.class, page);
