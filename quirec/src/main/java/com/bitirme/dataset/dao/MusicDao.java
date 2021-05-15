@@ -12,6 +12,8 @@ public interface MusicDao extends BaseDao<Music> {
 
     List<Music> findMusicByCategories(Categories category);
 
-    List<Music> findAllByTitleLike(String title);
+    List<Music> findAllByTitleLikeIgnoreCase(String title);
+
+
 
 }
