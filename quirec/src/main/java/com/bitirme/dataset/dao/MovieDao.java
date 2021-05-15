@@ -13,6 +13,6 @@ public interface MovieDao extends BaseDao<Movie> {
 
     List<Movie> findMovieByCategories(Categories category);
 
-    List<Movie> findAllByTitleLike(String title);
+    List<Movie> findAllByTitleLikeIgnoreCase(String title);
 
 }

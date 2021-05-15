@@ -56,7 +56,7 @@ public class BrowserServiceImpl implements BrowserService {
         if(category!=null)
             return musicDao.findMusicByCategories(category);
 
-        return musicDao.findAllByTitleLike(searchDetail);
+        return musicDao.findAllByTitleLikeIgnoreCase("%"+searchDetail+"%");
     }
 
     @Override
@@ -67,7 +67,7 @@ public class BrowserServiceImpl implements BrowserService {
         if(category!=null)
             return bookDao.findBookByCategories(category);
 
-        return bookDao.findAllByTitleLike(searchDetail);
+        return bookDao.findAllByTitleLikeIgnoreCase("%"+searchDetail+"%");
     }
 
     @Override
@@ -77,6 +77,6 @@ public class BrowserServiceImpl implements BrowserService {
         if(category!=null)
             return movieDao.findMovieByCategories(category);
 
-        return movieDao.findAllByTitleLike(searchDetail);
+        return movieDao.findAllByTitleLikeIgnoreCase("%"+searchDetail+"%");
     }
 }

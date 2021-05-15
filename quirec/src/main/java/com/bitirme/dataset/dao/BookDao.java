@@ -13,7 +13,7 @@ public interface BookDao extends BaseDao<Book> {
 
     List<Book> findBookByCategories(Categories category);
 
-    List<Book> findAllByTitleLike(String title);
+    List<Book> findAllByTitleLikeIgnoreCase(String title);
 
 
 }
