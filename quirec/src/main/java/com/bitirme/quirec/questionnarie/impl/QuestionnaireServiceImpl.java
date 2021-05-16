@@ -2,6 +2,8 @@ package com.bitirme.quirec.questionnarie.impl;
 
 import com.bitirme.quirec.questionnarie.dao.CategoryDao;
 import com.bitirme.quirec.questionnarie.model.Categories;
+import com.bitirme.quirec.questionnarie.model.CategoryType;
+import com.bitirme.quirec.questionnarie.model.Questionnaire;
 import com.bitirme.quirec.questionnarie.service.QuestionnaireService;
 import com.bitirme.quirec.user.dao.UserDao;
 import com.bitirme.quirec.user.model.User;
@@ -10,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.io.PrintWriter;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -39,26 +41,51 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
-    public Set<Categories> create(long userId, List<Categories> questionnaire) {
+    public void create(long userId, List<Questionnaire> questionnaire) throws Exception {
         User user = userDao.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("user")
         );
 
-        if(user.getCategories() == null){
-            questionnaire.stream()
-                    .filter(Objects::nonNull)
-                    .forEach(
-                            categoryParam -> {
-                                Categories category = categoryDao.findById(categoryParam.getId()).orElseThrow(
-                                        () -> new EntityNotFoundException("category")
-                                );
-                                user.getCategories().add(category);
-                            }
-                    );
-            return user.getCategories(); //TODO: save and flush eklenecek
+        if(user.getCategories() == null) {
+            String userMusicRatings = "D:\\\\Datasets\\user" + userId + "music.csv";
+            PrintWriter musicWriter = new PrintWriter(userMusicRatings);
+            musicWriter.println("user_id" + "," + "music_id" + "rating");
+
+            String userBookRatings = "D:\\\\Datasets\\user" + userId + "book.csv";
+            PrintWriter bookWriter = new PrintWriter(userBookRatings);
+            bookWriter.println("user_id" + "," + "book_id" + "rating");
+
+            String userMovieRatings = "D:\\\\Datasets\\user" + userId + "movie.csv";
+            PrintWriter movieWriter = new PrintWriter(userMovieRatings);
+            movieWriter.println("user_id" + "," + "movie_id" + "rating");
+
+            questionnaire.forEach(
+                    questionnaireElement -> {
+                        CategoryType type = questionnaireElement.getCategoryType();
+
+                        Categories category = categoryDao.findCategoriesByCategoryTypeAndOriginalId(type, questionnaireElement.getOriginalItemId());
+
+                        user.getCategories().add(category);
+
+                        if(type == CategoryType.MUSIC)
+                            musicWriter.println(userId + "," + category.getId() + "," + questionnaireElement.getUserRating());
+
+                        else if(type == CategoryType.BOOK)
+                            bookWriter.println(userId + "," + category.getId() + "," + questionnaireElement.getUserRating());
+
+                        else if(type == CategoryType.MOVIE)
+                            movieWriter.println(userId + "," + category.getId() + "," + questionnaireElement.getUserRating());
+                    }
+            );
+
+            musicWriter.flush();
+            bookWriter.flush();
+            movieWriter.flush();
+
+            userDao.saveAndFlush(user);
         }
 
-        return null; //userın zaten anketi vardır, create değil update çalıştırılmalı
+        else throw new Exception("user already has a questionnaire");
     }
 
     @Override
