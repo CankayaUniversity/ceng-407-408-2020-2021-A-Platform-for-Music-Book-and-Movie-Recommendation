@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/quirec-api/questionnarie")
+@RequestMapping("/quirec-api/questionnaire")
 public class QuestionnaireController {
 
     @Autowired

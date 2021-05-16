@@ -1,5 +1,11 @@
 package com.bitirme.quirec.questionnarie.impl;
 
+import com.bitirme.dataset.dao.BookDao;
+import com.bitirme.dataset.dao.MovieDao;
+import com.bitirme.dataset.dao.MusicDao;
+import com.bitirme.dataset.model.Book;
+import com.bitirme.dataset.model.Movie;
+import com.bitirme.dataset.model.Music;
 import com.bitirme.quirec.questionnarie.dao.CategoryDao;
 import com.bitirme.quirec.questionnarie.model.Categories;
 import com.bitirme.quirec.questionnarie.model.CategoryType;
@@ -26,6 +32,15 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     @Autowired
     UserDao userDao;
 
+    @Autowired
+    MusicDao musicDao;
+
+    @Autowired
+    BookDao bookDao;
+
+    @Autowired
+    MovieDao movieDao;
+
     @Override
     public List<Categories> getCategories() {
         return categoryDao.findAll();
@@ -48,32 +63,47 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
 
         String userMusicRatings = "D:\\\\Datasets\\user" + userId + "music.csv";
         PrintWriter musicWriter = new PrintWriter(userMusicRatings);
-        musicWriter.println("user_id" + "," + "music_id" + "rating");
+        musicWriter.println("user_id" + "," + "music_id" + "," +"rating");
 
         String userBookRatings = "D:\\\\Datasets\\user" + userId + "book.csv";
         PrintWriter bookWriter = new PrintWriter(userBookRatings);
-        bookWriter.println("user_id" + "," + "book_id" + "rating");
+        bookWriter.println("user_id" + "," + "book_id" + "," + "rating");
 
         String userMovieRatings = "D:\\\\Datasets\\user" + userId + "movie.csv";
         PrintWriter movieWriter = new PrintWriter(userMovieRatings);
-        movieWriter.println("user_id" + "," + "movie_id" + "rating");
+        movieWriter.println("user_id" + "," + "movie_id" + "," + "rating");
 
         questionnaire.forEach(
                 questionnaireElement -> {
-                    Categories category = categoryDao.findById(questionnaireElement.getItemId()).orElseThrow(
+                    Categories category = categoryDao.findById(questionnaireElement.getCategoryId()).orElseThrow(
                             () -> new EntityNotFoundException("category")
                     );
 
                     user.getCategories().add(category);
 
-                    if(category.getCategoryType() == CategoryType.MUSIC)
-                        musicWriter.println(userId + "," + category.getId() + "," + questionnaireElement.getUserRating());
+                    if(category.getCategoryType() == CategoryType.MUSIC) {
+                        Music music = musicDao.findById(questionnaireElement.getItemId()).orElseThrow(
+                                () -> new EntityNotFoundException("music")
+                        );
 
-                    else if(category.getCategoryType() == CategoryType.BOOK)
-                        bookWriter.println(userId + "," + category.getId() + "," + questionnaireElement.getUserRating());
+                        musicWriter.println(userId + "," + music.getId() + "," + questionnaireElement.getUserRating());
+                    }
 
-                    else if(category.getCategoryType() == CategoryType.MOVIE)
-                        movieWriter.println(userId + "," + category.getId() + "," + questionnaireElement.getUserRating());
+                    else if(category.getCategoryType() == CategoryType.BOOK) {
+                        Book book = bookDao.findById(questionnaireElement.getItemId()).orElseThrow(
+                                () -> new EntityNotFoundException("book")
+                        );
+
+                        bookWriter.println(userId + "," + book.getId() + "," + questionnaireElement.getUserRating());
+                    }
+
+                    else if(category.getCategoryType() == CategoryType.MOVIE) {
+                        Movie movie = movieDao.findById(questionnaireElement.getItemId()).orElseThrow(
+                                () -> new EntityNotFoundException("movie")
+                        );
+
+                        movieWriter.println(userId + "," + movie.getId() + "," + questionnaireElement.getUserRating());
+                    }
                 }
         );
 
