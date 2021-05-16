@@ -1,6 +1,7 @@
 package com.bitirme.quirec.questionnarie.controller;
 
 import com.bitirme.quirec.questionnarie.model.Categories;
+import com.bitirme.quirec.questionnarie.model.Questionnaire;
 import com.bitirme.quirec.questionnarie.service.QuestionnaireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,9 +42,9 @@ public class QuestionnaireController {
 
     //user anketi ilk kez doldurduğunda çalışacak
     @RequestMapping(value = "/user/{id}", method = RequestMethod.POST)
-    public ResponseEntity<Set<Categories>> create(@PathVariable("id") long userId, @RequestBody List<Categories> questionnaire) {
+    public ResponseEntity<Void> create(@PathVariable("id") long userId, @RequestBody List<Questionnaire> questionnaire) throws Exception {
+        questionnaireService.create(userId, questionnaire);
         return new ResponseEntity<>(
-                questionnaireService.create(userId, questionnaire),
                 HttpStatus.OK
         );
     }
