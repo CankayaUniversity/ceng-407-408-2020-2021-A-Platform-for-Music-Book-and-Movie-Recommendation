@@ -13,8 +13,6 @@ public interface QuestionnaireService {
 
     Set<Categories> get(long userId);
 
-    void create(long userId, List<Questionnaire> questionnaire) throws Exception;
-
-    Set<Categories> update(long userId, List<Categories> questionnaire);
+    void questionnaire(long userId, List<Questionnaire> questionnaire) throws Exception;
 
 }
