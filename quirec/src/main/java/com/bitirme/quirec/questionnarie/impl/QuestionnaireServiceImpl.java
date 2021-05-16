@@ -61,19 +61,19 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
 
             questionnaire.forEach(
                     questionnaireElement -> {
-                        CategoryType type = questionnaireElement.getCategoryType();
-
-                        Categories category = categoryDao.findCategoriesByCategoryTypeAndOriginalId(type, questionnaireElement.getOriginalItemId());
+                        Categories category = categoryDao.findById(questionnaireElement.getItemId()).orElseThrow(
+                                () -> new EntityNotFoundException("category")
+                        );
 
                         user.getCategories().add(category);
 
-                        if(type == CategoryType.MUSIC)
+                        if(category.getCategoryType() == CategoryType.MUSIC)
                             musicWriter.println(userId + "," + category.getId() + "," + questionnaireElement.getUserRating());
 
-                        else if(type == CategoryType.BOOK)
+                        else if(category.getCategoryType() == CategoryType.BOOK)
                             bookWriter.println(userId + "," + category.getId() + "," + questionnaireElement.getUserRating());
 
-                        else if(type == CategoryType.MOVIE)
+                        else if(category.getCategoryType() == CategoryType.MOVIE)
                             movieWriter.println(userId + "," + category.getId() + "," + questionnaireElement.getUserRating());
                     }
             );

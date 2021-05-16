@@ -5,9 +5,7 @@ import lombok.Data;
 @Data
 public class Questionnaire {
 
-    CategoryType categoryType;
-
-    Long originalItemId;
+    Long itemId;
 
     Double userRating;
 
