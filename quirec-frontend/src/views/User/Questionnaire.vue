@@ -1,16 +1,18 @@
 <template>
-  <v-row>
+  <v-row >
     <v-col cols="12" sm="4" md="4">
-      <v-card class="mt-15" flat color="#212121">
+      <v-card class="mt-15 secondary" flat>
         <v-card-text>
           <p class="text-h6 text-left ml-7 pink--text">Music</p>
           <ul>
             <v-checkbox
+              v-model="selectedCategories"
               v-for="item in MusicList"
               :key="item.id"
               color="#c2185b"
-              :label="item.title"
-              >{{ item.title }}</v-checkbox
+              :label="item.name"
+              :value="item"
+              >{{ item.name }}</v-checkbox
             >
           </ul>
           <v-col cols="4">
@@ -21,16 +23,18 @@
     </v-col>
 
     <v-col cols="12" sm="4" md="4">
-      <v-card class="mt-15" flat color="#212121">
+      <v-card class="mt-15 secondary" flat>
         <v-card-text>
           <p class="text-h6 text-left ml-7 pink--text">Books</p>
           <ul>
             <v-checkbox
+              v-model="selectedCategories"
               v-for="item in BookList"
               :key="item.id"
               color="#c2185b"
-              :label="item.title"
-              >{{ item.title }}</v-checkbox
+              :label="item.name"
+              :value="item"
+              >{{ item.name }}</v-checkbox
             >
           </ul>
           <v-col cols="4">
@@ -39,17 +43,20 @@
         </v-card-text>
       </v-card>
     </v-col>
+
     <v-col cols="12" sm="4" md="4">
-      <v-card class="mt-15" flat color="#212121">
+      <v-card class="mt-15 secondary" flat>
         <v-card-text>
           <p class="text-h6 text-left ml-7 pink--text">Movies</p>
           <ul>
             <v-checkbox
+              v-model="selectedCategories"
               v-for="item in MovieList"
               :key="item.id"
               color="#c2185b"
-              :label="item.title"
-              >{{ item.title }}</v-checkbox
+              :label="item.name"
+              :value="item"
+              >{{ item.name }}</v-checkbox
             >
           </ul>
           <v-col cols="4">
@@ -58,7 +65,8 @@
         </v-card-text>
       </v-card>
       <v-layout align-center justify-center mt-10>
-        <v-btn large color="#c2185b" rounded>Submit My Preferences</v-btn>
+        <span>Checked names: {{ selectedCategories }}</span>
+        <v-btn v-on:click="saveCategories" class="#primary" large rounded>Submit My Preferences</v-btn>
       </v-layout>
     </v-col>
   </v-row>
@@ -71,86 +79,32 @@ export default {
   data() {
     return {
       singleSelect: false,
-      selected: [],
-      MusicList: [
-        {
-          id: 1,
-          title: "Pop",
-        },
-        {
-          id: 2,
-          title: "Rock",
-        },
-        {
-          id: 3,
-          title: "Country",
-        },
-        {
-          id: 3,
-          title: "Blues",
-        },
-        {
-          id: 4,
-          title: "Hip Hop",
-        },
-        {
-          id: 5,
-          title: "Classic",
-        },
-      ],
-      BookList: [
-        {
-          id: 6,
-          title: "Science",
-        },
-        {
-          id: 7,
-          title: "Literature",
-        },
-        {
-          id: 8,
-          title: "Philosophy",
-        },
-        {
-          id: 8,
-          title: "Self-Help",
-        },
-        {
-          id: 8,
-          title: "Psychology",
-        },
-        {
-          id: 8,
-          title: "History",
-        },
-      ],
-      MovieList: [
-        {
-          id: 7,
-          title: "Action",
-        },
-        {
-          id: 8,
-          title: "Adventure",
-        },
-        {
-          id: 9,
-          title: "Comedy",
-        },
-        {
-          id: 9,
-          title: "Crime",
-        },
-        {
-          id: 9,
-          title: "Drama",
-        },
-        {
-          id: 9,
-          title: "Romance",
-        },
-      ],
-    };
+      selectedCategories: [],
+      MusicList: [],
+      BookList: [],
+      MovieList: [],
+    }
   },
+  async mounted() {
+    await this.getCategories()
+  },
+  methods:{
+    async getCategories(){
+      const categories = await this.axios.get('http://localhost:9000/quirec-api/questionnarie/categories')
+      for (let element of categories.data) {
+        if(element.categoryType === "MUSIC")
+          this.MusicList.push(element)
+        else if(element.categoryType === "MOVIE")
+          this.MovieList.push(element)
+        else if(element.categoryType === "BOOK")
+          this.BookList.push(element)
+      }
+    },
+    saveCategories() {
+      this.axios.post('http://localhost:9000/quirec-api/questionnarie/user/' + this.$store.getters.getUserId,
+         this.selectedCategories
+      )
+    }
+  }
 };
 </script>
