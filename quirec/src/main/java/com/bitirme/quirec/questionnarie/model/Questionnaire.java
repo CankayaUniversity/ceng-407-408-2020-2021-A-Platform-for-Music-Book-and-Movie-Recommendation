@@ -5,8 +5,10 @@ import lombok.Data;
 @Data
 public class Questionnaire {
 
-    Long itemId;
+    private Long categoryId;
 
-    Double userRating;
+    private Long itemId;
+
+    private Double userRating;
 
 }
