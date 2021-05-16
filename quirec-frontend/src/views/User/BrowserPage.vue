@@ -118,17 +118,23 @@
         movieIndex: -1,
         musicIndex: -1,
         searchMusic: "",
-        searchBook:"",
+        searchBook: "",
         searchMovie: ""
       }
     },
+
     async mounted() {
       await this.getItems();
-      await this.searchBy();
+      //await this.clearSearch();
     },
     methods: {
+      async clearSearch(){
+        this.$store.commit("clearBrowsedMusic");
+        this.$store.commit("clearBrowsedBook");
+        this.$store.commit("clearBrowsedMovie");
+      },
       async getItems() {
-        if(this.searchMusic == "" && this.searchBook == "" && this.searchMovie == "") {
+        if (this.searchMusic === "" && this.searchBook === "" && this.searchMovie === "") {
           const music = await this.axios.get('http://localhost:9000/quirec-api/browse/music');
           for (let element of music.data) {
             this.music.push(element)
@@ -145,40 +151,25 @@
           }
         }
       },
-      navToDetails (resourceId) {
+      navToDetails(resourceId) {
         //TODO: music/book/movie ayrımı yapılmalı
-        this.$router.push({ path: 'details/' + resourceId});
+        this.$router.push({path: 'details/' + resourceId});
       },
-      searchBy(){
-        if(this.searchMusic !== ""){
-          const msc = this.axios.get('http://localhost:9000/quirec-api/browse/musicSearch/' + this.searchMusic)
-          .then(response =>{
-            for(let element of msc.data){
-              this.music.push(element)
-            }
+       searchBy() {
+        if (this.searchMusic !== "") {
+          this.$store.commit("setBrowsedMusic", this.searchMusic);
+          this.$router.push("/browsed")
+        } else if (this.searchBook !== "") {
+          this.$store.commit("setBrowsedBook", this.searchBook);
+          this.$router.push("/browsed")
+        }else if (this.searchMovie !== "") {
+          this.$store.commit("setBrowsedMovie", this.searchMovie);
+          this.$router.push("/browsed")
 
-          })
         }
-        else if(this.searchBook !== ""){
-         const b =  this.axios.get('http://localhost:9000/quirec-api/browse/bookSearch/' + this.searchBook )
-             .then(response => {
-               for (let element of b.data) {
-                 this.books.push(element)
-               }
-             })
-        }
-        else if(this.searchMovie !== ""){
-          const mv = this.axios.get('http://localhost:9000/quirec-api/browse/movieSearch/'+  this.searchMovie)
-              .then(response => {
-                for (let element of mv.data) {
-                  this.movies.push(element)
-
-                }
-              })
-        }
-
       }
-    }
+  }
+
   };
 </script>
 
