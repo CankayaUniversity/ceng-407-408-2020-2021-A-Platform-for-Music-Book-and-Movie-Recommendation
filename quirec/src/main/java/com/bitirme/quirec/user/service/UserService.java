@@ -11,7 +11,7 @@ public interface UserService {
 
     LoginReturn login(User user) throws Exception;
 
-    User changePassword(long userId, String newPassword);
+    User changePassword(long userId, User user, String newPassword);
 
     void delete(long userId);
 

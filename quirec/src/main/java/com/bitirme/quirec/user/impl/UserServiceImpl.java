@@ -80,14 +80,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User changePassword(long userId, String newPassword) {
-        User update = userDao.findById(userId).orElseThrow(
+    public User changePassword(long userId, User user, String newPassword) {
+        User userControl = userDao.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("user")
         );
 
-        update.setPassword(BCrypt.hashpw(newPassword, salt));
+        //TODO: user.getPasswrd BCrypt.checkpw ile kontrol edilecek
+        // BCrypt.checkpw(user.getPassword(), userControl.getPassword()) databasedeki şifre userın girdiği şifre ile aynı ise TRUE ise update.setPassword çalışacak
 
-        return userDao.saveAndFlush(update);
+        //TODO: else için throws Exception ile new Exception("incorrect old password")
+
+        userControl.setPassword(BCrypt.hashpw(newPassword, salt));
+
+        return userDao.saveAndFlush(userControl);
     }
 
     @Override
