@@ -4,7 +4,7 @@ public interface JSONParsingService {
 
     Object get(String url);
 
-    String postForRecommendation(String url, String datasetPath);
+    String getForRecommendation(String url);
 
     Object getForPage(String url, int page);
 
