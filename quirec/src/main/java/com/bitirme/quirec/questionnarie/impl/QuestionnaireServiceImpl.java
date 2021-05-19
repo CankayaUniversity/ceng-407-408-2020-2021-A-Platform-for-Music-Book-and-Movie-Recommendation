@@ -101,7 +101,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                                 () -> new EntityNotFoundException("movie")
                         );
 
-                        movieWriter.append(movie.getId() + "," + userId + "," + questionnaireElement.getUserRating());
+                        movieWriter.println(movie.getId() + "," + userId + "," + questionnaireElement.getUserRating());
                     }
                 }
         );
