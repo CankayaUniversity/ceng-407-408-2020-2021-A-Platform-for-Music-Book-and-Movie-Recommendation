@@ -58,12 +58,13 @@ public class RecommendationServiceImpl implements RecommendationService {
 
         //TODO: containsler çalışmıyor
         if (user.getCategories().contains(CategoryType.MUSIC)) {
-            String musicUrl = "http://127.0.0.1:5000/music" + userId;
+            String musicUrl = "http://127.0.0.1:5000/music/" + userId;
 
             String musicIds = parsingService.getForRecommendation(musicUrl);
             String musics[] = musicIds.split("\n");
 
             for (String musicId : musics) {
+                musicId = musicId.replaceAll("\\s+","");
                 Music music = musicDao.findById(Long.valueOf(musicId)).orElseThrow(
                         () -> new EntityNotFoundException("music")
                 );
@@ -73,12 +74,13 @@ public class RecommendationServiceImpl implements RecommendationService {
         }
 
         if (user.getCategories().contains(CategoryType.BOOK)) {
-            String url = "http://127.0.0.1:5000/book"+ userId;
+            String url = "http://127.0.0.1:5000/books/"+ userId;
 
             String bookIds = parsingService.getForRecommendation(url);
             String books[] = bookIds.split("\n");
 
             for (String bookId : books) {
+                bookId = bookId.replaceAll("\\s+","");
                 Book book = bookDao.findById(Long.valueOf(bookId)).orElseThrow(
                         () -> new EntityNotFoundException("book")
                 );
@@ -88,12 +90,13 @@ public class RecommendationServiceImpl implements RecommendationService {
         }
 
         if (user.getCategories().contains(CategoryType.MOVIE)) {
-            String url = "http://127.0.0.1:5000/movie"+ userId;
+            String url = "http://127.0.0.1:5000/movie/"+ userId;
 
             String movieIds = parsingService.getForRecommendation(url);
             String movies[] = movieIds.split("\n");
 
             for (String movieId : movies) {
+                movieId = movieId.replaceAll("\\s+","");
                 Movie movie = movieDao.findById(Long.valueOf(movieId)).orElseThrow(
                         () -> new EntityNotFoundException("movie")
                 );
