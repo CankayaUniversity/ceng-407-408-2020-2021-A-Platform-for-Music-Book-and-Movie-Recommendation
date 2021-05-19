@@ -85,7 +85,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                                 () -> new EntityNotFoundException("music")
                         );
 
-                        musicWriter.println(userId + "," + music.getId() + "," + questionnaireElement.getUserRating());
+                        musicWriter.println(music.getId() + "," + userId + "," + questionnaireElement.getUserRating());
                     }
 
                     else if(category.getCategoryType() == CategoryType.BOOK) {
@@ -93,7 +93,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                                 () -> new EntityNotFoundException("book")
                         );
 
-                        bookWriter.println(userId + "," + book.getId() + "," + questionnaireElement.getUserRating());
+                        bookWriter.println(book.getId() + "," + userId + "," + questionnaireElement.getUserRating());
                     }
 
                     else if(category.getCategoryType() == CategoryType.MOVIE) {
@@ -101,7 +101,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                                 () -> new EntityNotFoundException("movie")
                         );
 
-                        movieWriter.append(userId + "," + movie.getId() + "," + questionnaireElement.getUserRating());
+                        movieWriter.append(movie.getId() + "," + userId + "," + questionnaireElement.getUserRating());
                     }
                 }
         );
