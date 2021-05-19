@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Set;
@@ -61,17 +63,14 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                 () -> new EntityNotFoundException("user")
         );
 
-        String userMusicRatings = "D:\\\\Datasets\\user" + userId + "music.csv";
-        PrintWriter musicWriter = new PrintWriter(userMusicRatings);
-        musicWriter.println("user_id" + "," + "music_id" + "," +"rating");
+        String userMusicRatings = "D:\\\\Datasets\\music_ratings.csv";
+        PrintWriter musicWriter = new PrintWriter(new BufferedWriter(new FileWriter(userMusicRatings, true)));
 
-        String userBookRatings = "D:\\\\Datasets\\user" + userId + "book.csv";
-        PrintWriter bookWriter = new PrintWriter(userBookRatings);
-        bookWriter.println("user_id" + "," + "book_id" + "," + "rating");
+        String userBookRatings = "D:\\\\Datasets\\book_ratings.csv";
+        PrintWriter bookWriter = new PrintWriter(new BufferedWriter(new FileWriter(userBookRatings, true)));
 
-        String userMovieRatings = "D:\\\\Datasets\\user" + userId + "movie.csv";
-        PrintWriter movieWriter = new PrintWriter(userMovieRatings);
-        movieWriter.println("user_id" + "," + "movie_id" + "," + "rating");
+        String userMovieRatings = "D:\\\\Datasets\\movie_ratings.csv";
+        PrintWriter movieWriter = new PrintWriter(new BufferedWriter(new FileWriter(userMovieRatings, true)));
 
         questionnaire.forEach(
                 questionnaireElement -> {
@@ -102,7 +101,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                                 () -> new EntityNotFoundException("movie")
                         );
 
-                        movieWriter.println(userId + "," + movie.getId() + "," + questionnaireElement.getUserRating());
+                        movieWriter.append(userId + "," + movie.getId() + "," + questionnaireElement.getUserRating());
                     }
                 }
         );
