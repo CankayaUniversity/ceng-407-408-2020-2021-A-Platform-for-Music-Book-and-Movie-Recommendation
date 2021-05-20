@@ -28,7 +28,7 @@
                 {{ music[musicIndex + n].title }} <br>
                 {{ music[musicIndex + n].artist }}
               </p>
-              <v-btn v-on:click="navToDetails(music[musicIndex+n].resourceId)" class="secondary white--text"> see
+              <v-btn v-on:click="navToDetails('music', music[musicIndex+n].resourceId)" class="secondary white--text"> see
                 details
               </v-btn>
             </v-card>
@@ -64,7 +64,7 @@
                 {{ books[bookIndex + n].title }} <br>
                 {{ books[bookIndex + n].author }}
               </p>
-              <v-btn v-on:click="navToDetails(books[bookIndex+n].resourceId)" class="secondary white--text"> see
+              <v-btn v-on:click="navToDetails('book', books[bookIndex+n].resourceId)" class="secondary white--text"> see
                 details
               </v-btn>
             </v-card>
@@ -102,6 +102,9 @@
                 {{ movies[movieIndex + n].title }} <br>
                 Language: {{ movies[movieIndex + n].language }}
               </p>
+              <v-btn v-on:click="navToDetails('movies', movies[movieIndex+n].resourceId)" class="secondary white--text"> see
+                details
+              </v-btn>
             </v-card>
           </v-col>
         </v-row>
@@ -128,7 +131,7 @@ export default {
       dataFetch: false,
       ncheckMusic: 4,
       ncheckBook: 4,
-      ncheckMovie: 4,
+      ncheckMovie: 4
     }
   },
   mounted() {
@@ -155,9 +158,8 @@ export default {
       }
       this.dataFetch = true;
     },
-    navToDetails(resourceId) {
-      //TODO: music/book/movie ayrımı yapılmalı
-      this.$router.push({path: 'details/' + resourceId});
+    navToDetails(category, resourceId) {
+      this.$router.push({path: 'details/' + category + "/" + resourceId, props: false});
     },
     searchByM() {
       if (this.searchMusic.length !== 0) {

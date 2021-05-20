@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-flex>
-      <v-card class="py-15 px-12 secondary text-center" rounded>
+      <v-card class="py-15 px-12 secondary text-center" rounded v-if="dataFetch">
           <p class="text-h6">Music</p>
           <v-row>
             <v-col
@@ -16,7 +16,7 @@
                   {{ music[musicIndex + n].title }} <br>
                   {{ music[musicIndex + n].artist }}
                 </p>
-                <v-btn v-on:click="navToDetails(music[musicIndex+n].resourceId)" class="secondary white--text"> see
+                <v-btn v-on:click="navToDetails('music', music[musicIndex+n].resourceId)" class="secondary white--text"> see
                   details
                 </v-btn>
               </v-card>
@@ -26,7 +26,7 @@
         <v-btn v-on:click="musicIndex += 4"><span class="text-h6 text--primary">&nbsp;→</span></v-btn>
       </v-card>
 
-      <v-card class="my-12 py-15 px-12 secondary text-center" rounded>
+      <v-card class="my-12 py-15 px-12 secondary text-center" rounded v-if="dataFetch">
         <p class="text-h6">Books</p>
         <v-row>
           <v-col
@@ -41,7 +41,7 @@
                 {{ books[bookIndex + n].title }} <br>
                 {{ books[bookIndex + n].author }}
               </p>
-              <v-btn v-on:click="navToDetails(books[bookIndex+n].resourceId)" class="secondary white--text"> see
+              <v-btn v-on:click="navToDetails('book', books[bookIndex+n].resourceId)" class="secondary white--text"> see
                 details
               </v-btn>
             </v-card>
@@ -51,7 +51,7 @@
         <v-btn v-on:click="bookIndex += 4"><span class="text-h6 text--primary">&nbsp;→</span></v-btn>
       </v-card>
 
-      <v-card class="my-12 py-15 px-12 secondary text-center" rounded>
+      <v-card class="my-12 py-15 px-12 secondary text-center" rounded v-if="dataFetch">
         <p class="text-h6">Movies</p>
         <v-row>
           <v-col
@@ -67,6 +67,9 @@
                 {{ movies[movieIndex + n].title }} <br>
                 Language: {{ movies[movieIndex + n].language }}
               </p>
+              <v-btn v-on:click="navToDetails('movies', movies[movieIndex+n].resourceId)" class="secondary white--text"> see
+                details
+              </v-btn>
             </v-card>
           </v-col>
         </v-row>
@@ -86,7 +89,8 @@
         movies: [],
         bookIndex: -1,
         movieIndex: -1,
-        musicIndex: -1
+        musicIndex: -1,
+        dataFetch: false
       }
     },
     async mounted() {
@@ -95,16 +99,30 @@
     methods: {
       async getItems() {
         const response = await this.axios.get('http://localhost:9000/quirec-api/recommendation/user/' + this.$store.getters.getUserId);
-        this.music = response.data.musicRecommendations;
-        this.books = response.data.bookRecommendations;
-        this.movies = response.data.movieRecommendations;
-      },
-      navToDetails (resourceId) {
+        let i = 0;
 
-        //TODO: music/book/movie ayrımı yapılmalı
-        //TODO: recommendations ya da browser page ayrımı yapılmalı ona göre rate çıkacak
-        this.$router.push({ path: 'details/' + resourceId});
-      }
+        this.music.splice(0);
+        for(let element of response.data.musicRecommendations) {
+          this.$set(this.music, i, element)
+          ++i
+        }
+
+        this.books.splice(0);
+        for(let element of response.data.bookRecommendations) {
+          this.$set(this.music, i, element)
+          ++i
+        }
+
+        this.movies.splice(0);
+        for(let element of response.data.movieRecommendations) {
+          this.$set(this.music, i, element)
+          ++i
+        }
+        this.dataFetch = true
+      },
+      navToDetails(category, resourceId) {
+        this.$router.push({path: 'details/' + category + "/" + resourceId, props: true});
+      },
     }
   };
 </script>
