@@ -104,17 +104,21 @@
         this.music.splice(0);
         for(let element of response.data.musicRecommendations) {
           this.$set(this.music, i, element)
+          ++i
         }
 
         this.books.splice(0);
         for(let element of response.data.bookRecommendations) {
           this.$set(this.music, i, element)
+          ++i
         }
 
         this.movies.splice(0);
         for(let element of response.data.movieRecommendations) {
           this.$set(this.music, i, element)
+          ++i
         }
+        this.dataFetch = true
       },
       navToDetails(category, resourceId) {
         this.$router.push({path: 'details/' + category + "/" + resourceId, props: true});
