@@ -55,6 +55,7 @@
   export default {
     data(){
       return{
+        valid: true,
         input: {
           email:"",
           passwordOld:"",
@@ -74,9 +75,12 @@
         if(this.$refs.form.validate()) {
           if(this.input.passwordNew  === this.input.passwordAgain) {
             await this.axios.put('http://localhost:9000/quirec-api/user/' + this.$store.getters.getUserId, {
-              email: "",
-              username:"",
-              password: this.input.passwordNew,
+              user: {
+                email: "",
+                username:"",
+                password: this.input.passwordOld
+              },
+              newPassword: this.input.passwordNew
             })
             .then(response => {
               this.errorMessage = false
