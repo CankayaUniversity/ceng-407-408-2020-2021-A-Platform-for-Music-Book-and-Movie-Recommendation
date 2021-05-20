@@ -19,8 +19,11 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 
 @Service
 @Transactional
@@ -46,14 +49,15 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     @Override
         public Recommendation get(long userId) {
-        User user = userDao.findById(userId).orElseThrow(
+        userDao.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("user")
         );
 
         Recommendation recommendation = new Recommendation();
 
-        //TODO: containsler çalışmıyor
-        if (user.getCategories().contains(CategoryType.MUSIC)) {
+        List<CategoryType> userCategories = userDao.findUserCategories(userId);
+
+        if (userCategories.contains(CategoryType.MUSIC)) {
             String musicUrl = "http://127.0.0.1:5000/music/" + userId;
 
             String musicIds = parsingService.getForRecommendation(musicUrl);
@@ -69,7 +73,7 @@ public class RecommendationServiceImpl implements RecommendationService {
             }
         }
 
-        if (user.getCategories().contains(CategoryType.BOOK)) {
+        if (userCategories.contains(CategoryType.BOOK)) {
             String url = "http://127.0.0.1:5000/books/"+ userId;
 
             String bookIds = parsingService.getForRecommendation(url);
@@ -85,7 +89,7 @@ public class RecommendationServiceImpl implements RecommendationService {
             }
         }
 
-        //if (user.getCategories().contains(CategoryType.MOVIE)) {
+        if (userCategories.contains(CategoryType.MOVIE)) {
             String url = "http://127.0.0.1:5000/movie/"+ userId;
 
             String movieIds = parsingService.getForRecommendation(url);
@@ -99,19 +103,59 @@ public class RecommendationServiceImpl implements RecommendationService {
 
                 recommendation.getMovieRecommendations()[i] = movie;
             }
-        //}
+        }
 
         return recommendation;
     }
 
     @Override
-    public void rate(long userId, CategoryType type, double rate) {
+    public void rate(long userId, CategoryType type, long itemId, double rate) throws IOException {
+        userDao.findById(userId).orElseThrow(
+                () -> new EntityNotFoundException("user")
+        );
+
         Rating rating = ratingDao.findRatingByCategoryType(type);
 
         rating.setRate(rating.getRate() + rate);
         rating.setVoteNumber(rating.getVoteNumber() + 1);
 
         ratingDao.saveAndFlush(rating);
-    }
 
+        String userMusicRatings = "D:\\\\Datasets\\music_ratings.csv";
+        PrintWriter musicWriter = new PrintWriter(new BufferedWriter(new FileWriter(userMusicRatings, true)));
+
+        String userBookRatings = "D:\\\\Datasets\\book_ratings.csv";
+        PrintWriter bookWriter = new PrintWriter(new BufferedWriter(new FileWriter(userBookRatings, true)));
+
+        String userMovieRatings = "D:\\\\Datasets\\movie_ratings.csv";
+        PrintWriter movieWriter = new PrintWriter(new BufferedWriter(new FileWriter(userMovieRatings, true)));
+
+        if(type == CategoryType.MUSIC) {
+            Music music = musicDao.findById(itemId).orElseThrow(
+                    () -> new EntityNotFoundException("music")
+            );
+
+            musicWriter.println(music.getId() + "," + userId + "," + rate);
+        }
+
+        else if(type == CategoryType.BOOK) {
+            Book book = bookDao.findById(itemId).orElseThrow(
+                    () -> new EntityNotFoundException("book")
+            );
+
+            bookWriter.println(book.getId() + "," + userId + "," + rate);
+        }
+
+        else if(type == CategoryType.MOVIE) {
+            Movie movie = movieDao.findById(itemId).orElseThrow(
+                    () -> new EntityNotFoundException("movie")
+            );
+
+            movieWriter.println(movie.getId() + "," + userId + "," + rate);
+        }
+
+        musicWriter.flush();
+        bookWriter.flush();
+        movieWriter.flush();
+    }
 }
