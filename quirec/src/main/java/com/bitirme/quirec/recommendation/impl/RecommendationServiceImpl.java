@@ -48,7 +48,7 @@ public class RecommendationServiceImpl implements RecommendationService {
     MovieDao movieDao;
 
     @Override
-        public Recommendation get(long userId) {
+    public Recommendation get(long userId) {
         userDao.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("user")
         );
