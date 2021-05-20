@@ -13,17 +13,11 @@ const store = new Vuex.Store({
         userId: null,
         userToken: null,
         role: null,
-        browsedMusic: null,
-        browsedBook: null,
-        browsedMovie: null
     },
     getters: {
         getUserId: state => state.userId,
         getToken: state => state.userToken,
         getRole: state => state.role,
-        getBrowsedMusic: state => state.browsedMusic,
-        getBrowsedBook: state => state.browsedBook,
-        getBrowsedMovie: state => state.browsedMovie,
     },
     mutations:{
         setUserId(state, id) {
@@ -43,27 +37,7 @@ const store = new Vuex.Store({
         },
         clearRole(state) {
             state.role = null
-        },
-        setBrowsedMusic(state, browse){
-            state.browsedMusic = browse;
-        },
-        clearBrowsedMusic(state){
-            state.browsedMusic = null
-        },
-        setBrowsedBook(state, browse){
-            state.browsedBook = browse;
-        },
-        clearBrowsedBook(state){
-            state.browsedBook = null
-        },
-        setBrowsedMovie(state, browse){
-            state.browsedMovie = browse;
-        },
-        clearBrowsedMovie(state){
-            state.browsedMovie = null
-        },
-
-
+        }
     },
     plugins: [vuexLocal.plugin]
 });

@@ -7,8 +7,8 @@
   >
     <v-toolbar dense>
       <v-toolbar-title>
-          QuiRec
-        </v-toolbar-title>
+        QuiRec
+      </v-toolbar-title>
       <v-btn to="/profile" :class="visibleClass" class="ml-10" prepend-icon="person" >
         Profile
       </v-btn>
@@ -35,7 +35,6 @@ export default {
       this.$store.commit('clearRole')
       this.$router.push("/login")
     }
-
   },
   computed:{
     visibleClass(){
@@ -48,5 +47,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

@@ -51,17 +51,16 @@ export default {
     await this.getRatings();
   },
   methods: {
-  async getRatings(){
-    const response1 = await this.axios.get('http://localhost:9000/quirec-api/admin');
-    for(let element of response1.data){
-      this.value.push(element)
-    }
-
-  },
+    async getRatings(){
+      const response1 = await this.axios.get('http://localhost:9000/quirec-api/admin');
+      for(let element of response1.data){
+        this.value.push(element)
+      }
+    },
     async dbUpdate(){
       await this.axios.post('http://localhost:9000/quirec-api/admin/databaseUpdate');
       this.$router.push("/browserpage")
-  }
+    }
   },
 };
 </script>

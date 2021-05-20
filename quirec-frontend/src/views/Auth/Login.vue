@@ -13,7 +13,7 @@
             <v-card class="elevation-12 my-12 py-12 px-10 secondary">
               <v-card-text class="text--primary">
                 <v-text-field label="Username or Email" v-model="input.email" prepend-icon="person"></v-text-field>
-                
+
                 <v-text-field label="Password" v-model="input.password" type="password" prepend-icon="lock"></v-text-field>
 
                 <v-alert v-if="errorMessage" type="error">Invalid username/password!</v-alert>
@@ -38,50 +38,49 @@
 </template>
 
 <script>
-  export default {
-    data(){
-      return {
-        input: {
-          email: "",
-          password: ""
-        },
-        errorMessage: false
-      }
-    },
-    async mounted() {
-      await this.reset()
-    },
-    methods: {
-      async login() {
-        if(this.input.email != null && this.input.password != null) {
-          this.axios.post('http://localhost:9000/quirec-api/user/login', {
-            email: this.input.email,
-            username: "",
-            password: this.input.password
-          })
-          .then(response => {
-            this.$store.commit('setUserId', response.data.user.id)
-            this.$store.commit('setUserToken', response.data.accessToken)
-
-            if(response.data.user.username == 'admin') {
-              this.$store.commit('setRole', 'admin')
-              this.$router.push("/admin-panel")
-            }
-            else {
-              this.$store.commit('setRole', 'user')
-              this.$router.push("/recommendations")
-            }
-          })
-          .catch(error => {
-            this.errorMessage = true
-          })
-        }
+export default {
+  data(){
+    return {
+      input: {
+        email: "",
+        password: ""
       },
-      async reset() {
-        this.$store.commit('clearUserId')
-        this.$store.commit('clearUserToken')
-        this.$store.commit('clearRole')
-      }
+      errorMessage: false
     }
-  };
+  },
+  async mounted() {
+    await this.reset()
+  },
+  methods: {
+    async login() {
+      if(this.input.email != null && this.input.password != null) {
+        this.axios.post('http://localhost:9000/quirec-api/user/login', {
+          email: this.input.email,
+          username: "",
+          password: this.input.password
+        })
+            .then(response => {
+              this.$store.commit('setUserId', response.data.user.id)
+              this.$store.commit('setUserToken', response.data.accessToken)
+              if(response.data.user.username === 'admin') {
+                this.$store.commit('setRole', 'admin')
+                this.$router.push("/admin-panel")
+              }
+              else {
+                this.$store.commit('setRole', 'user')
+                this.$router.push("/recommendations")
+              }
+            })
+            .catch(error => {
+              this.errorMessage = true
+            })
+      }
+    },
+    async reset() {
+      this.$store.commit('clearUserId')
+      this.$store.commit('clearUserToken')
+      this.$store.commit('clearRole')
+    }
+  }
+};
 </script>

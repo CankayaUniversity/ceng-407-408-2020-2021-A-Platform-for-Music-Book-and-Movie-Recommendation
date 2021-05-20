@@ -32,22 +32,22 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        username: "",
-        email: ""
-      };
-   },
-    async mounted() {
-      await this.getUserInfo();
-    },
-    methods: {
-      async getUserInfo() {
-        const response = await this.axios.get('http://localhost:9000/quirec-api/user/' + this.$store.getters.getUserId)
-        this.username = response.data.username;
-        this.email = response.data.email;
-      }
+export default {
+  data() {
+    return {
+      username: "",
+      email: ""
+    };
+  },
+  async mounted() {
+    await this.getUserInfo();
+  },
+  methods: {
+    async getUserInfo() {
+      const response = await this.axios.get('http://localhost:9000/quirec-api/user/' + this.$store.getters.getUserId)
+      this.username = response.data.username;
+      this.email = response.data.email;
     }
-  };
+  }
+};
 </script>

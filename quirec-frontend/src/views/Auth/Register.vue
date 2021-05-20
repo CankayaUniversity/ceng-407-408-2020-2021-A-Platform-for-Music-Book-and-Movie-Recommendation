@@ -39,49 +39,50 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        valid: true,
-        username: "",
-        nameRules: [
-          v => !!v || 'Name is required',
-          v => (v && v.length <= 10) || 'Name must be less than 10 characters',
-        ],
-        email: "",
-        emailRules: [
-          v => !!v || 'E-mail is required',
-          v => /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()\\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'E-mail must be valid',
-        ],
-        password: "",
-        passwordAgain: "",
-        passwordRules: [
-          v => !!v || 'Password is required',
-          v => /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(v) || 'Password must contain a lowercase letter, one number, a special character and one uppercase letter',
-        ],
-        errorMessage: false
-      }
-    },
-    methods: {
-      async register() {
-        if (this.$refs.form.validate()) {
-          if (this.password === this.passwordAgain) {
-            await this.axios.post('http://localhost:9000/quirec-api/user/register', {
-              email: this.email,
-              username: this.username,
-              password: this.password
-            })
-            .then(response => {
-              this.errorMessage = false
-              this.successMessage = true
-            })
-            .catch(error => {
-              this.successMessage = false
-              this.errorMessage = true
-            })
-          }
+export default {
+  data() {
+    return {
+      valid: true,
+      username: "",
+      nameRules: [
+        v => !!v || 'Name is required',
+        v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+      ],
+      email: "",
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()\\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'E-mail must be valid',
+      ],
+      password: "",
+      passwordAgain: "",
+      passwordRules: [
+        v => !!v || 'Password is required',
+        v => /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(v) || 'Password must contain a lowercase letter, one number, a special character and one uppercase letter',
+      ],
+      successMessage: false,
+      errorMessage: false
+    }
+  },
+  methods: {
+    async register() {
+      if (this.$refs.form.validate()) {
+        if (this.password === this.passwordAgain) {
+          await this.axios.post('http://localhost:9000/quirec-api/user/register', {
+            email: this.email,
+            username: this.username,
+            password: this.password
+          })
+              .then(response => {
+                this.errorMessage = false
+                this.successMessage = true
+              })
+              .catch(error => {
+                this.successMessage = false
+                this.errorMessage = true
+              })
         }
       }
     }
-  };
+  }
+};
 </script>
