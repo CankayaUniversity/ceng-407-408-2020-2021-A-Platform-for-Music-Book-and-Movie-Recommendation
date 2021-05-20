@@ -63,7 +63,7 @@
             this.$store.commit('setUserId', response.data.user.id)
             this.$store.commit('setUserToken', response.data.accessToken)
 
-            if(response.data.user.username == 'admin') {
+            if(response.data.user.username === 'admin') {
               this.$store.commit('setRole', 'admin')
               this.$router.push("/admin-panel")
             }

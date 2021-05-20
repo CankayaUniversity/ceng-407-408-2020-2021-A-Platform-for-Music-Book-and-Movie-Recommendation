@@ -57,9 +57,10 @@ const routes = [
     meta: { authorize: 'user' }
   },
   {
-    path: '/details/:resourceId',
+    path: '/details/:category/:resourceId',
     component: DetailsPage,
     name: 'detailsPage',
+    props: { showRating: false },
     meta: { authorize: 'user' }
   },
   {

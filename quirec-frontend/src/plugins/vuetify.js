@@ -16,7 +16,6 @@ export default new Vuetify({
                 secondary: '#212121'
             }
         }
-
     },
     icons: {
         iconfont: 'md',

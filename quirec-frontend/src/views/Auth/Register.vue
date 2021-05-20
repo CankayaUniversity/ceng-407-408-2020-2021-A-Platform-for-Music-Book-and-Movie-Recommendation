@@ -59,6 +59,7 @@
           v => !!v || 'Password is required',
           v => /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(v) || 'Password must contain a lowercase letter, one number, a special character and one uppercase letter',
         ],
+        successMessage: false,
         errorMessage: false
       }
     },
