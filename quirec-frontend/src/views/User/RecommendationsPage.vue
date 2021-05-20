@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-flex>
-      <v-card class="py-15 px-12 secondary text-center" rounded>
+      <v-card class="py-15 px-12 secondary text-center" rounded v-if="dataFetch">
           <p class="text-h6">Music</p>
           <v-row>
             <v-col
@@ -26,7 +26,7 @@
         <v-btn v-on:click="musicIndex += 4"><span class="text-h6 text--primary">&nbsp;→</span></v-btn>
       </v-card>
 
-      <v-card class="my-12 py-15 px-12 secondary text-center" rounded>
+      <v-card class="my-12 py-15 px-12 secondary text-center" rounded v-if="dataFetch">
         <p class="text-h6">Books</p>
         <v-row>
           <v-col
@@ -51,7 +51,7 @@
         <v-btn v-on:click="bookIndex += 4"><span class="text-h6 text--primary">&nbsp;→</span></v-btn>
       </v-card>
 
-      <v-card class="my-12 py-15 px-12 secondary text-center" rounded>
+      <v-card class="my-12 py-15 px-12 secondary text-center" rounded v-if="dataFetch">
         <p class="text-h6">Movies</p>
         <v-row>
           <v-col
@@ -89,7 +89,8 @@
         movies: [],
         bookIndex: -1,
         movieIndex: -1,
-        musicIndex: -1
+        musicIndex: -1,
+        dataFetch: false
       }
     },
     async mounted() {
@@ -98,9 +99,22 @@
     methods: {
       async getItems() {
         const response = await this.axios.get('http://localhost:9000/quirec-api/recommendation/user/' + this.$store.getters.getUserId);
-        this.music = response.data.musicRecommendations;
-        this.books = response.data.bookRecommendations;
-        this.movies = response.data.movieRecommendations;
+        let i = 0;
+
+        this.music.splice(0);
+        for(let element of response.data.musicRecommendations) {
+          this.$set(this.music, i, element)
+        }
+
+        this.books.splice(0);
+        for(let element of response.data.bookRecommendations) {
+          this.$set(this.music, i, element)
+        }
+
+        this.movies.splice(0);
+        for(let element of response.data.movieRecommendations) {
+          this.$set(this.music, i, element)
+        }
       },
       navToDetails(category, resourceId) {
         this.$router.push({path: 'details/' + category + "/" + resourceId, props: true});
