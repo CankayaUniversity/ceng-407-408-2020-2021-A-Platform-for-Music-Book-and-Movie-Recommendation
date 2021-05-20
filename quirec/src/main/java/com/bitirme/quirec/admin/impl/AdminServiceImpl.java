@@ -35,8 +35,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void databaseUpdate(){
-        //booksService.getBooks();
-        //movieDatabaseService.getMovies();
+        booksService.getBooks();
+        movieDatabaseService.getMovies();
         deezerService.getMusic();
     }
 

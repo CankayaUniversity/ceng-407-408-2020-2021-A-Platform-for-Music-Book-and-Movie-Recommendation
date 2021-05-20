@@ -33,7 +33,4 @@ public class AdminController {
                 HttpStatus.OK
         );
     }
-
-    //TODO: model retraining
-
 }

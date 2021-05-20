@@ -80,14 +80,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User changePassword(long userId, String newPassword) {
-        User update = userDao.findById(userId).orElseThrow(
+    public User changePassword(long userId, User user, String newPassword) throws Exception {
+        User userControl = userDao.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("user")
         );
 
-        update.setPassword(BCrypt.hashpw(newPassword, salt));
+        if(BCrypt.checkpw(user.getPassword(),userControl.getPassword())){
+            userControl.setPassword(BCrypt.hashpw(newPassword, salt));
+        }
+        else{
+            throw new Exception("Incorrect old Password");
+        }
 
-        return userDao.saveAndFlush(update);
+        return userDao.saveAndFlush(userControl);
     }
 
     @Override

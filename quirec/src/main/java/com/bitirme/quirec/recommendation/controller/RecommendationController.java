@@ -22,16 +22,16 @@ public class RecommendationController {
     RecommendationService recommendationService;
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Recommendation> get(@PathVariable("id") long userId) throws IOException {
+    public ResponseEntity<Recommendation> get(@PathVariable("id") long userId) {
         return new ResponseEntity<>(
                 recommendationService.get(userId),
                 HttpStatus.OK
         );
     }
 
-    @RequestMapping(value = "/rate", method = RequestMethod.POST)
-    public ResponseEntity<Void> rate(@RequestBody CategoryType type, int rate) {
-        recommendationService.rate(type, rate);
+    @RequestMapping(value = "/user/{id}/rate", method = RequestMethod.POST)
+    public ResponseEntity<Void> rate(@PathVariable("id") long userId, @RequestBody CategoryType type, long itemId, double rate) throws IOException {
+        recommendationService.rate(userId, type, itemId, rate);
         return new ResponseEntity<>(
                 HttpStatus.OK
         );

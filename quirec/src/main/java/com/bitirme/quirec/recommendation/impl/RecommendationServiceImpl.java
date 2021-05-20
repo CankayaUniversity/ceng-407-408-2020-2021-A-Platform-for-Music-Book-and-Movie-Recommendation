@@ -1,30 +1,29 @@
 package com.bitirme.quirec.recommendation.impl;
 
 import com.bitirme.api.JSONParser.JSONParsingService;
+import com.bitirme.dataset.dao.BookDao;
+import com.bitirme.dataset.dao.MovieDao;
 import com.bitirme.dataset.dao.MusicDao;
+import com.bitirme.dataset.model.Book;
 import com.bitirme.dataset.model.Movie;
 import com.bitirme.dataset.model.Music;
 import com.bitirme.quirec.questionnarie.model.CategoryType;
 import com.bitirme.quirec.recommendation.dao.RatingDao;
-import com.bitirme.quirec.recommendation.dao.RecommendationDao;
 import com.bitirme.quirec.recommendation.model.Rating;
 import com.bitirme.quirec.recommendation.model.Recommendation;
 import com.bitirme.quirec.recommendation.service.RecommendationService;
 import com.bitirme.quirec.user.dao.UserDao;
 import com.bitirme.quirec.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.io.FileNotFoundException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
-
-
 
 @Service
 @Transactional
@@ -32,9 +31,6 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     @Autowired
     UserDao userDao;
-
-    @Autowired
-    RecommendationDao recommendationDao;
 
     @Autowired
     RatingDao ratingDao;
@@ -45,66 +41,121 @@ public class RecommendationServiceImpl implements RecommendationService {
     @Autowired
     MusicDao musicDao;
 
+    @Autowired
+    BookDao bookDao;
+
+    @Autowired
+    MovieDao movieDao;
+
     @Override
-        public Recommendation get(long userId) throws IOException {
-        User user = userDao.findById(userId).orElseThrow(
+    public Recommendation get(long userId) {
+        userDao.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("user")
         );
 
         Recommendation recommendation = new Recommendation();
 
-        String url = "http://127.0.0.1:5000/"+ userId;
+        List<CategoryType> userCategories = userDao.findUserCategories(userId);
 
-        String datasetPath = "D:\\\\Datasets\\top10s.csv";
+        if (userCategories.contains(CategoryType.MUSIC)) {
+            String musicUrl = "http://127.0.0.1:5000/music/" + userId;
 
-        try (PrintWriter writer = new PrintWriter(datasetPath)) {
-            List<Music> musicList = musicDao.findAll(Sort.by("id"));
+            String musicIds = parsingService.getForRecommendation(musicUrl);
+            String musics[] = musicIds.split("\n");
 
-            writer.println("id" + "," + "title");
+            for (int i = 0; i < musics.length; i++) {
+                String musicId = musics[i].replaceAll("\\s+","");
+                Music music = musicDao.findById(Long.valueOf(musicId)).orElseThrow(
+                        () -> new EntityNotFoundException("music")
+                );
 
-            musicList.forEach(
-                    music -> writer.println(music.getId() + "," + music.getTitle())
-            );
-
-            writer.flush();
-
-            String ids = parsingService.postForRecommendation(url, datasetPath);
-
-            String lines[] = ids.split("\n");
-
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
+                recommendation.getMusicRecommendations()[i] = music;
+            }
         }
 
-        if (user.getCategories().contains(CategoryType.MOVIE)) {
-            List<Movie> m = new ArrayList<>();
+        if (userCategories.contains(CategoryType.BOOK)) {
+            String url = "http://127.0.0.1:5000/books/"+ userId;
 
-            m.forEach(
-                    mov -> {
-                        recommendation.getMovieRecommendations().add(mov);
-                    }
-            );
+            String bookIds = parsingService.getForRecommendation(url);
+            String books[] = bookIds.split("\n");
+
+            for (int i = 0; i < books.length; i++) {
+                String bookId = books[i].replaceAll("\\s+","");
+                Book book = bookDao.findById(Long.valueOf(bookId)).orElseThrow(
+                        () -> new EntityNotFoundException("book")
+                );
+
+                recommendation.getBookRecommendations()[i] = book;
+            }
         }
 
-        if (user.getCategories().contains(CategoryType.BOOK)) {
-            //Kitap recom yap
-        }
+        if (userCategories.contains(CategoryType.MOVIE)) {
+            String url = "http://127.0.0.1:5000/movie/"+ userId;
 
-        if (user.getCategories().contains(CategoryType.MUSIC)) {
-            //MUSIC recom yap
+            String movieIds = parsingService.getForRecommendation(url);
+            String movies[] = movieIds.split("\n");
+
+            for (int i = 0; i < movies.length; i++) {
+                String movieId = movies[i].replaceAll("\\s+","");
+                Movie movie = movieDao.findById(Long.valueOf(movieId)).orElseThrow(
+                        () -> new EntityNotFoundException("movie")
+                );
+
+                recommendation.getMovieRecommendations()[i] = movie;
+            }
         }
 
         return recommendation;
     }
 
     @Override
-    public void rate(CategoryType type, double rate) {
+    public void rate(long userId, CategoryType type, long itemId, double rate) throws IOException {
+        userDao.findById(userId).orElseThrow(
+                () -> new EntityNotFoundException("user")
+        );
+
         Rating rating = ratingDao.findRatingByCategoryType(type);
 
         rating.setRate(rating.getRate() + rate);
         rating.setVoteNumber(rating.getVoteNumber() + 1);
 
         ratingDao.saveAndFlush(rating);
-    }
 
+        String userMusicRatings = "D:\\\\Datasets\\music_ratings.csv";
+        PrintWriter musicWriter = new PrintWriter(new BufferedWriter(new FileWriter(userMusicRatings, true)));
+
+        String userBookRatings = "D:\\\\Datasets\\book_ratings.csv";
+        PrintWriter bookWriter = new PrintWriter(new BufferedWriter(new FileWriter(userBookRatings, true)));
+
+        String userMovieRatings = "D:\\\\Datasets\\movie_ratings.csv";
+        PrintWriter movieWriter = new PrintWriter(new BufferedWriter(new FileWriter(userMovieRatings, true)));
+
+        if(type == CategoryType.MUSIC) {
+            Music music = musicDao.findById(itemId).orElseThrow(
+                    () -> new EntityNotFoundException("music")
+            );
+
+            musicWriter.println(music.getId() + "," + userId + "," + rate);
+        }
+
+        else if(type == CategoryType.BOOK) {
+            Book book = bookDao.findById(itemId).orElseThrow(
+                    () -> new EntityNotFoundException("book")
+            );
+
+            bookWriter.println(book.getId() + "," + userId + "," + rate);
+        }
+
+        else if(type == CategoryType.MOVIE) {
+            Movie movie = movieDao.findById(itemId).orElseThrow(
+                    () -> new EntityNotFoundException("movie")
+            );
+
+            movieWriter.println(movie.getId() + "," + userId + "," + rate);
+        }
+
+        musicWriter.flush();
+        bookWriter.flush();
+        movieWriter.flush();
+    }
 }
