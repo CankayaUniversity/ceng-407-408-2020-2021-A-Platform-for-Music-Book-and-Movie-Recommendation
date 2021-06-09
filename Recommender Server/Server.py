@@ -18,7 +18,7 @@ class MyServer(BaseHTTPRequestHandler):
         userId = int(self.requestline[11])
 
         if self.requestline[4:10] == "/movie":
-            model2 = load_model('src/model retraining/model(movies).h5')
+            model2 = load_model('src/model retraining/regression_model2_movies.h5')
 
             dataset = pd.read_csv('C:/Datasets/movie_ratings.csv')
             movie_data = np.array(list(set(dataset.movie_id)))
@@ -38,7 +38,7 @@ class MyServer(BaseHTTPRequestHandler):
             self.wfile.write(bytes("%s" % result.to_string(index=False), "utf-8"))
 
         elif self.requestline[4:10] == "/books":
-            model2 = load_model('src/model retraining/model(book).h5')
+            model2 = load_model('src/model retraining/regression_model2_book.h5')
 
             dataset = pd.read_csv('C:/Datasets/book_ratings.csv')
             book_data = np.array(list(set(dataset.book_id)))
@@ -53,12 +53,12 @@ class MyServer(BaseHTTPRequestHandler):
             books = pd.read_csv('C:/Datasets/book.csv')
 
             b = books[books['id'].isin(recommended_book_ids)]
-            result = b[['id']]
+            result = b['id']
 
             self.wfile.write(bytes("%s" % result.to_string(index=False), "utf-8"))
 
         elif self.requestline[4:10] == "/music":
-            model2 = load_model('src/model retraining/model(music).h5')
+            model2 = load_model('src/model retraining/regression_model2_music.h5')
 
             dataset = pd.read_csv('C:/Datasets/music_ratings.csv')
             music_data = np.array(list(set(dataset.music_id)))

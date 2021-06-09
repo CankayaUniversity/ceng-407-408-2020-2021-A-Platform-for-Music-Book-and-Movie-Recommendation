@@ -50,7 +50,7 @@ class MyServer(BaseHTTPRequestHandler):
         model2.compile('adam', 'mean_squared_error')
 
         history = model2.fit([train.user_id, train.music_id], train.rating, epochs=25, verbose=1)
-        model2.save('model(music).h5')
+        model2.save('regression_model2_music.h5')
         plt.plot(history.history['loss'])
         plt.xlabel("Epochs")
         plt.ylabel("Training Error")
@@ -90,7 +90,7 @@ class MyServer(BaseHTTPRequestHandler):
         model2.compile('adam', 'mean_squared_error')
 
         history = model2.fit([train.user_id, train.book_id], train.rating, epochs=25, verbose=1)
-        model2.save('model(book).h5')
+        model2.save('regression_model2_book.h5')
         plt.plot(history.history['loss'])
         plt.xlabel("Epochs")
         plt.ylabel("Training Error")
@@ -130,7 +130,7 @@ class MyServer(BaseHTTPRequestHandler):
         model2.compile('adam', 'mean_squared_error')
 
         history = model2.fit([train.user_id, train.movie_id], train.rating, epochs=25, verbose=1)
-        model2.save('model(movies).h5')
+        model2.save('regression_model2_movies.h5')
         plt.plot(history.history['loss'])
         plt.xlabel("Epochs")
         plt.ylabel("Training Error")
