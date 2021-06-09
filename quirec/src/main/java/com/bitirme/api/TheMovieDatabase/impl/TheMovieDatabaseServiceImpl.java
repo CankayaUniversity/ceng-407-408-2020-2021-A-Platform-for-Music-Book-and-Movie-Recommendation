@@ -14,6 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 
 @Service
 @Transactional
@@ -86,7 +87,7 @@ public class TheMovieDatabaseServiceImpl implements TheMovieDatabaseService {
                         if(originalC == null) {
                             Categories c = new Categories();
                             c.setCategoryType(CategoryType.MOVIE);
-                            c.setName(category.get("name").toString());
+                            c.setName(category.get("name").toString().toLowerCase(Locale.ROOT));
                             c.setOriginalId(id);
 
                             categoryDao.saveAndFlush(c);

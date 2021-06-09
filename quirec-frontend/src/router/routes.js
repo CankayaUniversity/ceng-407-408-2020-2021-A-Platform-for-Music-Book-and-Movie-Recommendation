@@ -9,6 +9,7 @@ import Login from '../views/Auth/Login.vue'
 import Register from '../views/Auth/Register.vue'
 import ProfilePage from '../views/User/ProfilePage.vue'
 import Questionnaire from '../views/User/Questionnaire.vue'
+import QuestionnaireTwo from '../views/User/QuestionnaireTwo.vue'
 import BrowserPage from '../views/User/BrowserPage.vue'
 import DetailsPage from '../views/User/DetailsPage.vue'
 import AdminPanel from '../views/AdminPanel.vue'
@@ -47,6 +48,12 @@ const routes = [
     path: '/questionnaire',
     component: Questionnaire,
     name: 'questionnaire',
+    meta: { authorize: 'user' }
+  },
+  {
+    path: '/questionnaireTwo',
+    component: QuestionnaireTwo,
+    name: 'questionnaireTwo',
     meta: { authorize: 'user' }
   },
   {

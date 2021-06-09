@@ -7,9 +7,13 @@
   >
     <v-toolbar dense>
       <v-toolbar-title>
-          QuiRec
-        </v-toolbar-title>
-      <v-btn to="/profile" :class="visibleClass" class="ml-10" prepend-icon="person" >
+        QuiRec
+      </v-toolbar-title>
+      <v-btn to="/recommendations" :class="visibleClass">
+        Recommendations
+      </v-btn>
+
+      <v-btn to="/profile" :class="visibleClass">
         Profile
       </v-btn>
 
@@ -28,18 +32,17 @@
 <script>
 export default {
   name: "Header.vue",
-  methods:{
-    async logout(){
+  methods: {
+    async logout() {
       this.$store.commit('clearUserToken')
       this.$store.commit('clearUserId')
       this.$store.commit('clearRole')
       this.$router.push("/login")
     }
-
   },
-  computed:{
-    visibleClass(){
-      return{
+  computed: {
+    visibleClass() {
+      return {
         'd-none': !this.$store.getters.getToken
       }
     }
@@ -48,5 +51,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

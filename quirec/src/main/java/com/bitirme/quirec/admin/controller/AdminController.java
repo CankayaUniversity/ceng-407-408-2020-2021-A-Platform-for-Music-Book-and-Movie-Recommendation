@@ -34,6 +34,11 @@ public class AdminController {
         );
     }
 
-    //TODO: model retraining
-
+    @RequestMapping(path = "/modelRetrain", method = RequestMethod.GET)
+    public ResponseEntity<Void> modelRetrain() {
+        adminService.modelRetrain();
+        return new ResponseEntity<>(
+                HttpStatus.OK
+        );
+    }
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @Transactional
@@ -49,7 +50,7 @@ public class BrowserServiceImpl implements BrowserService {
 
     @Override
     public List<Music> musicSearch(String searchDetail) {
-        Categories category=categoryDao.findCategoriesByCategoryTypeAndName(CategoryType.MUSIC, searchDetail);
+        Categories category=categoryDao.findCategoriesByCategoryTypeAndNameLike(CategoryType.MUSIC, "%"+searchDetail.toLowerCase(Locale.ROOT)+"%");
 
         if(category!=null)
             return musicDao.findMusicByCategories(category);
@@ -59,7 +60,7 @@ public class BrowserServiceImpl implements BrowserService {
 
     @Override
     public List<Book> bookSearch(String searchDetail) {
-        Categories category=categoryDao.findCategoriesByCategoryTypeAndName(CategoryType.BOOK, searchDetail);
+        Categories category=categoryDao.findCategoriesByCategoryTypeAndNameLike(CategoryType.BOOK, "%"+searchDetail.toLowerCase(Locale.ROOT)+"%");
 
         if(category!=null)
             return bookDao.findBookByCategories(category);
@@ -69,7 +70,7 @@ public class BrowserServiceImpl implements BrowserService {
 
     @Override
     public List<Movie> movieSearch(String searchDetail) {
-        Categories category=categoryDao.findCategoriesByCategoryTypeAndName(CategoryType.MOVIE, searchDetail);
+        Categories category=categoryDao.findCategoriesByCategoryTypeAndNameLike(CategoryType.MOVIE,"%"+ searchDetail.toLowerCase(Locale.ROOT)+"%");
 
         if(category!=null)
             return movieDao.findMovieByCategories(category);

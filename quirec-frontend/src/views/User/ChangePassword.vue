@@ -50,13 +50,13 @@
 
 <script>
 export default {
-  data(){
-    return{
+  data() {
+    return {
       valid: true,
       input: {
-        passwordOld:"",
-        passwordNew:"",
-        passwordAgain:""
+        passwordOld: "",
+        passwordNew: "",
+        passwordAgain: ""
       },
       passwordRules: [
         v => !!v || 'Password is required',
@@ -67,18 +67,17 @@ export default {
     }
   },
   methods: {
-    async changePassword(){
-      if(this.$refs.form.validate()) {
-        if(this.input.passwordNew  === this.input.passwordAgain) {
+    async changePassword() {
+      if (this.$refs.form.validate()) {
+        if (this.input.passwordNew === this.input.passwordAgain) {
           await this.axios.put('http://localhost:9000/quirec-api/user/' + this.$store.getters.getUserId,
-                this.input.passwordOld + '&' + this.input.passwordNew
+              this.input.passwordOld + '&' + this.input.passwordNew
           )
-          .then(response => {
-            this.errorMessage = false
-            this.successMessage = true
-          })
-        }
-        else {
+              .then(response => {
+                this.errorMessage = false
+                this.successMessage = true
+              })
+        } else {
           this.successMessage = false
           this.errorMessage = true
         }

@@ -28,7 +28,8 @@
                 {{ music[musicIndex + n].title }} <br>
                 {{ music[musicIndex + n].artist }}
               </p>
-              <v-btn v-on:click="navToDetails('music', music[musicIndex+n].resourceId)" class="secondary white--text"> see
+              <v-btn v-on:click="navToDetails('music', music[musicIndex+n].resourceId)" class="secondary white--text">
+                see
                 details
               </v-btn>
             </v-card>
@@ -102,7 +103,8 @@
                 {{ movies[movieIndex + n].title }} <br>
                 Language: {{ movies[movieIndex + n].language }}
               </p>
-              <v-btn v-on:click="navToDetails('movies', movies[movieIndex+n].resourceId)" class="secondary white--text"> see
+              <v-btn v-on:click="navToDetails('movie', movies[movieIndex+n].resourceId)" class="secondary white--text">
+                see
                 details
               </v-btn>
             </v-card>
@@ -145,12 +147,10 @@ export default {
         for (let element of music.data) {
           this.music.push(element)
         }
-
         const books = await this.axios.get('http://localhost:9000/quirec-api/browse/book');
         for (let element of books.data) {
           this.books.push(element)
         }
-
         const movies = await this.axios.get('http://localhost:9000/quirec-api/browse/movie');
         for (let element of movies.data) {
           this.movies.push(element)
@@ -159,7 +159,8 @@ export default {
       this.dataFetch = true;
     },
     navToDetails(category, resourceId) {
-      this.$router.push({path: 'details/' + category + "/" + resourceId, props: false});
+      this.$store.commit('setShowRating', false)
+      this.$router.push({path: 'details/' + category + "/" + resourceId});
     },
     searchByM() {
       if (this.searchMusic.length !== 0) {
@@ -176,7 +177,6 @@ export default {
                 this.ncheckMusic = this.music.length
               } else
                 this.ncheckMusic = 4;
-
             })
       }
     },
@@ -219,4 +219,3 @@ export default {
   }
 };
 </script>
-

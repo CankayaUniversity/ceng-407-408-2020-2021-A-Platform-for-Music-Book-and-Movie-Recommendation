@@ -9,6 +9,7 @@ import com.bitirme.dataset.model.Movie;
 import com.bitirme.dataset.model.Music;
 import com.bitirme.quirec.questionnarie.model.CategoryType;
 import com.bitirme.quirec.recommendation.dao.RatingDao;
+import com.bitirme.quirec.recommendation.model.Rate;
 import com.bitirme.quirec.recommendation.model.Rating;
 import com.bitirme.quirec.recommendation.model.Recommendation;
 import com.bitirme.quirec.recommendation.service.RecommendationService;
@@ -64,7 +65,7 @@ public class RecommendationServiceImpl implements RecommendationService {
             String musics[] = musicIds.split("\n");
 
             for (int i = 0; i < musics.length; i++) {
-                String musicId = musics[i].replaceAll("\\s+","");
+                String musicId = musics[i].replaceAll("\\s+", "");
                 Music music = musicDao.findById(Long.valueOf(musicId)).orElseThrow(
                         () -> new EntityNotFoundException("music")
                 );
@@ -74,13 +75,13 @@ public class RecommendationServiceImpl implements RecommendationService {
         }
 
         if (userCategories.contains(CategoryType.BOOK)) {
-            String url = "http://127.0.0.1:5000/books/"+ userId;
+            String url = "http://127.0.0.1:5000/books/" + userId;
 
             String bookIds = parsingService.getForRecommendation(url);
             String books[] = bookIds.split("\n");
 
             for (int i = 0; i < books.length; i++) {
-                String bookId = books[i].replaceAll("\\s+","");
+                String bookId = books[i].replaceAll("\\s+", "");
                 Book book = bookDao.findById(Long.valueOf(bookId)).orElseThrow(
                         () -> new EntityNotFoundException("book")
                 );
@@ -90,13 +91,13 @@ public class RecommendationServiceImpl implements RecommendationService {
         }
 
         if (userCategories.contains(CategoryType.MOVIE)) {
-            String url = "http://127.0.0.1:5000/movie/"+ userId;
+            String url = "http://127.0.0.1:5000/movie/" + userId;
 
             String movieIds = parsingService.getForRecommendation(url);
             String movies[] = movieIds.split("\n");
 
             for (int i = 0; i < movies.length; i++) {
-                String movieId = movies[i].replaceAll("\\s+","");
+                String movieId = movies[i].replaceAll("\\s+", "");
                 Movie movie = movieDao.findById(Long.valueOf(movieId)).orElseThrow(
                         () -> new EntityNotFoundException("movie")
                 );
@@ -109,45 +110,41 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
 
     @Override
-    public void rate(long userId, CategoryType type, long itemId, double rate) throws IOException {
+    public void rate(long userId, Rate rate) throws IOException {
         userDao.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("user")
         );
 
-        Rating rating = ratingDao.findRatingByCategoryType(type);
+        Rating rating = ratingDao.findRatingByCategoryType(rate.getType());
 
-        rating.setRate(rating.getRate() + rate);
+        rating.setRate(rating.getRate() + rate.getRate());
         rating.setVoteNumber(rating.getVoteNumber() + 1);
 
         ratingDao.saveAndFlush(rating);
 
-        String userMusicRatings = "D:\\\\Datasets\\music_ratings.csv";
+        String userMusicRatings = "C:\\\\Datasets\\music_ratings.csv";
         PrintWriter musicWriter = new PrintWriter(new BufferedWriter(new FileWriter(userMusicRatings, true)));
 
-        String userBookRatings = "D:\\\\Datasets\\book_ratings.csv";
+        String userBookRatings = "C:\\\\Datasets\\book_ratings.csv";
         PrintWriter bookWriter = new PrintWriter(new BufferedWriter(new FileWriter(userBookRatings, true)));
 
-        String userMovieRatings = "D:\\\\Datasets\\movie_ratings.csv";
+        String userMovieRatings = "C:\\\\Datasets\\movie_ratings.csv";
         PrintWriter movieWriter = new PrintWriter(new BufferedWriter(new FileWriter(userMovieRatings, true)));
 
-        if(type == CategoryType.MUSIC) {
-            Music music = musicDao.findById(itemId).orElseThrow(
+        if (rate.getType() == CategoryType.MUSIC) {
+            Music music = musicDao.findById(rate.getItemId()).orElseThrow(
                     () -> new EntityNotFoundException("music")
             );
 
-            musicWriter.println(music.getId() + "," + userId + "," + rate);
-        }
-
-        else if(type == CategoryType.BOOK) {
-            Book book = bookDao.findById(itemId).orElseThrow(
+            musicWriter.println(music.getId() + "," + userId + "," + rate.getRate());
+        } else if (rate.getType() == CategoryType.BOOK) {
+            Book book = bookDao.findById(rate.getItemId()).orElseThrow(
                     () -> new EntityNotFoundException("book")
             );
 
             bookWriter.println(book.getId() + "," + userId + "," + rate);
-        }
-
-        else if(type == CategoryType.MOVIE) {
-            Movie movie = movieDao.findById(itemId).orElseThrow(
+        } else if (rate.getType() == CategoryType.MOVIE) {
+            Movie movie = movieDao.findById(rate.getItemId()).orElseThrow(
                     () -> new EntityNotFoundException("movie")
             );
 

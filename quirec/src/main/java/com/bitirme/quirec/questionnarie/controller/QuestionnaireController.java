@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/quirec-api/questionnaire")
@@ -26,14 +25,6 @@ public class QuestionnaireController {
     public ResponseEntity<List<Categories>> getCategories() {
         return new ResponseEntity<>(
                 questionnaireService.getCategories(),
-                HttpStatus.OK
-        );
-    }
-
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Set<Categories>> get(@PathVariable("id") long userId) {
-        return new ResponseEntity<>(
-                questionnaireService.get(userId),
                 HttpStatus.OK
         );
     }

@@ -13,11 +13,17 @@ const store = new Vuex.Store({
         userId: null,
         userToken: null,
         role: null,
+        showRating: false,
+        itemId: null,
+        selectedCategories: []
     },
     getters: {
         getUserId: state => state.userId,
         getToken: state => state.userToken,
         getRole: state => state.role,
+        getShowRating: state => state.showRating,
+        getItemId: state => state.itemId,
+        getSelectedCategories: state => state.selectedCategories
     },
     mutations:{
         setUserId(state, id) {
@@ -37,6 +43,15 @@ const store = new Vuex.Store({
         },
         clearRole(state) {
             state.role = null
+        },
+        setShowRating(state, value) {
+            state.showRating = value
+        },
+        setItemId(state, value) {
+            state.itemId = value
+        },
+        setSelectedCategories(state, value) {
+            state.selectedCategories = value
         }
     },
     plugins: [vuexLocal.plugin]

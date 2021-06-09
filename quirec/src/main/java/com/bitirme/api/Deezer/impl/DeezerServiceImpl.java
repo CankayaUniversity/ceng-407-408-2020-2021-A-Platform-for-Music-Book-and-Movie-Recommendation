@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @Transactional
@@ -80,7 +81,7 @@ public class DeezerServiceImpl implements DeezerService {
                             if(originalC == null) {
                                 Categories c = new Categories();
                                 c.setCategoryType(CategoryType.MUSIC);
-                                c.setName(category.get("name").toString());
+                                c.setName(category.get("name").toString().toLowerCase(Locale.ROOT));
                                 c.setOriginalId(id);
 
                                 categoryDao.saveAndFlush(c);

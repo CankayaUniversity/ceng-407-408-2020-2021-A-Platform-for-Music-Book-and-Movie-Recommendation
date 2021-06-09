@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @Transactional
@@ -61,13 +62,13 @@ public class GoogleBooksServiceImpl implements GoogleBooksService {
                     categories
                             .forEach(
                                     category -> {
-                                        Categories c = categoryDao.findCategoriesByCategoryTypeAndName(CategoryType.BOOK, category);
+                                        Categories c = categoryDao.findCategoriesByCategoryTypeAndName(CategoryType.BOOK, category.toLowerCase(Locale.ROOT));
 
                                         if (c == null) {
                                             Categories newCategory = new Categories();
 
                                             newCategory.setCategoryType(CategoryType.BOOK);
-                                            newCategory.setName(category);
+                                            newCategory.setName(category.toLowerCase(Locale.ROOT));
                                             newCategory.setOriginalId(0);
                                             categoryDao.saveAndFlush(newCategory);
 

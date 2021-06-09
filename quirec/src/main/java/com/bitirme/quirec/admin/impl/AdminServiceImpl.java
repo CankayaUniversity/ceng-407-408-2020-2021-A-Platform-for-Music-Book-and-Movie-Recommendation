@@ -2,6 +2,7 @@ package com.bitirme.quirec.admin.impl;
 
 import com.bitirme.api.Deezer.service.DeezerService;
 import com.bitirme.api.GoogleBooks.service.GoogleBooksService;
+import com.bitirme.api.JSONParser.JSONParsingService;
 import com.bitirme.api.TheMovieDatabase.service.TheMovieDatabaseService;
 import com.bitirme.quirec.admin.service.AdminService;
 import com.bitirme.quirec.recommendation.dao.RatingDao;
@@ -28,6 +29,9 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     DeezerService deezerService;
 
+    @Autowired
+    JSONParsingService parsingService;
+
     @Override
     public List<Rating> getRatings() {
         return ratingDao.findAll();
@@ -35,9 +39,17 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void databaseUpdate(){
-        //booksService.getBooks();
-        //movieDatabaseService.getMovies();
+        booksService.getBooks();
+        movieDatabaseService.getMovies();
         deezerService.getMusic();
+        String url = "http://127.0.0.1:5001";
+        parsingService.get(url);
+    }
+
+    @Override
+    public void modelRetrain() {
+        String url = "http://127.0.0.1:5002";
+        parsingService.get(url);
     }
 
 }

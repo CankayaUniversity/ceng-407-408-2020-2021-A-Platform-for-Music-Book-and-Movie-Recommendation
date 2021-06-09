@@ -1,6 +1,7 @@
 package com.bitirme.quirec.recommendation.controller;
 
 import com.bitirme.quirec.questionnarie.model.CategoryType;
+import com.bitirme.quirec.recommendation.model.Rate;
 import com.bitirme.quirec.recommendation.model.Recommendation;
 import com.bitirme.quirec.recommendation.service.RecommendationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ public class RecommendationController {
     }
 
     @RequestMapping(value = "/user/{id}/rate", method = RequestMethod.POST)
-    public ResponseEntity<Void> rate(@PathVariable("id") long userId, @RequestBody CategoryType type, long itemId, double rate) throws IOException {
-        recommendationService.rate(userId, type, itemId, rate);
+    public ResponseEntity<Void> rate(@PathVariable("id") long userId, @RequestBody Rate rate) throws IOException {
+        recommendationService.rate(userId, rate);
         return new ResponseEntity<>(
                 HttpStatus.OK
         );

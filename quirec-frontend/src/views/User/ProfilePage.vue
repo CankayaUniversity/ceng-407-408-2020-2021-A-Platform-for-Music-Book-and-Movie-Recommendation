@@ -19,9 +19,17 @@
         </v-simple-table>
         <v-simple-table>
           <tr>
-            <td> <v-btn to="/questionnaire" class="mx-5 primary float-left" large rounded>Change Questionnaire</v-btn> </td>
-            <td> <center><v-btn to="/change-password" class="mx-5 primary" large rounded>Change Password</v-btn></center> </td>
-            <td> <v-btn to="/delete-account" class="mx-5 primary float-right" large rounded>Delete My Account</v-btn> </td>
+            <td>
+              <v-btn to="/questionnaire" class="mx-5 primary float-left" large rounded>Change Questionnaire</v-btn>
+            </td>
+            <td>
+              <center>
+                <v-btn to="/change-password" class="mx-5 primary" large rounded>Change Password</v-btn>
+              </center>
+            </td>
+            <td>
+              <v-btn to="/delete-account" class="mx-5 primary float-right" large rounded>Delete My Account</v-btn>
+            </td>
           </tr>
         </v-simple-table>
         <br><br>
@@ -32,22 +40,22 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        username: "",
-        email: ""
-      };
-   },
-    async mounted() {
-      await this.getUserInfo();
-    },
-    methods: {
-      async getUserInfo() {
-        const response = await this.axios.get('http://localhost:9000/quirec-api/user/' + this.$store.getters.getUserId)
-        this.username = response.data.username;
-        this.email = response.data.email;
-      }
+export default {
+  data() {
+    return {
+      username: "",
+      email: ""
+    };
+  },
+  async mounted() {
+    await this.getUserInfo();
+  },
+  methods: {
+    async getUserInfo() {
+      const response = await this.axios.get('http://localhost:9000/quirec-api/user/' + this.$store.getters.getUserId)
+      this.username = response.data.username;
+      this.email = response.data.email;
     }
-  };
+  }
+};
 </script>

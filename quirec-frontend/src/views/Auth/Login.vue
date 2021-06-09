@@ -3,7 +3,7 @@
     <v-row align="center" justify="center">
       <v-col sm="6">
         <v-card class="my-12 elevation-0">
-          <v-img :src="require('@/assets/QuiRec.png')"> </v-img>
+          <v-img :src="require('@/assets/QuiRec.png')"></v-img>
         </v-card>
       </v-col>
 
@@ -13,21 +13,27 @@
             <v-card class="elevation-12 my-12 py-12 px-10 secondary">
               <v-card-text class="text--primary">
                 <v-text-field label="Username or Email" v-model="input.email" prepend-icon="person"></v-text-field>
-                
-                <v-text-field label="Password" v-model="input.password" type="password" prepend-icon="lock"></v-text-field>
+
+                <v-text-field label="Password" v-model="input.password" type="password"
+                              prepend-icon="lock"></v-text-field>
 
                 <v-alert v-if="errorMessage" type="error">Invalid username/password!</v-alert>
 
-                <div class="text-decoration-underline text-center"><a href="forgot-password"> Forgot Password? </a></div>
+                <div class="text-decoration-underline text-center"><a href="forgot-password"> Forgot Password? </a>
+                </div>
 
-                <center><v-btn v-on:click="login()" class="primary" large rounded>Login</v-btn></center>
+                <center>
+                  <v-btn v-on:click="login()" class="primary" large rounded>Login</v-btn>
+                </center>
               </v-card-text>
 
-              <v-divider> </v-divider>
+              <v-divider></v-divider>
 
               <v-card-text>
                 <div class="text-decoration-none text-center"> Don't have an account? Sign up to QUIREC.</div>
-                <center><v-btn to="/register" class="primary" large rounded>Sign Up</v-btn></center>
+                <center>
+                  <v-btn to="/register" class="primary" large rounded>Sign Up</v-btn>
+                </center>
               </v-card-text>
             </v-card>
           </v-form>
@@ -38,50 +44,50 @@
 </template>
 
 <script>
-  export default {
-    data(){
-      return {
-        input: {
-          email: "",
-          password: ""
-        },
-        errorMessage: false
-      }
-    },
-    async mounted() {
-      await this.reset()
-    },
-    methods: {
-      async login() {
-        if(this.input.email != null && this.input.password != null) {
-          this.axios.post('http://localhost:9000/quirec-api/user/login', {
-            email: this.input.email,
-            username: "",
-            password: this.input.password
-          })
-          .then(response => {
-            this.$store.commit('setUserId', response.data.user.id)
-            this.$store.commit('setUserToken', response.data.accessToken)
-
-            if(response.data.user.username === 'admin') {
-              this.$store.commit('setRole', 'admin')
-              this.$router.push("/admin-panel")
-            }
-            else {
-              this.$store.commit('setRole', 'user')
-              this.$router.push("/recommendations")
-            }
-          })
-          .catch(error => {
-            this.errorMessage = true
-          })
-        }
+export default {
+  data() {
+    return {
+      input: {
+        email: "",
+        password: ""
       },
-      async reset() {
-        this.$store.commit('clearUserId')
-        this.$store.commit('clearUserToken')
-        this.$store.commit('clearRole')
-      }
+      errorMessage: false
     }
-  };
+  },
+  async mounted() {
+    await this.reset()
+  },
+  methods: {
+    async login() {
+      if (this.input.email != null && this.input.password != null) {
+        this.axios.post('http://localhost:9000/quirec-api/user/login', {
+          email: this.input.email,
+          username: "",
+          password: this.input.password
+        })
+            .then(response => {
+              this.$store.commit('setUserId', response.data.user.id)
+              this.$store.commit('setUserToken', response.data.accessToken)
+              if (response.data.user.username === 'admin') {
+                this.$store.commit('setRole', 'admin')
+                this.$router.push("/admin-panel")
+              } else {
+                this.$store.commit('setRole', 'user')
+                if (response.data.user.categories.length !== 0)
+                  this.$router.push("/recommendations")
+                else this.$router.push("/questionnaire")
+              }
+            })
+            .catch(error => {
+              this.errorMessage = true
+            })
+      }
+    },
+    async reset() {
+      this.$store.commit('clearUserId')
+      this.$store.commit('clearUserToken')
+      this.$store.commit('clearRole')
+    }
+  }
+};
 </script>

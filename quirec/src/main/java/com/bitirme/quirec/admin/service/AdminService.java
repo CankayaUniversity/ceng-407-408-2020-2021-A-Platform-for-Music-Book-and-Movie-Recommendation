@@ -10,4 +10,5 @@ public interface AdminService {
 
     void databaseUpdate();
 
+    void modelRetrain();
 }

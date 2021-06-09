@@ -22,7 +22,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -49,27 +48,18 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
-    public Set<Categories> get(long userId) {
-        User user = userDao.findById(userId).orElseThrow(
-                () -> new EntityNotFoundException("user")
-        );
-
-        return user.getCategories();
-    }
-
-    @Override
     public void questionnaire(long userId, List<Questionnaire> questionnaire) throws Exception {
         User user = userDao.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("user")
         );
 
-        String userMusicRatings = "D:\\\\Datasets\\music_ratings.csv";
+        String userMusicRatings = "C:\\\\Datasets\\music_ratings.csv";
         PrintWriter musicWriter = new PrintWriter(new BufferedWriter(new FileWriter(userMusicRatings, true)));
 
-        String userBookRatings = "D:\\\\Datasets\\book_ratings.csv";
+        String userBookRatings = "C:\\\\Datasets\\book_ratings.csv";
         PrintWriter bookWriter = new PrintWriter(new BufferedWriter(new FileWriter(userBookRatings, true)));
 
-        String userMovieRatings = "D:\\\\Datasets\\movie_ratings.csv";
+        String userMovieRatings = "C:\\\\Datasets\\movie_ratings.csv";
         PrintWriter movieWriter = new PrintWriter(new BufferedWriter(new FileWriter(userMovieRatings, true)));
 
         questionnaire.forEach(
@@ -79,24 +69,21 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                     );
 
                     user.getCategories().add(category);
+                    userDao.saveAndFlush(user);
 
-                    if(category.getCategoryType() == CategoryType.MUSIC) {
+                    if (category.getCategoryType() == CategoryType.MUSIC) {
                         Music music = musicDao.findById(questionnaireElement.getItemId()).orElseThrow(
                                 () -> new EntityNotFoundException("music")
                         );
 
                         musicWriter.println(music.getId() + "," + userId + "," + questionnaireElement.getUserRating());
-                    }
-
-                    else if(category.getCategoryType() == CategoryType.BOOK) {
+                    } else if (category.getCategoryType() == CategoryType.BOOK) {
                         Book book = bookDao.findById(questionnaireElement.getItemId()).orElseThrow(
                                 () -> new EntityNotFoundException("book")
                         );
 
                         bookWriter.println(book.getId() + "," + userId + "," + questionnaireElement.getUserRating());
-                    }
-
-                    else if(category.getCategoryType() == CategoryType.MOVIE) {
+                    } else if (category.getCategoryType() == CategoryType.MOVIE) {
                         Movie movie = movieDao.findById(questionnaireElement.getItemId()).orElseThrow(
                                 () -> new EntityNotFoundException("movie")
                         );
@@ -109,7 +96,5 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         musicWriter.flush();
         bookWriter.flush();
         movieWriter.flush();
-
-        userDao.saveAndFlush(user);
     }
 }

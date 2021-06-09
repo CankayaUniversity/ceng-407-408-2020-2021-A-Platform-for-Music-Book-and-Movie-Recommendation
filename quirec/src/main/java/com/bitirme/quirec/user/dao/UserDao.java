@@ -18,8 +18,8 @@ public interface UserDao extends BaseDao<User> {
     User findUserByEmailOrUsername(@Param("userInfo") String userInfo);
 
     @Query(value = "SELECT DISTINCT category_type FROM quirec.categories as c " +
-                    " INNER JOIN quirec.user_categories uc on c.id = uc.category_id " +
-                    "WHERE uc.user_id = (:userId)", nativeQuery = true)
+            " INNER JOIN quirec.user_categories uc on c.id = uc.category_id " +
+            "WHERE uc.user_id = (:userId)", nativeQuery = true)
     List<CategoryType> findUserCategories(long userId);
 
 }

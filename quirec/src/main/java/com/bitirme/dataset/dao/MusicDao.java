@@ -14,6 +14,4 @@ public interface MusicDao extends BaseDao<Music> {
 
     List<Music> findAllByTitleLikeIgnoreCase(String title);
 
-
-
 }
