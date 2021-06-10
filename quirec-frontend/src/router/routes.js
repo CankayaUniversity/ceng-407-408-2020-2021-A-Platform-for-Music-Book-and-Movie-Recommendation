@@ -23,107 +23,105 @@ Vue.use(VueAxios, axios)
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: '/main-page',
-    component: MainPage,
-    name: 'mainPage'
-  },
-  {
-    path: '/login',
-    component: Login,
-    name: 'login'
-  },
-  {
-    path: '/register',
-    component: Register,
-    name: 'register'
-  },
-  {
-    path: '/profile',
-    component: ProfilePage,
-    name: 'profilePage',
-    meta: { authorize: 'user' }
-  },
-  {
-    path: '/questionnaire',
-    component: Questionnaire,
-    name: 'questionnaire',
-    meta: { authorize: 'user' }
-  },
-  {
-    path: '/questionnaireTwo',
-    component: QuestionnaireTwo,
-    name: 'questionnaireTwo',
-    meta: { authorize: 'user' }
-  },
-  {
-    path: '/browse',
-    component: BrowserPage,
-    name: 'browserPage',
-    meta: { authorize: 'user' }
-  },
-  {
-    path: '/details/:category/:resourceId',
-    component: DetailsPage,
-    name: 'detailsPage',
-    props: { showRating: false },
-    meta: { authorize: 'user' }
-  },
-  {
-    path: '/admin-panel',
-    component: AdminPanel,
-    name: 'adminPanel',
-    meta: { authorize: 'admin' }
-  },
-  {
-    path: '/change-password',
-    component: ChangePassword,
-    name: 'changePassword',
-    meta: { authorize: 'user' }
-  },
-  {
-    path: '/forgot-password',
-    component: ForgotPassword,
-    name: 'forgotPassword'
-  },
-  {
-    path: '/delete-account',
-    component: DeleteAccount,
-    name: 'deleteAccount',
-    meta: { authorize: 'user' }
-  },
-  {
-    path: '/reset-password',
-    component: ResetPassword,
-    name: 'resetPassword'
-  },
-  {
-    path: '/recommendations',
-    component: RecommendationsPage,
-    name: 'recommendationsPage',
-    meta: { authorize: 'user' }
-  }
+    {
+        path: '/main-page',
+        component: MainPage,
+        name: 'mainPage'
+    },
+    {
+        path: '/login',
+        component: Login,
+        name: 'login'
+    },
+    {
+        path: '/register',
+        component: Register,
+        name: 'register'
+    },
+    {
+        path: '/profile',
+        component: ProfilePage,
+        name: 'profilePage',
+        meta: {authorize: 'user'}
+    },
+    {
+        path: '/questionnaire',
+        component: Questionnaire,
+        name: 'questionnaire',
+        meta: {authorize: 'user'}
+    },
+    {
+        path: '/questionnaireTwo',
+        component: QuestionnaireTwo,
+        name: 'questionnaireTwo',
+        meta: {authorize: 'user'}
+    },
+    {
+        path: '/browse',
+        component: BrowserPage,
+        name: 'browserPage',
+        meta: {authorize: 'user'}
+    },
+    {
+        path: '/details/:category/:resourceId',
+        component: DetailsPage,
+        name: 'detailsPage',
+        props: {showRating: false},
+        meta: {authorize: 'user'}
+    },
+    {
+        path: '/admin-panel',
+        component: AdminPanel,
+        name: 'adminPanel',
+        meta: {authorize: 'admin'}
+    },
+    {
+        path: '/change-password',
+        component: ChangePassword,
+        name: 'changePassword',
+        meta: {authorize: 'user'}
+    },
+    {
+        path: '/forgot-password',
+        component: ForgotPassword,
+        name: 'forgotPassword'
+    },
+    {
+        path: '/delete-account',
+        component: DeleteAccount,
+        name: 'deleteAccount',
+        meta: {authorize: 'user'}
+    },
+    {
+        path: '/reset-password',
+        component: ResetPassword,
+        name: 'resetPassword'
+    },
+    {
+        path: '/recommendations',
+        component: RecommendationsPage,
+        name: 'recommendationsPage',
+        meta: {authorize: 'user'}
+    }
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  routes: routes,
-  base: '/'
+    mode: 'history',
+    routes: routes,
+    base: '/'
 })
 
 export default router
 
 router.beforeEach((to, from, next) => {
-  if(['register','mainPage', 'login', 'forgotPassword', "resetPassword"].includes(to.name)) {
-    next()
-  }
-  else {
-    const { authorize } = to.meta;
-    if(store.getters.getToken) {
-      if(authorize !== store.getters.getRole)
-        next({ path: '/login'});
-      else next()
+    if (['register', 'mainPage', 'login', 'forgotPassword', "resetPassword"].includes(to.name)) {
+        next()
+    } else {
+        const {authorize} = to.meta;
+        if (store.getters.getToken) {
+            if (authorize !== store.getters.getRole)
+                next({path: '/login'});
+            else next()
+        } else next("/main-page")
     }
-    else next("/login")
-  }
 })
