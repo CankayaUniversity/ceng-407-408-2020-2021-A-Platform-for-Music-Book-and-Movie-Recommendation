@@ -46,6 +46,9 @@
     <v-alert v-if="successMessage" type="success">
       Completed successfully.
     </v-alert>
+    <v-alert v-if="wait" type="warning">
+         Working on the upgrades!
+        </v-alert>
     <v-alert v-if="errorMessage" type="error">
       An error has occurred.
     </v-alert>
@@ -60,6 +63,7 @@ export default {
       warningMessage: false,
       successMessage: false,
       errorMessage: false,
+      wait: false
     }
   },
   async mounted() {
@@ -73,12 +77,15 @@ export default {
       }
     },
     async dbUpdate() {
+    this.wait = true;
       await this.axios.get('http://localhost:9000/quirec-api/admin/databaseUpdate')
           .then(response => {
+            this.wait = false;
             this.successMessage = true;
             this.errorMessage = false;
           })
           .catch(error => {
+            this.wait = false;
             this.successMessage = false;
             this.errorMessage = true;
           });
@@ -86,12 +93,15 @@ export default {
     },
     async modelRetrain() {
       this.warningMessage = false;
+      this.wait = true;
       await this.axios.get('http://localhost:9000/quirec-api/admin/modelRetrain')
           .then(response => {
+            this.wait = false;
             this.successMessage = true;
             this.errorMessage = false;
           })
           .catch(error => {
+            this.wait = false;
             this.successMessage = false;
             this.errorMessage = true;
           });

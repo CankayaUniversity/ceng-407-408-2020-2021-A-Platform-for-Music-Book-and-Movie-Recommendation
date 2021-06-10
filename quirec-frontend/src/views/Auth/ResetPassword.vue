@@ -1,6 +1,11 @@
 <template>
   <v-container fill-height>
     <v-flex>
+    <v-layout class="d-flex justify-end pa-2">
+            <v-btn to="/login" class="primary" large rounded>Login</v-btn>
+            <v-btn to="/register" class="primary ml-10" large rounded>Sign Up</v-btn>
+    </v-layout>
+
       <v-form v-model="valid" ref="form" lazy-validation>
         <v-card class="my-12 py-15 px-12 secondary" rounded>
           <v-card-text class="text-center">

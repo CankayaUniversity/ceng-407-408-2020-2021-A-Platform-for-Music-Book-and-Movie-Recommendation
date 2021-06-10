@@ -142,13 +142,13 @@ public class RecommendationServiceImpl implements RecommendationService {
                     () -> new EntityNotFoundException("book")
             );
 
-            bookWriter.println(book.getId() + "," + userId + "," + rate);
+            bookWriter.println(book.getId() + "," + userId + "," +  rate.getRate());
         } else if (rate.getType() == CategoryType.MOVIE) {
             Movie movie = movieDao.findById(rate.getItemId()).orElseThrow(
                     () -> new EntityNotFoundException("movie")
             );
 
-            movieWriter.println(movie.getId() + "," + userId + "," + rate);
+            movieWriter.println(movie.getId() + "," + userId + "," +  rate.getRate());
         }
 
         musicWriter.flush();

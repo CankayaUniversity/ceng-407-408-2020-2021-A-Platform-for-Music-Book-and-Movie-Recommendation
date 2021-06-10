@@ -33,7 +33,7 @@
           </tr>
         </v-simple-table>
         <br><br>
-        <v-btn to="/" class="float-right mx-5 primary" large rounded>Return to recommendations</v-btn>
+        <v-btn to="/recommendations" class="float-right mx-5 primary" large rounded>Return to recommendations</v-btn>
       </v-card>
     </v-flex>
   </v-container>

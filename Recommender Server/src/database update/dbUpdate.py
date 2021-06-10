@@ -17,7 +17,7 @@ class MyServer(BaseHTTPRequestHandler):
         host="localhost",
         database="quirec",
         user="postgres",
-        password="Ps6225950"
+        password="123456"
     )
 
     sql_query = pd.read_sql_query('''select * from quirec.music''', con)
